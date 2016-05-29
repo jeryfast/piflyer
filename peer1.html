@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--<script src="http://cdn.peerjs.com/0.3/peer.js"></script>-->
+<script src="https://skyway.io/dist/0.3/peer.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<style>
+    #connected
+    {
+        color:green
+    }
+    #refresh{
+        color:yellow;
+    }
+</style>
+</head>
+
+<body>
+<p id='log'></p>
+<div id="comm">
+    <div id="connected"></div>
+    <div id="peerid"></div>
+    <div id="remoteid"></div>
+    <form action="javascript:void(0);">
+        <input id="videoswitch" type="button" value="Video on/off"/>
+        <input placeholder="Message:" id="msg" type="text"/>
+        <input  id="sender" type="submit" value="Send"/>
+    </form>
+    <video id="video" autoplay></video>
+    <div id="receiver"></div>
+    <div id="refresh"></div>
+
+</div>
+
+<script>
+(function () {
+    var old = console.log;
+    var logger = document.getElementById('log');
+    console.log = function (message) {
+        if (typeof message == 'object') {
+            logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + '<br />';
+        } else {
+            logger.innerHTML += message + '<br />';
+        }
+    }
+})();
+
+if (util.supports.data && util.supports.binary) {console.log('OK, this browser supports webrtc'); }
+else {console.log('NO, this browser does not support webrtc');}
+util.reliable=false;
+var peer = new Peer(
+	{host:'peerserver.cloudapp.net', port:80},
+	{key: 'gsixocef254gqfr',
+	debug:3,
+	config: {'iceServers': [
+
+	{url:'stun:piflyerproxy.cloudapp.net'},
+    {url:'turn:piflyerproxy.cloudapp.net:443',
+     credential:'youhavetoberealistic',
+     username:'ninefingers'
+     }
+	  ]}
+});
+
+peer.on('open',function(id){
+	console.log('My peer ID is: ' + id);
+	$('#peerid').text(id);
+});
+
+peer.on('close', function() {
+    console.log('peer closed');
+	peer.destroy();
+	$('#refresh').text('true');
+});
+
+peer.on('disconnected', function() {
+	console.log('disconnected from the signalling server');
+	//setInterval(function(){peer.reconnect();}, 3000);
+	$('#refresh').text('true');
+
+});
+
+peer.on('error', function(err) {
+    console.log('Error: ' + err.type);
+    $('#refresh').text('true');
+});
+
+//var conn = peer.connect('qwd5lls47d620529');
+var conn = peer.connect('qwd5lls47d620529');
+conn.on('open', function() {
+	console.log('connection open');
+	$('#remoteid').text(conn.peer);
+	$('#connected').text(conn.open);
+	$('#refresh').text('false');
+});
+
+conn.on('data', function(data) {
+	//console.log('Received: '+data);
+  	$( "#receiver" ).text(data);
+});
+
+conn.on('error',function(err){
+    console.log('Error: ' + err.type);
+    $('#connected').text(conn.open);
+    $('#refresh').text('true');
+});
+conn.on('close', function() {
+    console.log('connection closed')
+    $('#connected').text(conn.open);
+    $('#refresh').text('true');
+});
+
+function send()
+{
+  if(conn.open) {
+	conn.send($('#msg').val());
+	$('#msg').val('');
+	}
+  else{
+    $('#connected').text(conn.open);
+  }
+}
+
+function sendstr(str)
+{
+  if(conn.open) {
+	conn.send(str);
+	}
+  else{
+    $('#connected').text(conn.open);
+  }
+}
+
+$( "#sender" ).click(function(){
+    send();
+});
+
+var call="";
+$( "#videoswitch" ).click(function() {
+	$('#receiver').empty();
+	console.log('dela');
+	if (util.supports.audioVideo) { console.log("I support media"); }
+	else {console.log("No media support");}
+
+	var p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
+
+    p.then(function(mediaStream) {
+    var video = document.querySelector('#video');
+    video.src = window.URL.createObjectURL(mediaStream);
+        video.onloadedmetadata = function(e) {
+        // Do something with the video here.
+        // Call a peer, providing our mediaStream
+        var remid=$('#remoteid').text();
+        call = peer.call(remid,mediaStream);
+        console.log(call.peer);
+        console.log("media connection active?:"+call.open);
+        };
+    });
+    p.catch(function(err) {
+     console.log(err.name);
+    }); // always check for errors at the end.
+});
+
+peer.on('call', function(call) {
+  // Answer the call, providing our mediaStream
+  console.log('call event fired');
+  call.answer();
+
+
+  call.on('stream', function(stream) {
+      // `stream` is the MediaStream of the remote peer.
+      // Here you'd add it to an HTML video/canvas element.
+      var video = document.querySelector('#video');
+      video.srcObject = stream;
+    });
+    call.on('close',function(){
+        console.log('stream closed');
+    });
+    call.on('error', function(err){
+        console.log('Error: ' + err.type);
+    });
+});
+
+
+
+
+</script>
+</body>
+</html>
