@@ -40,6 +40,7 @@ class comm:
         self.receiver = self.driver.find_element_by_id('receiver')
         self.videoswitch = self.driver.find_element_by_id('videoswitch')
         self.connection = self.driver.find_element_by_id('connected')
+
     def reset(self):
         #self.driver.save_screenshot('screenshot.png')
         if(self.driver.find_element_by_id('refresh').text != 'false'):
@@ -48,23 +49,29 @@ class comm:
             self.start()
             self.streaming = False
             time.sleep(2)
+
     def get_my_id(self):
         if(self.connected()):
             return self.driver.find_element_by_id('peerid').text
+
     def get_remote_id(self):
         if(self.connected()):
             return self.driver.find_element_by_id('remoteid').text
+
     #def connect(self):
     def set_attr(self, locator, attr, value):
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
+
     def connected(self):
         return self.connection.text=='true'
+
     def readmsg(self):
         text=self.receiver.text
         if(text!=NULL):
             #self.rcvclear.click()
             self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
         return text
+
     def sendmsg(self, msg):
         t0=time.time()
         #self.msg.send_keys(msg)
@@ -75,10 +82,12 @@ class comm:
         t1=time.time()
         r=t1-t0
         #print(str(round(r,2))+" Frekvenca: "+str(1/r)+"Hz")
+
     def startVideoStream(self):
         if(not self.streaming):
             self.streaming=True
             self.driver.execute_script('document.getElementById("videoswitch").click()')
+
     def close(self):
         #self.display.stop()
         self.driver.close()

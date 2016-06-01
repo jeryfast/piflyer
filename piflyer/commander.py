@@ -21,7 +21,6 @@ RESQUE="r"
 DISCONNECT = "X"
 INIT = "I"
 
-
 class commander:
     def __init__(self):
         self.mode="m"
@@ -32,6 +31,7 @@ class commander:
         self.auto_hold=False
 
         self.status=c.OK
+        self.servo_init=False
 
         self.pitch=0.0
         self.roll=0.0
@@ -46,6 +46,7 @@ class commander:
 
     def getParameters(self):
         return [self.pitch,self.roll,self.throttle]
+
     def setMode(self,mode):
         self.mode=mode
 
@@ -56,6 +57,7 @@ class commander:
         elif(words[1] == AUTO):
             self.auto_hold = bool(int(words[2]))
             print("AUTO_HOLD: %s" % (self.auto_hold))
+
     #process command
     def update(self,arg=""):
         self.status=c.OK
@@ -63,6 +65,7 @@ class commander:
         if (words[0] == MODE):
             self.setMode(words[1])
         elif(words[0] == CONTROL):
+            self.servo_init=False
             self.pitch=float(words[1])
             self.roll=float(words[2])
             if(len(words)>=4):
@@ -83,32 +86,34 @@ class commander:
                 else:
                     self.pitch=words[2]
         elif (words[0] == INIT):
-            self.elevons.setAngle(int(words[1]),int(words[2]))
+            self.servo_init=True
+            self.elevons.setServos(int(words[1]),int(words[2]))
         else:
             self.status=c.INVALID
             print("status invalid")
         return self.status
 
     def control(self):
-        if(self.mode == MANUAL):
-            #print("Manual %f %f" % (self.pitch,self.roll))
-            self.elevons.setAngle(self.pitch,self.roll)
-            #testing:
-            #self.motor.control(self.throttle)
+        if(not self.servo_init):
+            if(self.mode == MANUAL):
+                #print("Manual %f %f" % (self.pitch,self.roll))
+                self.elevons.setAngle(self.pitch,self.roll)
+                #testing:
+                #self.motor.control(self.throttle)
 
-        elif(self.mode == STABILIZED):
-            print("Stabilized %f %f" % (self.pitch,self.roll))
-            if(self.alt_hold):
-                print("Alt hold, controlling roll")
+            elif(self.mode == STABILIZED):
+                print("Stabilized %f %f" % (self.pitch,self.roll))
+                if(self.alt_hold):
+                    print("Alt hold, controlling roll")
+                else:
+                    self.elevons.control(self.pitch,self.roll,self.sensors.pitch,self.sensors.roll)
+                #self.motor.control(self.throttle)
+
+            elif(self.mode == RESQUE):
+                #TODO
+                self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
             else:
-                self.elevons.control(self.pitch,self.roll,self.sensors.pitch,self.sensors.roll)
-            #self.motor.control(self.throttle)
-
-        elif(self.mode == RESQUE):
-            #TODO
-            self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
-        else:
-            self.failsafe()
+                self.failsafe()
 
     def failsafe(self):
         print("failsafe")

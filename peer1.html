@@ -15,7 +15,7 @@
 </style>
 </head>
 
-<body>
+<body onload="setTimeout('init();', 100);">
 <p id='log'></p>
 <div id="comm">
     <div id="connected"></div>
@@ -26,7 +26,8 @@
         <input placeholder="Message:" id="msg" type="text"/>
         <input  id="sender" type="submit" value="Send"/>
     </form>
-    <video id="video" autoplay></video>
+    <!--<video id="video" autoplay></video>-->
+    <video id="video" />
     <div id="receiver"></div>
     <div id="refresh"></div>
 
@@ -159,6 +160,7 @@ $( "#videoswitch" ).click(function() {
     p.catch(function(err) {
      console.log(err.name);
     }); // always check for errors at the end.
+
 });
 
 peer.on('call', function(call) {

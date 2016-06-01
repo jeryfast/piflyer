@@ -89,8 +89,10 @@ peer.on('connection', function(conn) {
         $('#remoteid').text(conn.peer);
         $('#connected').text(conn.open);
         $( '#sender' ).click(function() {
-            conn.send($('#msg').val());
-            $('#msg').val('');
+            if(conn.open){
+                conn.send($('#msg').val());
+                $('#msg').val('');
+            }
         });
 	});
 
