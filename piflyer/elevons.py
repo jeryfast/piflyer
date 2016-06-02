@@ -1,12 +1,21 @@
 from piflyer.servo_handler import servo_handler
+TILT_UP_LIMIT=90
+TILT_DOWN_LIMIT=-90
 
 class elevons:
     def __init__(self):
         self.left=servo_handler()
         self.right=servo_handler()
         self.multiplier=2
+        self.pitchUpLimit=45
+        self.pitchDownLimit=-45
+        self.rollUpLimit = 45
+        self.rollDownLimit = -45
         self.setMultiplier(self.multiplier)
-        self.setUpDownLimit(0, 100)
+        self.setServosUpDownLimit(0, 100)
+
+    def arduino_map(self, x, in_min, in_max, out_min, out_max):
+        return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
 
     ## Servo settings methods
 
@@ -16,17 +25,24 @@ class elevons:
         self.right.setMultiplier(multiplier)
 
     # see servo_handler.py documentation
-    def setUpDownLimit(self, up, down):
+    def setServosUpDownLimit(self, up, down):
         self.left.setUpDownLimit(up,down)
         self.right.setUpDownLimit(up,down)
 
-    # see servo_handler.py documentation - not quite tested yet
-    def setTiltSensitivity(self,down,up):
-        self.left.setTiltSensitivity(down,up)
-        self.right.setTiltSensitivity(down, up)
+    # mobile device pitch limits
+    def setPitchTiltLimits(self, down, up):
+        if (up <= TILT_UP_LIMIT and down >= TILT_DOWN_LIMIT):
+            self.pitchUpLimit=up
+            self.pitchDownLimit=down
+
+    # mobile device roll limits
+    def setRollTiltLimits(self, down, up):
+        if (up <= TILT_UP_LIMIT and down >= TILT_DOWN_LIMIT):
+            self.rollUpLimit=up
+            self.rollDownLimit=down
 
     # servoUpDirectionSettings
-    def setServos(self,left,right):
+    def setServosUpDirection(self, left, right):
         self.left.setUpDirection(left)
         self.right.setUpDirection(right)
 
@@ -42,20 +58,15 @@ class elevons:
         self.left.setPositionFromTilt(self.left.positionToTilt(self.left.getPosition())/2-position/2)
         self.right.setPositionFromTilt(self.right.positionToTilt(self.right.getPosition())+position/2)
         """
-    # pitch and roll update, elevons specific method
+
+    # pitch and roll update, elevons specific method - tested
     def setPitchRoll(self,pitch,roll):
-        #both elevons have equal sensitivity to pitch and roll input
-        down,up=self.left.getTiltSensitivity()
-        if(pitch>up):
-            pitch=up
-        elif(pitch<down):
-            pitch=down
-        if(roll>up):
-            roll=up
-        elif(roll<down):
-            roll=down
-        self.left.setPositionFromTilt(pitch/2-roll/2)
-        self.right.setPositionFromTilt(pitch/2+roll/2)
+        # both elevons have equal limits to pitch and roll input
+        # pitch and roll should have seperate limits
+        pitch = self.arduino_map(clamp(pitch, self.pitchDownLimit,self.pitchUpLimit),self.pitchDownLimit,self.pitchUpLimit,-45, 45)
+        roll = self.arduino_map(clamp(roll, self.rollDownLimit, self.rollUpLimit), self.rollDownLimit, self.rollUpLimit, -45, 45)
+        self.left.setPositionFromTilt(pitch/2 - roll/2)
+        self.right.setPositionFromTilt(pitch / 2 + roll / 2)
 
     def setAngle(self,pitch,roll):
         print("pitch,roll: %d %d"%(pitch,roll))
@@ -94,3 +105,10 @@ class elevons:
 
         if(target_roll>roll):
             self.turnLeft()
+
+    ##Helpers
+
+# return limit value if n out of limits
+def clamp(n, minn, maxn):
+    return max(min(maxn, n), minn)
+

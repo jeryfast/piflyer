@@ -19,8 +19,10 @@ STABILIZED="s"
 RESQUE="r"
 
 DISCONNECT = "X"
-INIT = "I"
-SERVO_LIMIT = "L"
+SERVO_INIT = "SI"
+SERVO_LIMIT = "SL"
+TILT_PITCH_LIMIT = "PL"
+TILT_ROLL_LIMIT = "RL"
 
 class commander:
     def __init__(self):
@@ -32,7 +34,7 @@ class commander:
         self.auto_hold=False
 
         self.status=c.OK
-        self.servo_init=False
+        self.servo_tilt_init=False
 
         self.pitch=0.0
         self.roll=0.0
@@ -66,7 +68,7 @@ class commander:
         if (words[0] == MODE):
             self.setMode(words[1])
         elif(words[0] == CONTROL):
-            self.servo_init=False
+            self.servo_tilt_init=False
             self.pitch=float(words[1])
             self.roll=float(words[2])
             if(len(words)>=4):
@@ -86,19 +88,25 @@ class commander:
                     self.altittude=words[2]
                 else:
                     self.pitch=words[2]
-        elif (words[0] == INIT):
-            self.servo_init=True
-            self.elevons.setServos(int(words[1]),int(words[2]))
+        elif (words[0] == SERVO_INIT):
+            self.servo_tilt_init=True
+            self.elevons.setServosUpDirection(int(words[1]), int(words[2]))
         elif(words[0] == SERVO_LIMIT):
-            self.servo_init=True
-            self.elevons.setUpDownLimit(int(words[1]), int(words[2]))
+            self.servo_tilt_init=True
+            self.elevons.setServosUpDownLimit(int(words[1]), int(words[2]))
+        elif (words[0] == TILT_PITCH_LIMIT):
+            self.servo_tilt_init = True
+            self.elevons.setPitchTiltLimits(int(words[1]), int(words[2]))
+        elif (words[0] == TILT_ROLL_LIMIT):
+            self.servo_tilt_init = True
+            self.elevons.setRollTiltLimits(int(words[1]), int(words[2]))
         else:
             self.status=c.INVALID
             print("status invalid")
         return self.status
 
     def control(self):
-        if(not self.servo_init):
+        if(not self.servo_tilt_init):
             if(self.mode == MANUAL):
                 #print("Manual %f %f" % (self.pitch,self.roll))
                 self.elevons.setAngle(self.pitch,self.roll)
