@@ -9,7 +9,7 @@ class servo_handler:
         self.neutral = MAX/2
         self.position = 0
         self.oldRange=[0,0]
-        # mobile phone tilt
+        # mobile phone tilt reference - dont`t change
         self.upTilt = 45
         self.downTilt = -45
         # upAdd can be 1 or -1
@@ -23,21 +23,35 @@ class servo_handler:
     def getPosition(self):
         return self.position
 
+    def getUpPosition(self):
+        return self.up
+
+    def getDownPosition(self):
+        return self.down
+
     # converter
     def tiltToPosition(self, tilt):
         return self.arduino_map(tilt, self.downTilt, self.upTilt, self.down, self.up)
+
+    # converter with limits
+    def tiltToPositionWithLimits(self,tilt, upTilt, downTilt):
+        a=  self.arduino_map(tilt, downTilt, upTilt, self.down, self.up)
+        return a
 
     # converter
     def positionToTilt(self,position):
         return self.arduino_map(position, self.down, self.up, self.downTilt, self.upTilt)
 
-    # sensitivity of tilt controls
-    def setTiltSensitivity(self, down, up):
+    """
+    # reference limits of tilt controls
+    def setTiltLimits(self, up, down):
         self.upTilt = up
         self.downTilt = down
 
-    def getTiltSensitivity(self):
-        return [self.downTilt,self.upTilt]
+    # reference limits of tilt control
+    def getTiltLimits(self):
+        return [self.upTilt,self.downTilt]
+    """
 
     # resolution: 100, from servosettings
     def setPositionPercent(self, position):
