@@ -20,6 +20,7 @@ RESQUE="r"
 
 DISCONNECT = "X"
 INIT = "I"
+SERVO_LIMIT = "L"
 
 class commander:
     def __init__(self):
@@ -88,6 +89,9 @@ class commander:
         elif (words[0] == INIT):
             self.servo_init=True
             self.elevons.setServos(int(words[1]),int(words[2]))
+        elif(words[0] == SERVO_LIMIT):
+            self.servo_init=True
+            self.elevons.setUpDownLimit(int(words[1]), int(words[2]))
         else:
             self.status=c.INVALID
             print("status invalid")
@@ -98,9 +102,10 @@ class commander:
             if(self.mode == MANUAL):
                 #print("Manual %f %f" % (self.pitch,self.roll))
                 self.elevons.setAngle(self.pitch,self.roll)
-                #testing:
+                # not tested
                 #self.motor.control(self.throttle)
 
+            # not tested
             elif(self.mode == STABILIZED):
                 print("Stabilized %f %f" % (self.pitch,self.roll))
                 if(self.alt_hold):
@@ -109,12 +114,14 @@ class commander:
                     self.elevons.control(self.pitch,self.roll,self.sensors.pitch,self.sensors.roll)
                 #self.motor.control(self.throttle)
 
+            # not tested
             elif(self.mode == RESQUE):
                 #TODO
                 self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
             else:
                 self.failsafe()
 
+    # not tested
     def failsafe(self):
         print("failsafe")
         #TODO control in reference to altitude, speed and glide slope

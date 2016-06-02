@@ -6,18 +6,21 @@ class elevons:
         self.right=servo_handler()
         self.multiplier=2
         self.setMultiplier(self.multiplier)
-        self.setUpDownLmit(0,100)
+        self.setUpDownLimit(0, 100)
 
     ## Servo settings methods
 
+    # servo multiplier, default 2 because of extended range due to elevon mixing (50% pitch 50%roll)
     def setMultiplier(self,multiplier):
         self.left.setMultiplier(multiplier)
         self.right.setMultiplier(multiplier)
 
-    def setUpDownLmit(self,up,down):
+    # see servo_handler.py documentation
+    def setUpDownLimit(self, up, down):
         self.left.setUpDownLimit(up,down)
         self.right.setUpDownLimit(up,down)
 
+    # see servo_handler.py documentation - not quite tested yet
     def setTiltSensitivity(self,down,up):
         self.left.setTiltSensitivity(down,up)
         self.right.setTiltSensitivity(down, up)
@@ -27,17 +30,19 @@ class elevons:
         self.left.setUpDirection(left)
         self.right.setUpDirection(right)
 
+    # set pitch only, no mixing
     def setPitch(self,position):
         self.left.setPositionFromTilt(position)
         self.right.setPositionFromTilt(position)
 
     #does it work?
     """
+    # set roll only, no mixing
     def setRoll(self, position):
         self.left.setPositionFromTilt(self.left.positionToTilt(self.left.getPosition())/2-position/2)
         self.right.setPositionFromTilt(self.right.positionToTilt(self.right.getPosition())+position/2)
         """
-
+    # pitch and roll update, elevons specific method
     def setPitchRoll(self,pitch,roll):
         #both elevons have equal sensitivity to pitch and roll input
         down,up=self.left.getTiltSensitivity()
@@ -54,12 +59,10 @@ class elevons:
 
     def setAngle(self,pitch,roll):
         print("pitch,roll: %d %d"%(pitch,roll))
-        #self.setPitch(pitch)
-        #self.setRoll(roll)
         self.setPitchRoll(pitch,roll)
         print("servo L, R: %d %d"%(self.left.getPosition(),self.right.getPosition()))
 
-    ## Autopilot methods - not tested!
+    ## Stabilize and Autopilot mode methods - not tested!, just draft
 
     def turnRight(self, val=1):
         self.left.add(val)

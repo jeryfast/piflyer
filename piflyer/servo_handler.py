@@ -8,6 +8,7 @@ class servo_handler:
         self.down = MAX
         self.neutral = MAX/2
         self.position = 0
+        self.oldRange=[0,0]
         # mobile phone tilt
         self.upTilt = 45
         self.downTilt = -45
@@ -51,8 +52,19 @@ class servo_handler:
         if(position>MIN and position<MAX):
             self.position=position
 
-    # servo movement limits - tested
+    # servo movement range limits - tested!
     def setUpDownLimit(self,up,down):
+
+        # save history for live servo update - to know which value to update - top/left or bottom/right
+        a, b = self.oldRange
+        u, d = False, False
+        if (up != a):
+            u = True
+            self.oldRange[0]=up
+        if (down != b):
+            d = True
+            self.oldRange[1] = down
+
         """
         Sets up and down servo limitations in percentage values: range - 0 to 100,
         useful for flap of airbrake definition, control surface offsets for
@@ -63,11 +75,27 @@ class servo_handler:
         if(self.upAdd == -1):
             self.up=self.arduino_map(up, 0, 100, MIN, MAX)
             self.down=self.arduino_map(down, 0, 100, MIN, MAX)
+            if(u):
+                self.setPosition(self.up)
+                print("Servo position: %d" % (self.up))
+                u=False
+            elif(d):
+                self.setPosition(self.down)
+                print("Servo position: %d" % (self.down))
+                d=False
         elif(self.upAdd == 1):
             self.up=self.arduino_map(up, 0, 100, MAX, MIN)
             self.down=self.arduino_map(down, 0, 100, MAX, MIN)
+            if (u):
+                self.setPosition(self.up)
+                print("Servo position: %d" % (self.up))
+                u = False
+            elif (d):
+                self.setPosition(self.down)
+                print("Servo position: %d" % (self.down))
+                d = False
 
-    # servo directions settings-works
+    # servo directions settings - tested
     def setUpDirection(self, val):
         if (val > 50):
             self.up = MAX
