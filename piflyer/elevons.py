@@ -30,16 +30,18 @@ class elevons:
         self.right.setUpDownLimit(up,down)
 
     # mobile device pitch limits
-    def setPitchTiltLimits(self, down, up):
+    def setPitchTiltLimits(self, up, down):
         if (up <= TILT_UP_LIMIT and down >= TILT_DOWN_LIMIT):
             self.pitchUpLimit=up
             self.pitchDownLimit=down
+            print("pitch limit: up:%d, down:%d"%(up,down))
 
     # mobile device roll limits
-    def setRollTiltLimits(self, down, up):
+    def setRollTiltLimits(self, up, down):
         if (up <= TILT_UP_LIMIT and down >= TILT_DOWN_LIMIT):
             self.rollUpLimit=up
             self.rollDownLimit=down
+            print("roll limit: left:%d, right:%d" % (down, up))
 
     # servoUpDirectionSettings
     def setServosUpDirection(self, left, right):
