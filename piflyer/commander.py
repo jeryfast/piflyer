@@ -23,6 +23,7 @@ SERVO_INIT = "SI"
 SERVO_LIMIT = "SL"
 TILT_PITCH_LIMIT = "PL"
 TILT_ROLL_LIMIT = "RL"
+THROTTLE_LIMIT = "TL"
 
 class commander:
     def __init__(self):
@@ -34,7 +35,7 @@ class commander:
         self.auto_hold=False
 
         self.status=c.OK
-        self.servo_tilt_init=False
+        self.servos_init=False
 
         self.pitch=0.0
         self.roll=0.0
@@ -68,12 +69,11 @@ class commander:
         if (words[0] == MODE):
             self.setMode(words[1])
         elif(words[0] == CONTROL):
-            self.servo_tilt_init=False
+            self.servos_init=False
             self.pitch=float(words[1])
             self.roll=float(words[2])
             if(len(words)>=4):
                 self.throttle=float(words[3])
-                print("throttle: %d"%(self.throttle))
         elif(words[0] == CAMERA):
             self.camera.takeShot()
         elif(words[0] == RECORD):
@@ -83,30 +83,33 @@ class commander:
             self.setHold(words)
         elif (words[0] == AUTO):
             if(self.auto_hold):
-                self.compass=words[1]
+                self.compass=float(words[1])
                 if (self.alt_hold):
-                    self.altittude=words[2]
+                    self.altittude=float(words[2])
                 else:
                     self.pitch=words[2]
         elif (words[0] == SERVO_INIT):
-            self.servo_tilt_init=True
+            self.servos_init=True
             self.elevons.setServosUpDirection(int(words[1]), int(words[2]))
         elif(words[0] == SERVO_LIMIT):
-            self.servo_tilt_init=True
+            self.servos_init=True
             self.elevons.setServosUpDownLimit(int(words[1]), int(words[2]))
         elif (words[0] == TILT_PITCH_LIMIT):
-            self.servo_tilt_init = True
+            self.servos_init = True
             self.elevons.setPitchTiltLimits(int(words[1]), int(words[2]))
         elif (words[0] == TILT_ROLL_LIMIT):
-            self.servo_tilt_init = True
+            self.servos_init = True
             self.elevons.setRollTiltLimits(int(words[1]), int(words[2]))
+        elif (words[0] == THROTTLE_LIMIT):
+            self.servos_init = True
+            self.motor.setThrottleLimits(int(words[1]), int(words[2]))
         else:
             self.status=c.INVALID
             print("status invalid")
         return self.status
 
     def control(self):
-        if(not self.servo_tilt_init):
+        if(not self.servos_init):
             if(self.mode == MANUAL):
                 #print("Manual %f %f" % (self.pitch,self.roll))
                 self.elevons.setAngle(self.pitch,self.roll)
