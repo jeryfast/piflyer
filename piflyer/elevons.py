@@ -1,4 +1,5 @@
 from piflyer.servo_handler import servo_handler
+import piflyer.number_range as n
 TILT_UP_LIMIT=90
 TILT_DOWN_LIMIT=-90
 
@@ -13,9 +14,6 @@ class elevons:
         self.rollDownLimit = -45
         self.setMultiplier(self.multiplier)
         self.setServosUpDownLimit(0, 100)
-
-    def arduino_map(self, x, in_min, in_max, out_min, out_max):
-        return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
 
     ## Servo settings methods
 
@@ -65,15 +63,15 @@ class elevons:
     def setPitchRoll(self,pitch,roll):
         # both elevons have equal limits to pitch and roll input
         # pitch and roll should have seperate limits
-        pitch = self.arduino_map(clamp(pitch, self.pitchDownLimit,self.pitchUpLimit),self.pitchDownLimit,self.pitchUpLimit,-45, 45)
-        roll = self.arduino_map(clamp(roll, self.rollDownLimit, self.rollUpLimit), self.rollDownLimit, self.rollUpLimit, -45, 45)
+        pitch = n.arduino_map(n.clamp(pitch, self.pitchDownLimit,self.pitchUpLimit),self.pitchDownLimit,self.pitchUpLimit,-45, 45)
+        roll = n.arduino_map(n.clamp(roll, self.rollDownLimit, self.rollUpLimit), self.rollDownLimit, self.rollUpLimit, -45, 45)
         self.left.setPositionFromTilt(pitch/2 - roll/2)
         self.right.setPositionFromTilt(pitch / 2 + roll / 2)
 
     def setAngle(self,pitch,roll):
-        print("pitch,roll: %d %d"%(pitch,roll))
+        #print("pitch,roll: %d %d"%(pitch,roll))
         self.setPitchRoll(pitch,roll)
-        print("servo L, R: %d %d"%(self.left.getPosition(),self.right.getPosition()))
+        #print("servo L, R: %d %d"%(self.left.getPosition(),self.right.getPosition()))
 
     ## Stabilize and Autopilot mode methods - not tested!, just draft
 
@@ -107,10 +105,3 @@ class elevons:
 
         if(target_roll>roll):
             self.turnLeft()
-
-    ##Helpers
-
-# return limit value if n out of limits
-def clamp(n, minn, maxn):
-    return max(min(maxn, n), minn)
-

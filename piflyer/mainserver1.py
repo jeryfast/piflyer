@@ -1,5 +1,4 @@
 import time
-
 __author__ = 'Jernej'
 import piflyer.commands as c
 from piflyer.commander import commander
@@ -24,14 +23,8 @@ class mainserver:
             data = self.client.readmsg()
             #new data available
             if data != '':
-                #data=data.decode("utf-8")
-                #print("Received: "+data)
-                #execute commands
-                #result=self.commander.update(data)
-                #print("Commander: "+result)
-                #self.client.sendmsg(result)
-                #self.conn.send(result.encode("utf-8"))"""
                 status=self.commander.update(data)
+                #TODO: key commands ack ... auto, alt hold, modes
             #self.client.sendmsg("test:"+str(i))
             pitch = str(r.randint(3, 5))
             roll = str(r.randint(3, 5))

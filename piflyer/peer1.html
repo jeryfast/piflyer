@@ -49,6 +49,8 @@
 if (util.supports.data && util.supports.binary) {console.log('OK, this browser supports webrtc'); }
 else {console.log('NO, this browser does not support webrtc');}
 util.reliable=false;
+var mystream;
+var mycall;
 var peer = new Peer(
 	{host:'peerserver.cloudapp.net', port:80},
 	{key: 'gsixocef254gqfr',
@@ -97,6 +99,8 @@ conn.on('open', function() {
 
 conn.on('data', function(data) {
 	//console.log('Received: '+data);
+	if(data=="restartCall")
+	    restartCall();
   	$( "#receiver" ).text(data);
 });
 
@@ -136,7 +140,7 @@ $( "#sender" ).click(function(){
     send();
 });
 
-var call="";
+
 $( "#videoswitch" ).click(function() {
 	$('#receiver').empty();
 	console.log('dela');
@@ -146,15 +150,16 @@ $( "#videoswitch" ).click(function() {
 	var p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
 
     p.then(function(mediaStream) {
+    mystream=mediaStream;
     var video = document.querySelector('#video');
     video.src = window.URL.createObjectURL(mediaStream);
         video.onloadedmetadata = function(e) {
         // Do something with the video here.
         // Call a peer, providing our mediaStream
         var remid=$('#remoteid').text();
-        call = peer.call(remid,mediaStream);
-        console.log(call.peer);
-        console.log("media connection active?:"+call.open);
+        mycall = peer.call(remid,mediaStream);
+        console.log(mycall.peer);
+        console.log("media connection active?:"+mycall.open);
         };
     });
     p.catch(function(err) {
@@ -183,8 +188,9 @@ peer.on('call', function(call) {
     });
 });
 
-
-
+function restartCall(){
+    peer.call(mycall.peer,mystream)
+}
 
 </script>
 </body>

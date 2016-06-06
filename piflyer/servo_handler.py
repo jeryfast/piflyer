@@ -1,4 +1,5 @@
 __author__ = 'Jernej'
+import piflyer.number_range as n
 MIN = 0
 MAX = 180
 class servo_handler:
@@ -17,9 +18,6 @@ class servo_handler:
         # input intensitymultiplier
         self.multiplier=1
 
-    def arduino_map(self, x, in_min, in_max, out_min, out_max):
-        return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
-
     def getPosition(self):
         return self.position
 
@@ -31,16 +29,15 @@ class servo_handler:
 
     # converter
     def tiltToPosition(self, tilt):
-        return self.arduino_map(tilt, self.downTilt, self.upTilt, self.down, self.up)
+        return n.arduino_map(tilt, self.downTilt, self.upTilt, self.down, self.up)
 
     # converter with limits
     def tiltToPositionWithLimits(self,tilt, upTilt, downTilt):
-        a=  self.arduino_map(tilt, downTilt, upTilt, self.down, self.up)
-        return a
+        return n.arduino_map(tilt, downTilt, upTilt, self.down, self.up)
 
     # converter
     def positionToTilt(self,position):
-        return self.arduino_map(position, self.down, self.up, self.downTilt, self.upTilt)
+        return n.arduino_map(position, self.down, self.up, self.downTilt, self.upTilt)
 
     """
     # reference limits of tilt controls
@@ -55,7 +52,7 @@ class servo_handler:
 
     # resolution: 100, from servosettings
     def setPositionPercent(self, position):
-        position = self.arduino_map(position, 0, 100, MIN, MAX)
+        position = n.arduino_map(position, 0, 100, MIN, MAX)
         self.setPosition(position)
 
     def setPositionFromTilt(self, tiltPosition):
@@ -87,8 +84,8 @@ class servo_handler:
         up=0, down=100 -> full range
         """
         if(self.upAdd == -1):
-            self.up=self.arduino_map(up, 0, 100, MIN, MAX)
-            self.down=self.arduino_map(down, 0, 100, MIN, MAX)
+            self.up=n.arduino_map(up, 0, 100, MIN, MAX)
+            self.down=n.arduino_map(down, 0, 100, MIN, MAX)
             if(u):
                 self.setPosition(self.up)
                 print("Servo position: %d" % (self.up))
@@ -98,8 +95,8 @@ class servo_handler:
                 print("Servo position: %d" % (self.down))
                 d=False
         elif(self.upAdd == 1):
-            self.up=self.arduino_map(up, 0, 100, MAX, MIN)
-            self.down=self.arduino_map(down, 0, 100, MAX, MIN)
+            self.up=n.arduino_map(up, 0, 100, MAX, MIN)
+            self.down=n.arduino_map(down, 0, 100, MAX, MIN)
             if (u):
                 self.setPosition(self.up)
                 print("Servo position: %d" % (self.up))
