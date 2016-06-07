@@ -5,9 +5,9 @@ from threading import Thread
 
 D=","
 
-class mainserver(Thread):
+class mainserver():
     def __init__(self):
-        Thread.__init__(self)
+        #Thread.__init__(self)
         self.client=comm()
         self.commander=commander()
         self.start()
