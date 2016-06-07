@@ -64,10 +64,12 @@ class comm():
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
 
     def connected(self):
-        t=time.time()
+        """t=time.time()
+        print("connected:")
         if(t-self.conntime>1 and self.connection.text=='true'):
             self.conntime=t
-        return True
+            return True"""
+        return self.connection.text=='true'
 
     def readmsg(self):
         result=None
