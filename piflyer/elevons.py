@@ -1,4 +1,4 @@
-import servo_handler
+from servo_handler import servo_handler
 
 import number_range as n
 

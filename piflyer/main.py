@@ -1,6 +1,6 @@
 __author__ = 'Jernej'
 import sys
-import mainserver
+from mainserver import mainserver
 
 s = mainserver()
 

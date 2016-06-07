@@ -1,8 +1,9 @@
 __author__ = 'Jernej'
-import camera
-import elevons
-import motor_handler
-import sensors
+from camera import camera
+from elevons import elevons
+from motor_handler import motor_handler
+from sensors import sensors
+
 import commands as c
 
 MODE="M"

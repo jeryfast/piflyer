@@ -1,7 +1,7 @@
 __author__ = 'Jernej'
 import random as r
-from piflyer.commander import commander
-from piflyer.comm import comm
+from commander import commander
+from comm import comm
 
 D=","
 
