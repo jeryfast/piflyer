@@ -25,7 +25,8 @@ class mainserver():
             #Sends sensoric data to mobile device
             #elf.client.sendmsg(self.commander.sensors.getStrArr())
             try:
-                t1 = threading.Thread(target=self.client.sendmsg, args=(self.commander.sensors.getStrArr(),''))
+                arg=tuple(self.commander.sensors.getStrArr())
+                t1 = threading.Thread(target=self.client.sendmsg, args=arg)
                 t1.start()
                 t1.join()
             except Exception as errtxt:
