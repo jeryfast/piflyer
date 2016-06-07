@@ -10,9 +10,8 @@ N = 13
 
 class comm:
     def __init__(self):
-        #set display to invisible
-        #self.display = Display(visible=0, size=(480, 320))
-        #self.display.start()
+        self.display = Display(visible=0, size=(480, 320))
+        self.display.start()
 
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
@@ -89,8 +88,8 @@ class comm:
             self.driver.execute_script('document.getElementById("videoswitch").click()')
 
     def close(self):
-        #self.display.stop()
         self.driver.close()
+        self.display.stop()
 
     def generateIDs(self):
         for i in range(len(self.arr)):
