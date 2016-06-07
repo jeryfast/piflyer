@@ -55,7 +55,7 @@ class sensors(Thread):
             if (pitch > 180):
                 pitch = pitch - 360
             if (roll > 180):
-                sroll = roll - 360
+                roll = roll - 360
             self.pitch = round(pitch, 2)
             self.roll = round(roll, 2)
             self.yaw = round(yaw, 2)
