@@ -27,6 +27,8 @@ class mainserver():
             t2=threading.Thread(self.commander.control())
             t1.start()
             t2.start()
+            t1.join()
+            t2.join()
         self.commander.failsafe()
         self.client.reset()
 
