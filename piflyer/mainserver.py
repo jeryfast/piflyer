@@ -1,10 +1,9 @@
 __author__ = 'Jernej'
 from commander import commander
 from comm import comm
-from threading import Thread
-from time import sleep
+import threading
 
-class mainserver():
+def mainserver():
     def __init__(self):
         #Thread.__init__(self)
         self.client=comm()
@@ -24,8 +23,10 @@ class mainserver():
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
             #Sends sensoric data to mobile device
-            self.client.sendmsg(self.commander.sensors.getStrArr())
-            self.commander.control()
+            t1=threading.Thread(target=self.client.sendmsg(),args=self.commander.sensors.getStrArr())
+            t2=threading.Thread(self.commander.control())
+            t1.start()
+            t2.start()
         self.commander.failsafe()
         self.client.reset()
 

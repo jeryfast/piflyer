@@ -8,7 +8,7 @@ NULL=''
 M = 1000
 N = 13
 
-class comm:
+class comm():
     def __init__(self):
         self.display = Display(visible=0, size=(480, 320))
         self.display.start()
