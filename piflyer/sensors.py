@@ -1,7 +1,6 @@
 import random as r
 from sense_hat import SenseHat
 from threading import Thread
-from time import sleep
 
 class sensors(Thread):
     def __init__(self):
@@ -46,20 +45,20 @@ class sensors(Thread):
         return self.joinDelimiter([pitch, roll, yaw, compass, temp, humidity, pressure, ax, ay, az, altitude])
 
     def run(self):
-        while(True):
-            self.sense.set_imu_config(True, True, True)
-            pitch, yaw, roll = self.sense.get_orientation().values()
-            self.compass = round(self.sense.get_compass(), 2)
+        while True:
             self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
+            self.sense.set_imu_config(True, True, True)
+            pitch, yaw, roll = self.sense.get_orientation().values()
             ax, ay, az = self.sense.get_accelerometer_raw().values()
+            self.compass = round(self.sense.get_compass(), 2)
             self.pitch = round(pitch, 2)
             self.roll = round(roll, 2)
             if (self.pitch > 180):
-                self.pitch -= - 360
+                self.pitch -= 360
             if (self.roll > 180):
-                self.roll -= - 360
+                self.roll -=  360
             self.yaw = round(yaw, 2)
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)

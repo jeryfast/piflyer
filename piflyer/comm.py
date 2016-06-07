@@ -23,7 +23,7 @@ class comm:
         #self.driver.set_window_size(800, 600)
 
         #ID array
-        self.arr = [None] * M
+        #self.arr = [None] * M
         #self.driver = webdriver.Firefox()
         #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
         self.driver.get('http://peerclient.cloudapp.net/peer1.html')
@@ -32,7 +32,6 @@ class comm:
         time.sleep(3)
         self.start()
         self.streaming=False
-        self.t0=0
 
     def start(self):
         self.msg = self.driver.find_element_by_id('msg')
@@ -77,8 +76,6 @@ class comm:
         #self.msg.send_keys(Keys.ENTER)
         #self.driver.execute_script('document.getElementById("msg").value = "' + msg + '";document.getElementById("sender").click()')
         #self.browser.execute_script('document.getElementById("sender").click()')
-        if(time.time()-self.t0>0.03):
-            self.t0 = time.time()
         self.driver.execute_script('sendstr("'+msg+'")')
         #print(str(round(r,2))+" Frekvenca: "+str(1/r)+"Hz")
 
@@ -88,9 +85,8 @@ class comm:
             self.driver.execute_script('document.getElementById("videoswitch").click()')
 
     def close(self):
-        self.display.stop()
         self.driver.close()
-
+        self.display.stop()
     def generateIDs(self):
         for i in range(len(self.arr)):
             self.arr[i] = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(N))

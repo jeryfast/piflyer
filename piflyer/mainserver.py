@@ -16,7 +16,7 @@ class mainserver():
         data=""
         #while connection not broken by client
         #while result!=c.DISCONNECT:
-        while self.client.connected():
+        """while self.client.connected():
             #self.client.startVideoStream()
             data = self.client.readmsg()
             #new data available
@@ -29,7 +29,8 @@ class mainserver():
             self.commander.control()
         self.commander.failsafe()
         self.client.reset()
-
+        """
+        self.client.sendmsg(self.commander.sensors.getStrArr())
 
 
 
