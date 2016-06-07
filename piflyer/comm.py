@@ -29,27 +29,25 @@ class comm:
         self.driver.get('http://peerclient.cloudapp.net/peer1.html')
         #self.driver.get('http://siol.net')
         #self.driver.get('http://localhost:63342/TcpServer/peer1.html')
+        time.sleep(3)
         self.start()
         self.streaming=False
-        self.started=False
 
     def start(self):
-        time.sleep(2)
         self.msg = self.driver.find_element_by_id('msg')
         self.sender = self.driver.find_element_by_id('sender')
         self.receiver = self.driver.find_element_by_id('receiver')
         self.videoswitch = self.driver.find_element_by_id('videoswitch')
         self.connection = self.driver.find_element_by_id('connected')
-        self.started=True
 
     def reset(self):
         #self.driver.save_screenshot('screenshot.png')
         if(self.driver.find_element_by_id('refresh').text != 'false'):
             print("refreshing")
-            self.started=False
             self.driver.refresh()
             self.start()
             self.streaming = False
+            time.sleep(2)
 
     def get_my_id(self):
         if(self.connected()):
@@ -64,8 +62,7 @@ class comm:
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
 
     def connected(self):
-        #return self.connection.text=='true'
-        return self.started
+        return self.connection.text=='true'
 
     def readmsg(self):
         text=self.receiver.text
@@ -73,7 +70,6 @@ class comm:
             #self.rcvclear.click()
             self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
         return text
-
 
     def sendmsg(self, msg):
         #self.msg.send_keys(msg)
@@ -91,6 +87,7 @@ class comm:
     def close(self):
         self.driver.close()
         self.display.stop()
+
     def generateIDs(self):
         for i in range(len(self.arr)):
             self.arr[i] = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(N))
