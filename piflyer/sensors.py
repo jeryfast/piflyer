@@ -6,6 +6,7 @@ from time import sleep
 class sensors(Thread):
     def __init__(self):
         Thread.__init__(self)
+        self.daemon=True
         self.pitch = 0
         self.roll = 0
         self.yaw = 0
@@ -64,7 +65,7 @@ class sensors(Thread):
             self.ay = round(ay, 2)
             self.az = round(az, 2)
             self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
-        self.join()
+            sleep(0.02)
 
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
