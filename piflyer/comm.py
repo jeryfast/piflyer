@@ -5,7 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
 import time
 
@@ -37,7 +36,7 @@ class comm():
         self.driver.get('http://peerclient.cloudapp.net/peer1.html')
         try:
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(By.ID('msg')))
+                EC.presence_of_element_located(self.driver.find_element_by_id('msg')))
         except TimeoutException:
             print ("Loading took too much time!")
         self.start()
