@@ -63,7 +63,7 @@ class sensors(Thread):
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)
             self.az = round(az, 2)
-            self.altitude = (288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1)
+            self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
             sleep(0.01)
 
     def getStrArr(self):
