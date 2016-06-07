@@ -56,16 +56,15 @@ class sensors(Thread):
             ax, ay, az = self.sense.get_accelerometer_raw().values()
             self.pitch = round(pitch, 2)
             self.roll = round(roll, 2)
-            if (pitch > 180):
-                self.pitch = round(pitch, 2) - 360
-            if (roll > 180):
-                self.roll = round(roll, 2) - 360
+            if (self.pitch > 180):
+                self.pitch -= - 360
+            if (self.roll > 180):
+                self.roll -= - 360
             self.yaw = round(yaw, 2)
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)
             self.az = round(az, 2)
             self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
-            sleep(0.02)
 
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
