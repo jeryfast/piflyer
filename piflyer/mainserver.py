@@ -1,5 +1,4 @@
 __author__ = 'Jernej'
-import random as r
 from commander import commander
 from comm import comm
 
@@ -24,15 +23,8 @@ class mainserver:
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
             #self.client.sendmsg("test:"+str(i))
-            pitch = str(r.randint(3, 5))
-            roll = str(r.randint(3, 5))
-            yaw = str(r.randint(0, 2))
-            compass=str(r.randint(240,241))
-            temp=str(r.randint(19,20))
-            humidity=str(r.randint(43,46))
-            pressure=str(r.randint(983,985))
-            altitude = "286"
-            self.client.sendmsg(pitch+D+roll+D+yaw+D+compass+D+temp+D+humidity+D+pressure+",0.00,0.00,0.00"+D+altitude)
+
+            self.client.sendmsg(self.commander.sensors.getRandomStrArr())
             #i+=1
             #print(time.time() * 1000)
             self.commander.control()
