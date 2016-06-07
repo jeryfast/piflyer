@@ -3,7 +3,7 @@ from commander import commander
 from comm import comm
 import threading
 
-def mainserver():
+class mainserver():
     def __init__(self):
         #Thread.__init__(self)
         self.client=comm()
