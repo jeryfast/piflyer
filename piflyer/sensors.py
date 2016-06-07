@@ -68,5 +68,7 @@ class sensors(Thread):
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
                                    self.az, self.altitude])
+    def getTuple(self):
+        return (self.getStrArr(),'')
 
 
