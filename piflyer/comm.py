@@ -34,11 +34,6 @@ class comm():
         #self.driver = webdriver.Firefox()
         #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
         self.driver.get('http://peerclient.cloudapp.net/peer1.html')
-        try:
-            WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(self.driver.find_element_by_id('msg')))
-        except TimeoutException:
-            print ("Loading took too much time!")
         self.start()
         self.streaming=False
         self.conntime=0
@@ -58,7 +53,6 @@ class comm():
             self.driver.refresh()
             self.start()
             self.streaming = False
-            time.sleep(2)
 
     def get_my_id(self):
         if(self.connected()):
