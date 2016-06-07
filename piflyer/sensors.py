@@ -1,6 +1,8 @@
 import random as r
 from sense_hat import SenseHat
 from threading import Thread
+from time import sleep
+
 class sensors(Thread):
     def __init__(self):
         self.pitch = 0
@@ -50,19 +52,19 @@ class sensors(Thread):
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
             ax, ay, az = self.sense.get_accelerometer_raw().values()
-            pitch = round(pitch, 2)
-            roll = round(roll, 2)
-            yaw = round(yaw, 2)
+            self.pitch = round(pitch, 2)
+            self.roll = round(roll, 2)
+            self.yaw = round(yaw, 2)
             if (pitch > 180):
                 self.pitch = pitch - 360
             roll = round(roll, 2)
             if (roll > 180):
                 self.roll = roll - 360
-            self.yaw=yaw
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)
             self.az = round(az, 2)
             self.altitude = (288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1)
+            sleep(0.01)
 
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
