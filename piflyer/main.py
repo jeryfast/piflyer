@@ -10,5 +10,6 @@ while 1:
     try:
         s.run()
     except:
-        print(sys.exc_info())
         s.client.close()
+        print(sys.exc_info())
+
