@@ -1,5 +1,7 @@
-from piflyer.servo_handler import servo_handler
-import piflyer.number_range as n
+import servo_handler
+
+import number_range as n
+
 TILT_UP_LIMIT=90
 TILT_DOWN_LIMIT=-90
 
@@ -8,6 +10,7 @@ class elevons:
         self.left=servo_handler()
         self.right=servo_handler()
         self.multiplier=2
+        #mobile devide tilt limits
         self.pitchUpLimit=45
         self.pitchDownLimit=-45
         self.rollUpLimit = 45
@@ -46,31 +49,41 @@ class elevons:
         self.left.setUpDirection(left)
         self.right.setUpDirection(right)
 
-    # set pitch only, no mixing
-    def setPitch(self,position):
-        self.left.setPositionFromTilt(position)
-        self.right.setPositionFromTilt(position)
+    def setPitch(self, pitch):
+        self.left.setPositionFromTilt(pitch/2)
+        self.right.setPositionFromTilt(pitch/2)
 
-    #does it work?
-    """
-    # set roll only, no mixing
-    def setRoll(self, position):
-        self.left.setPositionFromTilt(self.left.positionToTilt(self.left.getPosition())/2-position/2)
-        self.right.setPositionFromTilt(self.right.positionToTilt(self.right.getPosition())+position/2)
-        """
+    def setRoll(self, roll):
+        self.left.setPositionFromTilt(-roll / 2)
+        self.right.setPositionFromTilt(roll / 2)
 
-    # pitch and roll update, elevons specific method - tested
     def setPitchRoll(self,pitch,roll):
-        # both elevons have equal limits to pitch and roll input
-        # pitch and roll should have seperate limits
-        pitch = n.arduino_map(n.clamp(pitch, self.pitchDownLimit,self.pitchUpLimit),self.pitchDownLimit,self.pitchUpLimit,-45, 45)
-        roll = n.arduino_map(n.clamp(roll, self.rollDownLimit, self.rollUpLimit), self.rollDownLimit, self.rollUpLimit, -45, 45)
         self.left.setPositionFromTilt(pitch/2 - roll/2)
         self.right.setPositionFromTilt(pitch / 2 + roll / 2)
 
+    # set pitch only, no mixing - not tested!
+    def setPitchFromInput(self, pitch):
+        pitch = n.arduino_map(n.clamp(pitch, self.pitchDownLimit, self.pitchUpLimit), self.pitchDownLimit, self.pitchUpLimit, -45, 45)
+        self.setPitch(pitch)
+
+    # set roll only, no mixing - not tested!
+    def setRollFromInput(self, roll):
+        roll = n.arduino_map(n.clamp(roll, self.rollDownLimit, self.rollUpLimit), self.rollDownLimit, self.rollUpLimit,-45, 45)
+        self.setRoll(roll)
+        #print("servo L, R: %d %d" % (self.left.getPosition(), self.right.getPosition()))
+
+    # pitch and roll update, elevons specific method - tested
+    def setPitchRollFromInput(self,pitch,roll):
+        # both elevons have equal limits to pitch and roll input
+        # pitch and roll input have seperate limits
+        pitch = n.arduino_map(n.clamp(pitch, self.pitchDownLimit, self.pitchUpLimit), self.pitchDownLimit,self.pitchUpLimit, -45, 45)
+        roll = n.arduino_map(n.clamp(roll, self.rollDownLimit, self.rollUpLimit), self.rollDownLimit, self.rollUpLimit, -45, 45)
+        self.setPitchRoll(pitch,roll)
+
+    # manual - raw control
     def setAngle(self,pitch,roll):
         #print("pitch,roll: %d %d"%(pitch,roll))
-        self.setPitchRoll(pitch,roll)
+        self.setPitchRollFromInput(pitch,roll)
         #print("servo L, R: %d %d"%(self.left.getPosition(),self.right.getPosition()))
 
     ## Stabilize and Autopilot mode methods - not tested!, just draft
@@ -91,9 +104,14 @@ class elevons:
          self.left.sub()
          self.right.sub()
 
-    def control(self,target_pitch,target_roll,pitch, roll,):
-        #print("controlling servos")
+    # stabilize mode algorithm
+    def control(self,target_pitch,target_roll,pitch,roll):
+        # idea: map target-sensor values difference to pitch and roll control
+        pitch = n.clamp(pitch - target_pitch, -45, 45)
+        roll = n.clamp(roll - target_roll, -45, 45)
+        self.setPitchRoll(pitch, roll)
 
+        """
         if(target_pitch<pitch):
            self.pullUp()
 
@@ -105,3 +123,4 @@ class elevons:
 
         if(target_roll>roll):
             self.turnLeft()
+        """

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from piflyer.commander import commander
+import commander
 
 
 class TestCommander(TestCase):

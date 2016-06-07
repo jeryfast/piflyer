@@ -5,7 +5,7 @@ import socks
 
 #Comment if not running on raspberry pi
 #import QRReader
-from piflyer.old.ip_carrier import ip_carrier
+from piflyer.old import ip_carrier
 
 TCP_PORT = 13000
 BUFFER_SIZE = 20

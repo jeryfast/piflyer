@@ -1,9 +1,10 @@
 __author__ = 'Jernej'
-import piflyer.commands as c
-from piflyer.elevons import elevons
-from piflyer.sensors import sensors
-from piflyer.motor_handler import motor_handler
-from piflyer.camera import camera
+import camera
+import elevons
+import motor_handler
+import sensors
+import commands as c
+
 MODE="M"
 CONTROL="C"
 HOLD="H"
@@ -30,12 +31,13 @@ class commander:
         self.mode="m"
 
         self.pitch_hold=False
-        self.hdg_hold=False
+        #self.hdg_hold=False
         self.alt_hold=False
         self.auto_hold=False
 
         self.status=c.OK
         self.servos_init=False
+        self.throttle_updated=False
 
         self.pitch=0.0
         self.roll=0.0
@@ -74,6 +76,7 @@ class commander:
             self.roll=float(words[2])
             if(len(words)>=4):
                 self.throttle=float(words[3])
+                self.throttle_updated=True
         elif(words[0] == CAMERA):
             self.camera.takeShot()
         elif(words[0] == RECORD):
@@ -112,23 +115,30 @@ class commander:
         if(not self.servos_init):
             if(self.mode == MANUAL):
                 #print("Manual %f %f" % (self.pitch,self.roll))
+                #constantly updated even if no change ... not ok
                 self.elevons.setAngle(self.pitch,self.roll)
+                #self.elevons.setRoll(self.roll)
                 # not tested
-                #self.motor.control(self.throttle)
+                if(self.throttle_updated):
+                    self.throttle_updated=False
+                    self.motor.setThrottleFromInput(self.throttle)
 
             # not tested
             elif(self.mode == STABILIZED):
                 print("Stabilized %f %f" % (self.pitch,self.roll))
                 if(self.alt_hold):
                     print("Alt hold, controlling roll")
+
                 else:
                     self.elevons.control(self.pitch,self.roll,self.sensors.pitch,self.sensors.roll)
-                #self.motor.control(self.throttle)
+                if (self.throttle_updated):
+                    self.throttle_updated = False
+                    self.motor.setThrottleFromInput(self.throttle)
 
             # not tested
             elif(self.mode == RESQUE):
-                #TODO
                 self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
+                #self.motor. ...
             else:
                 self.failsafe()
 
@@ -136,8 +146,8 @@ class commander:
     def failsafe(self):
         print("failsafe")
         #TODO control in reference to altitude, speed and glide slope
-        self.elevons.control(0.0,0.0,self.sensors.pitch,self.sensors.roll)
-        self.motor.control(0)
+        self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
+        #self.motor.control(0)
 
 
 

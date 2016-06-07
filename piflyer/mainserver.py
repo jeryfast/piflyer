@@ -1,39 +1,44 @@
 __author__ = 'Jernej'
-import socket
-
-import piflyer.commands as c
+import random as r
 from piflyer.commander import commander
+from piflyer.comm import comm
 
-TCP_PORT = 13000
-BUFFER_SIZE = 20  # Normally 1024, but we want fast response
+D=","
 
 class mainserver:
     def __init__(self):
-        self.conn=""
-        self.addr=""
+        self.client=comm()
+        self.commander=commander()
+
     def run(self):
-        #create an INET, STREAMing socket
-        self.s  = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #connect to a server port
-        self.s.bind(("0.0.0.0", TCP_PORT))
-        print(socket.gethostname())
-        self.s.listen(1)
-        #client must connect within timeout for safety reasons
-        self.s.settimeout(5)
-        self.conn, self.addr = self.s.accept()
-        print ('Connection address:', self.addr)
-        result=""
+        status=""
+        data=""
         #while connection not broken by client
-        while result!=c.DISCONNECT:
-            data = self.conn.recv(BUFFER_SIZE)
-            if not data:break
-            data=data.decode("utf-8")
-            print("Received:"+data)
-            #execute commands
-            result=commander.execute(data)
-            print(result)
-            self.conn.send(result.encode("utf-8"))
-        self.conn.close()
+        #while result!=c.DISCONNECT:
+        i=0
+        while self.client.connected():
+            self.client.startVideoStream()
+            data = self.client.readmsg()
+            #new data available
+            if data != '':
+                status=self.commander.update(data)
+                #TODO: key commands ack ... auto, alt hold, modes
+            #self.client.sendmsg("test:"+str(i))
+            pitch = str(r.randint(3, 5))
+            roll = str(r.randint(3, 5))
+            yaw = str(r.randint(0, 2))
+            compass=str(r.randint(240,241))
+            temp=str(r.randint(19,20))
+            humidity=str(r.randint(43,46))
+            pressure=str(r.randint(983,985))
+            altitude = "286"
+            self.client.sendmsg(pitch+D+roll+D+yaw+D+compass+D+temp+D+humidity+D+pressure+",0.00,0.00,0.00"+D+altitude)
+            #i+=1
+            #print(time.time() * 1000)
+            self.commander.control()
+            #time.sleep(0.5)
+        self.commander.failsafe()
+        self.client.reset()
 
 
 

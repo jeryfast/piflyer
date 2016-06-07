@@ -1,5 +1,5 @@
 __author__ = 'Jernej'
-import piflyer.number_range as n
+import number_range as n
 MIN=0
 MAX=100
 class motor_handler:
@@ -36,11 +36,9 @@ class motor_handler:
         if(throttle>=self.minThrottle and throttle<=self.maxThrottle):
             self.throttle=throttle
 
-    def control(self,throttle):
+    # auto throttle
+    #def control(self,throttle):
         #print("controlling a motor")
-        if(self.throttle<throttle):
-            self.throttle+=1
-        elif(self.throttle>throttle):
-            self.throttle-=1
+
 
 

@@ -1,5 +1,5 @@
 __author__ = 'Jernej'
-import piflyer.number_range as n
+import number_range as n
 MIN = 0
 MAX = 180
 class servo_handler:
@@ -71,7 +71,7 @@ class servo_handler:
         u, d = False, False
         if (up != a):
             u = True
-            self.oldRange[0]=up
+            self.oldRange[0] = up
         if (down != b):
             d = True
             self.oldRange[1] = down
@@ -128,6 +128,7 @@ class servo_handler:
             val = 1
             self.setPosition(self.position + val*self.upAdd)
 
+    # not tested yet
     def sub(self, val=None):
         if (not val):
             val = 1
