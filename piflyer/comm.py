@@ -32,6 +32,7 @@ class comm:
         time.sleep(3)
         self.start()
         self.streaming=False
+        self.t0=0
 
     def start(self):
         self.msg = self.driver.find_element_by_id('msg')
@@ -72,14 +73,14 @@ class comm:
         return text
 
     def sendmsg(self, msg):
-        t0=time.time()
+
         #self.msg.send_keys(msg)
         #self.msg.send_keys(Keys.ENTER)
         #self.driver.execute_script('document.getElementById("msg").value = "' + msg + '";document.getElementById("sender").click()')
-        self.driver.execute_script('sendstr("'+msg+'")')
         #self.browser.execute_script('document.getElementById("sender").click()')
-        t1=time.time()
-        r=t1-t0
+        if(time.time()-self.t0>0.03):
+            self.t0 = time.time()
+        self.driver.execute_script('sendstr("'+msg+'")')
         #print(str(round(r,2))+" Frekvenca: "+str(1/r)+"Hz")
 
     def startVideoStream(self):

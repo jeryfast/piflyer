@@ -16,7 +16,7 @@ class mainserver:
         #while result!=c.DISCONNECT:
         i=0
         while self.client.connected():
-            #self.client.startVideoStream()
+            self.client.startVideoStream()
             data = self.client.readmsg()
             #new data available
             if data != '':
