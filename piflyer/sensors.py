@@ -5,6 +5,7 @@ from time import sleep
 
 class sensors(Thread):
     def __init__(self):
+        Thread.__init__(self)
         self.pitch = 0
         self.roll = 0
         self.yaw = 0
@@ -20,7 +21,7 @@ class sensors(Thread):
         self.sense = SenseHat()
         self.sense.clear()
         self.sense.set_imu_config(True, True, True)
-        Thread.__init__(self)
+
         self.start()
 
     def joinDelimiter(self, arr):

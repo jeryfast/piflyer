@@ -73,7 +73,6 @@ class comm:
         return text
 
     def sendmsg(self, msg):
-
         #self.msg.send_keys(msg)
         #self.msg.send_keys(Keys.ENTER)
         #self.driver.execute_script('document.getElementById("msg").value = "' + msg + '";document.getElementById("sender").click()')
