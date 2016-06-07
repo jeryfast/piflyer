@@ -22,16 +22,29 @@ class mainserver():
             if data != None:
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
+
             #Sends sensoric data to mobile device
+            #should run in its own thread, independent, sending data as fast as possible
             #elf.client.sendmsg(self.commander.sensors.getStrArr())
             try:
-                arg=tuple(self.commander.sensors.getStrArr())
+                arg=(self.commander.sensors.getStrArr(),)
                 t1 = threading.Thread(target=self.client.sendmsg, args=arg)
+                t1.daemon=True
                 t1.start()
+                while True:
+                    pass
                 t1.join()
             except Exception as errtxt:
                 print (errtxt)
             #t2=threading.Thread(self.commander.control())
+            """
+            try:
+                t2 = threading.Thread(target=self.commander.control)
+                t2.start()
+                t2.join()
+            except Exception as errtxt:
+                print(errtxt)
+            """
         self.commander.failsafe()
         self.client.reset()
 
