@@ -50,11 +50,12 @@ class sensors:
     def read(self):
         self.sense.set_imu_config(True, True, True)
         pitch, yaw, roll = self.sense.get_orientation().values()
+        ax, ay, az = self.sense.get_accelerometer_raw().values()
         self.compass = round(self.sense.get_compass(), 2)
         self.temp = round(self.sense.get_temperature(), 1)
         self.humidity = round(self.sense.get_humidity(), 1)
         self.pressure = round(self.sense.get_pressure(), 2)
-        ax, ay, az = self.sense.get_accelerometer_raw().values()
+
         pitch = round(pitch, 2)
         roll = round(roll, 2)
         yaw = round(yaw, 2)
