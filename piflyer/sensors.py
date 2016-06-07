@@ -1,7 +1,7 @@
 import random as r
 from sense_hat import SenseHat
-import threading
-class sensors:
+from threading import Thread
+class sensors(Thread):
     def __init__(self):
         self.pitch = 0
         self.roll = 0
@@ -18,14 +18,8 @@ class sensors:
         self.sense = SenseHat()
         self.sense.clear()
         self.sense.set_imu_config(True, True, True)
-        self.t1 = threading.Thread(self.read())
-        self.run()
-
-    def run(self):
-        self.t1.start()
-
-    def stop(self):
-        self.t1.join()
+        Thread.__init__(self)
+        self.start()
 
     def joinDelimiter(self, arr):
         tmp=[None]*len(arr)
@@ -47,7 +41,7 @@ class sensors:
         altitude = 286
         return self.joinDelimiter([pitch, roll, yaw, compass, temp, humidity, pressure, ax, ay, az, altitude])
 
-    def read(self):
+    def run(self):
         while(True):
             self.sense.set_imu_config(True, True, True)
             pitch, yaw, roll = self.sense.get_orientation().values()
