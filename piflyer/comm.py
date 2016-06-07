@@ -32,6 +32,8 @@ class comm:
         time.sleep(3)
         self.start()
         self.streaming=False
+        self.conntime=0
+        self.lastmsg= ""
 
     def start(self):
         self.msg = self.driver.find_element_by_id('msg')
@@ -62,15 +64,21 @@ class comm:
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
 
     def connected(self):
-        #return self.connection.text=='true'
+        t=time.time()
+        if(t-self.conntime>1 and self.connection.text=='true'):
+            self.conntime=t
         return True
 
     def readmsg(self):
+        result=None
         text=self.receiver.text
-        if(text!=NULL):
+        if(text!=self.lastmsg):
+            self.lastmsg=text
+            result=text
+        #if(text!=NULL):
             #self.rcvclear.click()
-            self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
-        return text
+            #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
+        return result
 
     def sendmsg(self, msg):
         #self.msg.send_keys(msg)

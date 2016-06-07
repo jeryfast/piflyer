@@ -17,17 +17,15 @@ class mainserver():
         #while connection not broken by client
         #while result!=c.DISCONNECT:
         while self.client.connected():
-            #self.client.startVideoStream()
+            self.client.startVideoStream()
             data = self.client.readmsg()
             #new data available
-            if data != '':
+            if data != None:
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
             #Sends sensoric data to mobile device
-
             self.client.sendmsg(self.commander.sensors.getStrArr())
-            #print(self.commander.sensors.getStrArr())
-            #self.commander.control()
+            self.commander.control()
         self.commander.failsafe()
         self.client.reset()
 
