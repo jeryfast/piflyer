@@ -20,10 +20,7 @@ class sensors:
 
     def joinDelimiter(self, arr):
         tmp=[None]*len(arr)
-        print(len(arr))
-        print(len(tmp))
         for i in range(len(arr)):
-            print(i)
             tmp[i]=str(arr[i])
         return ",".join(tmp)
 
