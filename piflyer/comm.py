@@ -62,7 +62,8 @@ class comm:
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
 
     def connected(self):
-        return self.connection.text=='true'
+        #return self.connection.text=='true'
+        return True
 
     def readmsg(self):
         text=self.receiver.text
