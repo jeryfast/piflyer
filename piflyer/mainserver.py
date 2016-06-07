@@ -29,11 +29,10 @@ class mainserver():
             try:
                 arg=(self.commander.sensors.getStrArr(),)
                 t1 = threading.Thread(target=self.client.sendmsg, args=arg)
-                t1.daemon=True
+                t1.setDaemon(True)
                 t1.start()
                 while True:
                     pass
-                t1.join()
             except Exception as errtxt:
                 print (errtxt)
             #t2=threading.Thread(self.commander.control())
