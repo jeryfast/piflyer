@@ -1,15 +1,8 @@
 import random
 import string
-
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from pyvirtualdisplay import Display
 import time
-
-
-
 NULL=''
 
 M = 1000
@@ -53,6 +46,7 @@ class comm():
             self.driver.refresh()
             self.start()
             self.streaming = False
+            time.sleep(2)
 
     def get_my_id(self):
         if(self.connected()):
@@ -72,6 +66,7 @@ class comm():
         if(t-self.conntime>1 and self.connection.text=='true'):
             self.conntime=t
             return True"""
+        print(self.connection.text)
         return self.connection.text=='true'
 
     def readmsg(self):
