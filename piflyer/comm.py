@@ -29,8 +29,8 @@ class comm():
         self.driver.get('http://peerclient.cloudapp.net/peer1.html')
         self.start()
         self.streaming=False
-        self.conntime=0
         self.lastmsg= ""
+        self.lastmsgtime=0
 
     def start(self):
         self.msg = self.driver.find_element_by_id('msg')
@@ -61,20 +61,20 @@ class comm():
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
 
     def connected(self):
-        """t=time.time()
-        print("connected:")
-        if(t-self.conntime>1 and self.connection.text=='true'):
-            self.conntime=t
-            return True"""
-        print(self.connection.text)
-        return self.connection.text=='true'
+        t=time.time()
+        if(t-self.lastmsgtime>1 and self.connection.text!='true'):
+            return False
+        self.lastmsgtime=t
+        return True
 
     def readmsg(self):
         result=None
         text=self.receiver.text
         if(text!=self.lastmsg):
             self.lastmsg=text
+            self.lastmsgtime=time.time()
             result=text
+
         #if(text!=NULL):
             #self.rcvclear.click()
             #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
