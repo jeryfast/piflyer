@@ -88,8 +88,8 @@ class comm:
             self.driver.execute_script('document.getElementById("videoswitch").click()')
 
     def close(self):
-        self.driver.close()
         self.display.stop()
+        self.driver.close()
 
     def generateIDs(self):
         for i in range(len(self.arr)):

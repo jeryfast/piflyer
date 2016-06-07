@@ -53,12 +53,12 @@ class sensors(Thread):
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
             ax, ay, az = self.sense.get_accelerometer_raw().values()
-            if (pitch > 180):
-                pitch = pitch - 360
-            if (roll > 180):
-                roll = roll - 360
             self.pitch = round(pitch, 2)
             self.roll = round(roll, 2)
+            if (pitch > 180):
+                self.pitch = round(pitch, 2) - 360
+            if (roll > 180):
+                self.roll = round(roll, 2) - 360
             self.yaw = round(yaw, 2)
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)

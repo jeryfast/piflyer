@@ -28,7 +28,6 @@ class mainserver():
             #Sends sensoric data to mobile device
             #self.client.sendmsg(self.commander.sensors.getStrArr())
             print(self.commander.sensors.getStrArr())
-            sleep(0.03)
             #self.commander.control()
         self.commander.failsafe()
         self.client.reset()
