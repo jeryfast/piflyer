@@ -11,4 +11,5 @@ while 1:
         s.run()
     except:
         print(sys.exc_info())
+        s.commander.sensors.stop()
         s.client.close()

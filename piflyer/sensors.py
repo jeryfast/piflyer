@@ -1,5 +1,6 @@
 import random as r
 from sense_hat import SenseHat
+import threading
 class sensors:
     def __init__(self):
         self.pitch = 0
@@ -17,6 +18,14 @@ class sensors:
         self.sense = SenseHat()
         self.sense.clear()
         self.sense.set_imu_config(True, True, True)
+        self.t1 = threading.Thread(self.read())
+        self.run()
+
+    def run(self):
+        self.t1.start()
+
+    def stop(self):
+        self.t1.join()
 
     def joinDelimiter(self, arr):
         tmp=[None]*len(arr)

@@ -24,7 +24,7 @@ class mainserver:
                 #TODO: key commands ack ... auto, alt hold, modes
             #self.client.sendmsg("test:"+str(i))
 
-            self.client.sendmsg(self.commander.sensors.getRandomStrArr())
+            self.client.sendmsg(self.commander.sensors.getStrArr())
             #i+=1
             #print(time.time() * 1000)
             self.commander.control()
