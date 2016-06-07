@@ -23,12 +23,13 @@ class mainserver():
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
             #Sends sensoric data to mobile device
-            t1=threading.Thread(target=self.client.sendmsg(),args=self.commander.sensors.getStrArr())
+            self.client.sendmsg(self.commander.sensors.getStrArr())
+            """t1=threading.Thread(target=self.client.sendmsg(),args=self.commander.sensors.getStrArr())
             t2=threading.Thread(self.commander.control())
             t1.start()
             t2.start()
             t1.join()
-            t2.join()
+            t2.join()"""
         self.commander.failsafe()
         self.client.reset()
 

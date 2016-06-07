@@ -1,8 +1,15 @@
 import random
 import string
+from telnetlib import EC
+
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.wait import WebDriverWait
 from pyvirtualdisplay import Display
 import time
+
+
+
 NULL=''
 
 M = 1000
@@ -27,9 +34,11 @@ class comm():
         #self.driver = webdriver.Firefox()
         #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
         self.driver.get('http://peerclient.cloudapp.net/peer1.html')
-        #self.driver.get('http://siol.net')
-        #self.driver.get('http://localhost:63342/TcpServer/peer1.html')
-        time.sleep(3)
+        try:
+            WebDriverWait(self.driver).until(
+                EC.presence_of_element_located(self.driver.find_element_by_id('msg')))
+        except TimeoutException:
+            print ("Loading took too much time!")
         self.start()
         self.streaming=False
         self.conntime=0
