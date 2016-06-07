@@ -1,17 +1,70 @@
+import random as r
+from sense_hat import SenseHat
 class sensors:
     def __init__(self):
-        self.pitch = 10.0
-        self.roll = -3.0
-        self.yaw = 1.0
-        self.compass= 100.0
-        self.temp = 23.0
-        self.humidity = 50.0
-        self.pressure = 990.0
-        self.ax = 0.0
-        self.ay = 0.0
-        self.az = 0.0
+        self.pitch = 0
+        self.roll = 0
+        self.yaw = 0
+        self.compass= 10
+        self.temp = 0
+        self.humidity = 0
+        self.pressure = 0
+        self.ax = 0
+        self.ay = 0
+        self.az = 0
+        self.altitude = 0
+        # Comment if not running on RPI
+        self.sense = SenseHat()
+        self.sense.clear()
+        self.sense.set_imu_config(True, True, True)
+
+    def joinDelimiter(self, arr):
+        tmp=[None]*len(arr)
+        print(len(arr))
+        print(len(tmp))
+        for i in range(len(arr)):
+            print(i)
+            tmp[i]=str(arr[i])
+        return ",".join(tmp)
+
+    def getRandomStrArr(self):
+        pitch = r.randint(3, 5)
+        roll = r.randint(3, 5)
+        yaw = r.randint(0, 2)
+        compass = r.randint(240, 241)
+        temp = r.randint(19, 20)
+        humidity = r.randint(43, 46)
+        pressure = r.randint(983, 985)
+        ax = 0.1
+        ay = 0.1
+        az = 0.1
+        altitude = 286
+        return self.joinDelimiter([pitch, roll, yaw, compass, temp, humidity, pressure, ax, ay, az, altitude])
 
     def read(self):
-        print("branje podatkov iz senzorjev")
+        self.sense.set_imu_config(True, True, True)
+        pitch, yaw, roll = self.sense.get_orientation().values()
+        self.compass = round(self.sense.get_compass(), 2)
+        self.temp = round(self.sense.get_temperature(), 1)
+        self.humidity = round(self.sense.get_humidity(), 1)
+        self.pressure = round(self.sense.get_pressure(), 2)
+        ax, ay, az = self.sense.get_accelerometer_raw().values()
+        pitch = round(pitch, 2)
+        roll = round(roll, 2)
+        yaw = round(yaw, 2)
+        if (pitch > 180):
+            self.pitch = pitch - 360
+        roll = round(roll, 2)
+        if (roll > 180):
+            self.roll = roll - 360
+        self.yaw=yaw
+        self.ax = round(ax, 2)
+        self.ay = round(ay, 2)
+        self.az = round(az, 2)
+        self.altitude = (288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1)
+
+    def getStrArr(self):
+        return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
+                                   self.az, self.altitude])
 
 
