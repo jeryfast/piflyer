@@ -48,27 +48,27 @@ class sensors:
         return self.joinDelimiter([pitch, roll, yaw, compass, temp, humidity, pressure, ax, ay, az, altitude])
 
     def read(self):
-        self.sense.set_imu_config(True, True, True)
-        pitch, yaw, roll = self.sense.get_orientation().values()
-        ax, ay, az = self.sense.get_accelerometer_raw().values()
-        self.compass = round(self.sense.get_compass(), 2)
-        self.temp = round(self.sense.get_temperature(), 1)
-        self.humidity = round(self.sense.get_humidity(), 1)
-        self.pressure = round(self.sense.get_pressure(), 2)
-
-        pitch = round(pitch, 2)
-        roll = round(roll, 2)
-        yaw = round(yaw, 2)
-        if (pitch > 180):
-            self.pitch = pitch - 360
-        roll = round(roll, 2)
-        if (roll > 180):
-            self.roll = roll - 360
-        self.yaw=yaw
-        self.ax = round(ax, 2)
-        self.ay = round(ay, 2)
-        self.az = round(az, 2)
-        self.altitude = (288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1)
+        while(True):
+            self.sense.set_imu_config(True, True, True)
+            pitch, yaw, roll = self.sense.get_orientation().values()
+            self.compass = round(self.sense.get_compass(), 2)
+            self.temp = round(self.sense.get_temperature(), 1)
+            self.humidity = round(self.sense.get_humidity(), 1)
+            self.pressure = round(self.sense.get_pressure(), 2)
+            ax, ay, az = self.sense.get_accelerometer_raw().values()
+            pitch = round(pitch, 2)
+            roll = round(roll, 2)
+            yaw = round(yaw, 2)
+            if (pitch > 180):
+                self.pitch = pitch - 360
+            roll = round(roll, 2)
+            if (roll > 180):
+                self.roll = roll - 360
+            self.yaw=yaw
+            self.ax = round(ax, 2)
+            self.ay = round(ay, 2)
+            self.az = round(az, 2)
+            self.altitude = (288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1)
 
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
