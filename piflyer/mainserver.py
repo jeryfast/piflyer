@@ -3,15 +3,6 @@ from commander import commander
 from comm import comm
 import threading
 
-class FuncThread(threading.Thread):
-    def __init__(self, target, *args):
-        self._target = target
-        self._args = args
-        threading.Thread.__init__(self)
-
-    def run(self):
-        self._target(*self._args)
-
 class mainserver():
     def __init__(self):
         #Thread.__init__(self)
@@ -33,10 +24,12 @@ class mainserver():
                 #TODO: key commands ack ... auto, alt hold, modes
             #Sends sensoric data to mobile device
             #elf.client.sendmsg(self.commander.sensors.getStrArr())
-
-            t1=FuncThread(self.client.sendmsg,1,self.commander.sensors.getStrArr())
-            t1.start()
-            t1.join()
+            try:
+                t1 = threading.Thread(target=self.client.sendmsg, args=(self.commander.sensors.getStrArr(), 1))
+                t1.start()
+                t1.join()
+            except Exception as errtxt:
+                print (errtxt)
             #t2=threading.Thread(self.commander.control())
         self.commander.failsafe()
         self.client.reset()
