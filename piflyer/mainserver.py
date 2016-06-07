@@ -34,7 +34,7 @@ class mainserver():
             #Sends sensoric data to mobile device
             #elf.client.sendmsg(self.commander.sensors.getStrArr())
 
-            t1=FuncThread(self.client.sendmsg(),1,self.commander.sensors.getStrArr())
+            t1=FuncThread(self.client.sendmsg,1,self.commander.sensors.getStrArr())
             t1.start()
             t1.join()
             #t2=threading.Thread(self.commander.control())
