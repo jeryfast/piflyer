@@ -115,11 +115,11 @@ class comm():
             try:
                 self.updateIsStreaming()
                 self.driver.execute_script('document.getElementById("videoswitch").click()')
-                time.sleep(0.5)
             except:
                 print("mediastreamopen error")
 
     def updateIsStreaming(self):
+        print("updateIsStreaming")
         try:
             x=self.driver.execute_script('return isMediaStreamOpen()')
         except:

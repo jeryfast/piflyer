@@ -22,8 +22,6 @@ class sensors(Thread):
         self.sense = SenseHat()
         self.sense.clear()
         self.sense.set_imu_config(True, True, True)
-        self.t0=0
-
         self.start()
 
     def joinDelimiter(self, arr):
@@ -48,25 +46,24 @@ class sensors(Thread):
 
     def run(self):
         while True:
-            if(time.time()-self.t0>0.02):
-                self.temp = round(self.sense.get_temperature(), 1)
-                self.humidity = round(self.sense.get_humidity(), 1)
-                self.pressure = round(self.sense.get_pressure(), 2)
-                self.sense.set_imu_config(True, True, True)
-                pitch, yaw, roll = self.sense.get_orientation().values()
-                ax, ay, az = self.sense.get_accelerometer_raw().values()
-                self.compass = round(self.sense.get_compass(), 2)
-                self.pitch = round(pitch, 2)
-                self.roll = round(roll, 2)
-                if (self.pitch > 180):
-                    self.pitch -= 360
-                if (self.roll > 180):
-                    self.roll -=  360
-                self.yaw = round(yaw, 2)
-                self.ax = round(ax, 2)
-                self.ay = round(ay, 2)
-                self.az = round(az, 2)
-                self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
+            self.temp = round(self.sense.get_temperature(), 1)
+            self.humidity = round(self.sense.get_humidity(), 1)
+            self.pressure = round(self.sense.get_pressure(), 2)
+            self.sense.set_imu_config(True, True, True)
+            pitch, yaw, roll = self.sense.get_orientation().values()
+            ax, ay, az = self.sense.get_accelerometer_raw().values()
+            self.compass = round(self.sense.get_compass(), 2)
+            self.pitch = round(pitch, 2)
+            self.roll = round(roll, 2)
+            if (self.pitch > 180):
+                self.pitch -= 360
+            if (self.roll > 180):
+                self.roll -=  360
+            self.yaw = round(yaw, 2)
+            self.ax = round(ax, 2)
+            self.ay = round(ay, 2)
+            self.az = round(az, 2)
+            self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
             """
             self.pitch = r.randint(3, 5)
             self.roll = r.randint(3, 5)
