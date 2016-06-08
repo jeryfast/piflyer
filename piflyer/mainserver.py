@@ -63,7 +63,7 @@ class mainserver():
                 #TODO: key commands ack ... auto, alt hold, modes
             #Sends sensoric data to mobile device
             #should run in its own thread, independent, sending data as fast as possible
-            #self.client.sendmsg(self.commander.sensors.getStrArr())
+            self.client.sendmsg(self.commander.sensors.getStrArr())
             self.commander.control()
             #self.controlThread.start()
         #self.sendThread.stopStream()
