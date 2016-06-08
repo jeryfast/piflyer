@@ -2,7 +2,7 @@ __author__ = 'Jernej'
 from commander import commander
 from comm import comm
 import threading
-from time import sleep
+from time import time
 
 class dataSendingThread(threading.Thread):
     def __init__(self,myclient,mycommander):
@@ -10,16 +10,18 @@ class dataSendingThread(threading.Thread):
         self.daemon = True
         self.client=myclient
         self.commander=mycommander
-        self.freq=10
+        self.freq=30
         self.event=threading.Event()
         self.start()
 
     def run(self):
+        t=0
         while True:
             self.event.wait()
             try:
-                self.client.sendmsg(self.commander.sensors.getStrArr())
-                #sleep(1/self.freq)
+                if(time()-t > 1/self.freq):
+                    self.client.sendmsg(self.commander.sensors.getStrArr())
+                    t = time()
             except:
                 print("Sending thread exception")
 
