@@ -4,8 +4,7 @@ from mainserver import mainserver
 
 s = mainserver()
 
-print("Starting Main ...")
-print("Starting a python server ...")
+print("Starting main server ...")
 while 1:
     try:
         s.run()

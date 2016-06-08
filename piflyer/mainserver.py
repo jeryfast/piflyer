@@ -19,7 +19,7 @@ class dataSendingThread(threading.Thread):
             self.event.wait()
             try:
                 self.client.sendmsg(self.commander.sensors.getStrArr())
-                sleep(1/self.freq)
+                #sleep(1/self.freq)
             except:
                 print("Sending thread exception")
 
@@ -39,7 +39,6 @@ class controlThread(threading.Thread):
             self.event.wait()
             try:
                 self.commander.control()
-                sleep(1/self.freq)
             except:
                 print("Commander thread exception")
 

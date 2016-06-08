@@ -15,6 +15,7 @@ class comm():
         self.display = Display(visible=0, size=(480, 320))
         self.display.start()
 
+        print("Starting firefox")
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
         firefox_profile.set_preference('permissions.default.stylesheet', 2)
