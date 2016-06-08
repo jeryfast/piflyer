@@ -2,6 +2,7 @@ __author__ = 'Jernej'
 from commander import commander
 from comm import comm
 import threading
+from multiprocessing import Process
 from time import time
 
 class dataSendingThread(threading.Thread):
@@ -10,18 +11,14 @@ class dataSendingThread(threading.Thread):
         self.daemon = True
         self.client=myclient
         self.commander=mycommander
-        self.freq=30
         self.event=threading.Event()
         self.start()
 
     def run(self):
-        t=0
         while True:
             self.event.wait()
             try:
-                if(time()-t > 1/self.freq):
-                    self.client.sendmsg(self.commander.sensors.getStrArr())
-                    t = time()
+                self.client.sendmsg(self.commander.sensors.getStrArr())
             except:
                 print("Sending thread exception")
 
@@ -57,7 +54,7 @@ class mainserver():
         while self.client.connected():
             self.sendThread.event.set()
             #self.controlThread.event.set()
-            #self.client.startVideoStream()
+            self.client.startVideoStream()
             #print("read ",threading.current_thread())
             data = self.client.readmsg()
             #new data available

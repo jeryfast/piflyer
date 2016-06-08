@@ -4,7 +4,6 @@ from selenium import webdriver
 import selenium
 from pyvirtualdisplay import Display
 import time
-import threading
 NULL=''
 
 M = 1000
@@ -112,7 +111,6 @@ class comm():
         #print(str(round(r,2))+" Frekvenca: "+str(1/r)+"Hz")
 
     def startVideoStream(self):
-        print(threading._active)
         if(not self.streaming):
             try:
                 self.updateIsStreaming()
