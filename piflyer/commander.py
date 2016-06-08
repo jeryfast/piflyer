@@ -129,7 +129,6 @@ class commander:
                 print("Stabilized %f %f" % (self.pitch,self.roll))
                 if(self.alt_hold):
                     print("Alt hold, controlling roll")
-
                 else:
                     self.elevons.control(self.pitch,self.roll,self.sensors.pitch,self.sensors.roll)
                 if (self.throttle_updated):
@@ -140,8 +139,6 @@ class commander:
             elif(self.mode == RESQUE):
                 self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
                 #self.motor. ...
-            else:
-                self.failsafe()
 
     # not tested
     def failsafe(self):

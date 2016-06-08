@@ -46,6 +46,7 @@ class sensors(Thread):
 
     def run(self):
         while True:
+
             self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
@@ -64,6 +65,19 @@ class sensors(Thread):
             self.ay = round(ay, 2)
             self.az = round(az, 2)
             self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
+            """
+            self.pitch = r.randint(3, 5)
+            self.roll = r.randint(3, 5)
+            self.yaw = r.randint(0, 2)
+            self.compass = r.randint(240, 241)
+            self.temp = r.randint(19, 20)
+            self.humidity = r.randint(43, 46)
+            self.pressure = r.randint(983, 985)
+            self.ax = 0.1
+            self.ay = 0.1
+            self.az = 0.1
+            self.altitude = 286
+            """
 
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,

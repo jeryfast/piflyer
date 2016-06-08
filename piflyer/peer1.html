@@ -151,7 +151,7 @@ $( "#videoswitch" ).click(function() {
 
     p.then(function(mediaStream) {
     mystream=mediaStream;
-    var video = document.querySelector('#video');
+    /*var video = document.querySelector('#video');
     video.src = window.URL.createObjectURL(mediaStream);
         video.onloadedmetadata = function(e) {
         // Do something with the video here.
@@ -159,9 +159,12 @@ $( "#videoswitch" ).click(function() {
         var remid=$('#remoteid').text();
         mycall = peer.call(remid,mediaStream);
         console.log(mycall.peer);
-        console.log("media connection active?:"+mycall.open);
-        };
+        };*/
+    var remid=$('#remoteid').text();
+    mycall = peer.call(remid,mediaStream);
+    console.log(mycall.peer);
     });
+
     p.catch(function(err) {
      console.log(err.name);
     }); // always check for errors at the end.
@@ -190,6 +193,10 @@ peer.on('call', function(call) {
 
 function restartCall(){
     peer.call(mycall.peer,mystream)
+}
+
+function isMediaStreamOpen(){
+    return mycall.open
 }
 
 </script>
