@@ -45,14 +45,14 @@ class mainserver():
     def __init__(self):
         self.client=comm()
         self.commander=commander()
-        self.sendThread=dataSendingThread(self.client, self.commander)
+        #self.sendThread=dataSendingThread(self.client, self.commander)
         #self.controlThread=controlThread(self.commander)
 
     def run(self):
         status=""
         data=""
         while self.client.connected():
-            self.sendThread.event.set()
+            #self.sendThread.event.set()
             #self.controlThread.event.set()
             self.client.startVideoStream()
             #print("read ",threading.current_thread())
@@ -68,7 +68,7 @@ class mainserver():
             #self.controlThread.start()
         #self.sendThread.stopStream()
         print("not connected ",threading.current_thread())
-        self.sendThread.event.clear()
+        #self.sendThread.event.clear()
         #self.controlThread.event.clear()
         #self.commander.failsafe()
         self.client.reset()
