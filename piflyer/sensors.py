@@ -1,5 +1,5 @@
 import random as r
-#from sense_hat import SenseHat
+from sense_hat import SenseHat
 from threading import Thread
 
 class sensors(Thread):
@@ -18,9 +18,9 @@ class sensors(Thread):
         self.az = 0
         self.altitude = 0
         # Comment if not running on RPI
-        #self.sense = SenseHat()
-        #self.sense.clear()
-        #self.sense.set_imu_config(True, True, True)
+        self.sense = SenseHat()
+        self.sense.clear()
+        self.sense.set_imu_config(True, True, True)
 
         self.start()
 
@@ -46,7 +46,7 @@ class sensors(Thread):
 
     def run(self):
         while True:
-            """
+
             self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
@@ -77,6 +77,7 @@ class sensors(Thread):
             self.ay = 0.1
             self.az = 0.1
             self.altitude = 286
+            """
 
     def getStrArr(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,

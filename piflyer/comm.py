@@ -12,8 +12,8 @@ N = 13
 
 class comm():
     def __init__(self):
-        #self.display = Display(visible=0, size=(480, 320))
-        #self.display.start()
+        self.display = Display(visible=0, size=(480, 320))
+        self.display.start()
 
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
@@ -22,7 +22,7 @@ class comm():
         firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
         self.driver = webdriver.Firefox(firefox_profile=firefox_profile)
-        #self.driver.set_window_size(800, 600)
+        self.driver.set_window_size(800, 600)
 
         #ID array
         #self.arr = [None] * M
