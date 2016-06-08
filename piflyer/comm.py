@@ -1,8 +1,10 @@
 import random
 import string
 from selenium import webdriver
+import selenium
 from pyvirtualdisplay import Display
 import time
+import threading
 NULL=''
 
 M = 1000
@@ -10,8 +12,8 @@ N = 13
 
 class comm():
     def __init__(self):
-        self.display = Display(visible=0, size=(480, 320))
-        self.display.start()
+        #self.display = Display(visible=0, size=(480, 320))
+        #self.display.start()
 
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
@@ -33,20 +35,26 @@ class comm():
         self.lastmsgtime=0
 
     def start(self):
-        self.msg = self.driver.find_element_by_id('msg')
-        self.sender = self.driver.find_element_by_id('sender')
-        self.receiver = self.driver.find_element_by_id('receiver')
-        self.videoswitch = self.driver.find_element_by_id('videoswitch')
-        self.connection = self.driver.find_element_by_id('connected')
+        time.sleep(3)
+        try:
+            self.msg = self.driver.find_element_by_id('msg')
+            self.sender = self.driver.find_element_by_id('sender')
+            self.receiver = self.driver.find_element_by_id('receiver')
+            self.videoswitch = self.driver.find_element_by_id('videoswitch')
+            self.connection = self.driver.find_element_by_id('connected')
+        except AttributeError:
+            time.sleep(0.5)
 
     def reset(self):
         #self.driver.save_screenshot('screenshot.png')
-        if(self.driver.find_element_by_id('refresh').text != 'false'):
-            print("refreshing")
-            self.driver.refresh()
-            self.start()
-            self.streaming = False
-            time.sleep(2)
+        try:
+            if(self.driver.find_element_by_id('refresh').text != 'false'):
+                print("refreshing")
+                self.driver.refresh()
+                self.start()
+                self.streaming = False
+        except:
+            time.sleep(0.5)
 
     def get_my_id(self):
         if(self.connected()):
@@ -61,20 +69,31 @@ class comm():
         self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
 
     def connected(self):
+        #print("check-connected")
         t=time.time()
-        if(t-self.lastmsgtime>1 and self.connection.text!='true'):
-            return False
-        self.lastmsgtime=t
+        if(t-self.lastmsgtime>5):
+            self.lastmsgtime=t
+            text=""
+            try:
+                self.connection = self.driver.find_element_by_id('connected')
+                text=self.connection.text
+            except:
+                pass
+
+            if(text!='true'):
+                return False
         return True
 
     def readmsg(self):
         result=None
-        text=self.receiver.text
-        if(text!=self.lastmsg):
-            self.lastmsg=text
-            self.lastmsgtime=time.time()
-            result=text
-
+        try:
+            text=self.receiver.text
+            if(text!=self.lastmsg):
+                self.lastmsg=text
+                self.lastmsgtime=time.time()
+                result=text
+        except:
+            pass
         #if(text!=NULL):
             #self.rcvclear.click()
             #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
@@ -85,17 +104,33 @@ class comm():
         #self.msg.send_keys(Keys.ENTER)
         #self.driver.execute_script('document.getElementById("msg").value = "' + msg + '";document.getElementById("sender").click()')
         #self.browser.execute_script('document.getElementById("sender").click()')
-        self.driver.execute_script('sendstr("'+msg+'")')
+        try:
+            self.driver.execute_script('sendstr("'+msg+'")')
+        except:
+            pass
         #print(str(round(r,2))+" Frekvenca: "+str(1/r)+"Hz")
 
     def startVideoStream(self):
+        print(threading._active)
         if(not self.streaming):
-            self.streaming=True
-            self.driver.execute_script('document.getElementById("videoswitch").click()')
+            try:
+                self.updateIsStreaming()
+                self.driver.execute_script('document.getElementById("videoswitch").click()')
+                time.sleep(0.5)
+            except:
+                print("mediastreamopen error")
+
+    def updateIsStreaming(self):
+        try:
+            x=self.driver.execute_script('return isMediaStreamOpen()')
+        except:
+            return
+
+        self.streaming = x
 
     def close(self):
         self.driver.close()
-        self.display.stop()
+        #self.display.stop()
 
     def generateIDs(self):
         for i in range(len(self.arr)):
