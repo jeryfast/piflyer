@@ -16,32 +16,31 @@ SEND_DELAY=0.025
 
 class comm():
     def __init__(self):
-        if __name__ == '__main__':
-            self.display = Display(visible=0, size=(480, 320))
-            self.display.start()
-            print("Starting firefox")
-            #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
-            firefox_profile = webdriver.FirefoxProfile()
-            #firefox_profile = DesiredCapabilities.FIREFOX()
-            firefox_profile.set_preference('permissions.default.stylesheet', 2)
-            firefox_profile.set_preference('permissions.default.image', 2)
-            firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
-            firefox_profile.set_preference("media.navigator.permission.disabled", True);
-            self.driver = webdriver.Firefox(firefox_profile=firefox_profile)
-            self.driver.set_window_size(800, 600)
+        self.display = Display(visible=0, size=(480, 320))
+        self.display.start()
+        print("Starting firefox")
+        #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
+        firefox_profile = webdriver.FirefoxProfile()
+        #firefox_profile = DesiredCapabilities.FIREFOX()
+        firefox_profile.set_preference('permissions.default.stylesheet', 2)
+        firefox_profile.set_preference('permissions.default.image', 2)
+        firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+        firefox_profile.set_preference("media.navigator.permission.disabled", True);
+        self.driver = webdriver.Firefox(firefox_profile=firefox_profile)
+        self.driver.set_window_size(800, 600)
 
 
-            #ID array
-            #self.arr = [None] * M
-            #self.driver = webdriver.Firefox()
-            #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
-            self.driver.get('http://peerclient.cloudapp.net/peer1.html')
-            self.start()
-            self.streaming=False
-            self.lastmsg= ""
-            self.lastmsgtime=0
-            self.connchecktime=0
-            self.sendtimer=0
+        #ID array
+        #self.arr = [None] * M
+        #self.driver = webdriver.Firefox()
+        #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
+        self.driver.get('http://peerclient.cloudapp.net/peer1.html')
+        self.start()
+        self.streaming=False
+        self.lastmsg= ""
+        self.lastmsgtime=0
+        self.connchecktime=0
+        self.sendtimer=0
 
     def start(self):
         time.sleep(3)

@@ -22,7 +22,6 @@ class sensors(Thread):
         self.sense = SenseHat()
         self.sense.clear()
         self.sense.set_imu_config(True, True, True)
-        self.start()
 
     def joinDelimiter(self, arr):
         tmp=[None]*len(arr)

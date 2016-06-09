@@ -29,28 +29,27 @@ THROTTLE_LIMIT = "TL"
 
 class commander:
     def __init__(self):
-        if __name__ == '__main__':
-            self.mode="m"
+        self.mode="m"
 
-            self.pitch_hold=False
-            #self.hdg_hold=False
-            self.alt_hold=False
-            self.auto_hold=False
+        self.pitch_hold=False
+        #self.hdg_hold=False
+        self.alt_hold=False
+        self.auto_hold=False
 
-            self.status=c.OK
-            self.servos_init=False
-            self.throttle_updated=False
+        self.status=c.OK
+        self.servos_init=False
+        self.throttle_updated=False
 
-            self.pitch=0.0
-            self.roll=0.0
-            self.throttle=0.0
-            self.compass=0.0
-            self.altittude=0.0
+        self.pitch=0.0
+        self.roll=0.0
+        self.throttle=0.0
+        self.compass=0.0
+        self.altittude=0.0
 
-            self.elevons = elevons()
-            self.sensors = sensors()
-            self.motor=motor_handler()
-            self.camera=camera()
+        self.elevons = elevons()
+        self.sensors = sensors()
+        self.motor=motor_handler()
+        self.camera=camera()
 
     def getParameters(self):
         return [self.pitch,self.roll,self.throttle]
