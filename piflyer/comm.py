@@ -119,10 +119,11 @@ class comm():
         if(t-self.sendtimer>SEND_DELAY):
             try:
                 self.driver.execute_script('sendstr("'+msg+'")')
+                self.sendtimer = t
                 return True
             except:
                 pass
-            self.sendtimer = t
+
 
 
     def startVideoStream(self):
