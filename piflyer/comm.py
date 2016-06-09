@@ -15,8 +15,8 @@ N = 13
 
 class comm():
     def __init__(self):
-        #self.display = Display(visible=0, size=(480, 320))
-        #self.display.start()
+        self.display = Display(visible=0, size=(480, 320))
+        self.display.start()
         print("Starting firefox")
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
@@ -140,7 +140,7 @@ class comm():
 
     def close(self):
         self.driver.close()
-        #self.display.stop()
+        self.display.stop()
 
     def generateIDs(self):
         for i in range(len(self.arr)):
