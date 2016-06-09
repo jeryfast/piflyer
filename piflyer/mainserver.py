@@ -49,30 +49,34 @@ class mainserver():
         self.commander.sensors.start()
 
     def run(self):
-        status=""
-        data=""
-        while self.client.connected():
-            #self.sendThread.event.set()
-            #self.controlThread.event.set()
-            self.client.startVideoStream()
-            #print("read ",threading.current_thread())
-            data = self.client.readMsg()
-            #new data available
-            if data != None:
-                status=self.commander.update(data)
-                #TODO: key commands ack ... auto, alt hold, modes
-            #Sends sensoric data to mobile device
-            #should run in its own thread, independent, sending data as fast as possible
-            self.client.sendMsg(self.commander.sensors.getStrArr())
-            #print(self.commander.sensors.getStrArr())
-            self.commander.control()
-            #self.controlThread.start()
-        #self.sendThread.stopStream()
-        print("out of while ")
-        #self.sendThread.event.clear()
-        #self.controlThread.event.clear()
-        #self.commander.failsafe()
-        self.client.reset()
+        try:
+            status=""
+            data=""
+
+            while self.client.connected():
+                #self.sendThread.event.set()
+                #self.controlThread.event.set()
+                #self.client.startVideoStream()
+                #print("read ",threading.current_thread())
+                data = self.client.readMsg()
+                #new data available
+                if data != None:
+                    status=self.commander.update(data)
+                    #TODO: key commands ack ... auto, alt hold, modes
+                #Sends sensoric data to mobile device
+                #should run in its own thread, independent, sending data as fast as possible
+                self.client.sendMsg(self.commander.sensors.getStrArr())
+                #print(self.commander.sensors.getStrArr())
+                self.commander.control()
+                #self.controlThread.start()
+            #self.sendThread.stopStream()
+            print("out of while ")
+            #self.sendThread.event.clear()
+            #self.controlThread.event.clear()
+            #self.commander.failsafe()
+            self.client.reset()
+        except:
+            self.client.close()
 
 
 

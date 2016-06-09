@@ -77,7 +77,7 @@ class sensors(Thread):
             self.ay = 0.1
             self.az = 0.1
             self.altitude = 286
-            time.sleep(0.02)
+            time.sleep(0.05)
 
 
     def getStrArr(self):
