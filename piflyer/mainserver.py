@@ -64,8 +64,8 @@ class mainserver():
             #self.controlThread.event.set()
             #self.client.startVideoStream()
             #print("read ",threading.current_thread())
-
-            data = self.client.readMsg()
+            for i in range(100):
+                data = self.client.readMsg()
             print("readmsg",processingTime(t0))
             t0=time.clock()
             #new data available
@@ -78,7 +78,8 @@ class mainserver():
             t0=time.clock()
             #Sends sensoric data to mobile device
             #should run in its own thread, independent, sending data as fast as possible
-            self.client.sendMsg(self.commander.sensors.getStrArr())
+            for i in range(100):
+                self.client.sendMsg(self.commander.sensors.getStrArr())
             print("sendmsg",processingTime(t0))
 
             self.commander.control()
