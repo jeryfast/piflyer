@@ -12,6 +12,7 @@ NULL=''
 
 M = 1000
 N = 13
+SEND_DELAY=0.025
 
 class comm():
     def __init__(self):
@@ -39,6 +40,7 @@ class comm():
         self.lastmsg= ""
         self.lastmsgtime=0
         self.connchecktime=0
+        self.sendtimer=0
 
     def start(self):
         time.sleep(3)
@@ -113,11 +115,14 @@ class comm():
     """
 
     def sendMsg(self, msg):
-        try:
-            self.driver.execute_script('sendstr("'+msg+'")')
-            return True
-        except:
-            pass
+        t=time.time()
+        if(t-self.sendtimer>SEND_DELAY):
+            try:
+                self.driver.execute_script('sendstr("'+msg+'")')
+                return True
+            except:
+                pass
+            self.sendtimer = t
 
 
     def startVideoStream(self):

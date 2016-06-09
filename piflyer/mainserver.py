@@ -4,10 +4,6 @@ from comm import comm
 import threading
 import time
 
-
-def processingTime(t0):
-    return time.time() - t0
-
 class dataSendingThread(threading.Thread):
     def __init__(self,myclient,mycommander):
         threading.Thread.__init__(self)
@@ -52,8 +48,13 @@ class mainserver():
         #self.controlThread=controlThread(self.commander)
         print("starting sensor readings")
         self.commander.sensors.start()
+        self.printDelay=0
 
-
+    def processingTime(self,t0, name):
+        t=time.time()
+        if t-self.printDelay>0.5:
+            self.printDelay=t
+            print(name,time.time() - t0)
 
     def run(self):
         status=""
@@ -66,28 +67,27 @@ class mainserver():
 
             t0 = time.time()
             data = self.client.readMsg()
-            print("readmsg",processingTime(t0))
+            self.processingTime(t0,"readmsg")
 
             t0=time.time()
             #new data available
             if data != None:
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
-            print("update",processingTime(t0))
+            self.processingTime(t0,"update")
 
             t0=time.time()
             #Sends sensoric data to mobile device
             #should run in its own thread, independent, sending data as fast as possible
             self.client.sendMsg(self.commander.sensors.getStrArr())
-            print("sendmsg",processingTime(t0))
+            self.processingTime(t0,"sendmsg")
 
             t0 = time.time()
             self.commander.control()
-            print("control", processingTime(t0))
+            self.processingTime(t0,"control")
+
             #self.controlThread.start()
-            time.sleep(0.5)
         #self.sendThread.stopStream()
-        print("out of while ")
         #self.sendThread.event.clear()
         #self.controlThread.event.clear()
         #self.commander.failsafe()
