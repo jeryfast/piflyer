@@ -2,7 +2,6 @@ __author__ = 'Jernej'
 from commander import commander
 from comm import comm
 import threading
-import multiprocessing as m
 
 class dataSendingThread(threading.Thread):
     def __init__(self,myclient,mycommander):

@@ -1,7 +1,6 @@
 import random as r
 #from sense_hat import SenseHat
 from threading import Thread
-from multiprocessing import Process
 import time
 
 class sensors(Thread):

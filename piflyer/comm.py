@@ -1,11 +1,12 @@
 import random
 import string
-from multiprocessing.context import Process
-from selenium import webdriver
-from pyvirtualdisplay import Display
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-#from Cython.Utils import
 import time
+from selenium import webdriver
+#from multiprocessing.context import Process
+from pyvirtualdisplay import Display
+#from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+#from Cython.Utils import
+
 
 NULL=''
 
@@ -103,11 +104,13 @@ class comm():
             #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
         return result
 
+    """
     def sendMsgAsync(self,msg):
         if __name__ == '__main__':
             p = Process(target=self.sendMsg, args=(msg,))
             p.start()
             p.join()
+    """
 
     def sendMsg(self, msg):
         try:
