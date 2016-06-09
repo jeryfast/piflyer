@@ -6,7 +6,7 @@ import time
 
 
 def processingTime(t0):
-    return time.clock() - t0
+    return time.time() - t0
 
 class dataSendingThread(threading.Thread):
     def __init__(self,myclient,mycommander):
@@ -59,7 +59,7 @@ class mainserver():
         status=""
         data=""
         while self.client.connected():
-            t0=time.clock()
+            t0=time.time()
             #self.sendThread.event.set()
             #self.controlThread.event.set()
             #self.client.startVideoStream()
@@ -67,7 +67,7 @@ class mainserver():
             for i in range(100):
                 data = self.client.readMsg()
             print("readmsg",processingTime(t0))
-            t0=time.clock()
+            t0=time.time()
             #new data available
 
             if data != None:
@@ -75,7 +75,7 @@ class mainserver():
                 #TODO: key commands ack ... auto, alt hold, modes
 
             print("update",processingTime(t0))
-            t0=time.clock()
+            t0=time.time()
             #Sends sensoric data to mobile device
             #should run in its own thread, independent, sending data as fast as possible
             for i in range(100):
