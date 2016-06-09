@@ -1,9 +1,12 @@
 import random
 import string
+from multiprocessing.context import Process
 from selenium import webdriver
-import selenium
 from pyvirtualdisplay import Display
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+#from Cython.Utils import
 import time
+
 NULL=''
 
 M = 1000
@@ -11,18 +14,19 @@ N = 13
 
 class comm():
     def __init__(self):
-        self.display = Display(visible=0, size=(480, 320))
-        self.display.start()
-
+        #self.display = Display(visible=0, size=(480, 320))
+        #self.display.start()
         print("Starting firefox")
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
+        #firefox_profile = DesiredCapabilities.FIREFOX()
         firefox_profile.set_preference('permissions.default.stylesheet', 2)
         firefox_profile.set_preference('permissions.default.image', 2)
         firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
         self.driver = webdriver.Firefox(firefox_profile=firefox_profile)
         self.driver.set_window_size(800, 600)
+
 
         #ID array
         #self.arr = [None] * M
@@ -33,6 +37,7 @@ class comm():
         self.streaming=False
         self.lastmsg= ""
         self.lastmsgtime=0
+        self.connchecktime=0
 
     def start(self):
         time.sleep(3)
@@ -70,27 +75,26 @@ class comm():
 
     def connected(self):
         #print("check-connected")
-        t=time.time()
-        if(t-self.lastmsgtime>5):
-            self.lastmsgtime=t
+        t=round(time.time(),1)
+        if(t-self.connchecktime>1 and t-self.lastmsgtime>3):
+            self.connchecktime=round(t,1)
             text=""
             try:
-                self.connection = self.driver.find_element_by_id('connected')
-                text=self.connection.text
+                text = self.connection.text
             except:
                 pass
 
-            if(text!='true'):
+            if(text!="true"):
                 return False
         return True
 
-    def readmsg(self):
+    def readMsg(self):
         result=None
         try:
             text=self.receiver.text
             if(text!=self.lastmsg):
+                self.lastmsgtime = time.time()
                 self.lastmsg=text
-                self.lastmsgtime=time.time()
                 result=text
         except:
             pass
@@ -99,22 +103,26 @@ class comm():
             #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
         return result
 
-    def sendmsg(self, msg):
-        #self.msg.send_keys(msg)
-        #self.msg.send_keys(Keys.ENTER)
-        #self.driver.execute_script('document.getElementById("msg").value = "' + msg + '";document.getElementById("sender").click()')
-        #self.browser.execute_script('document.getElementById("sender").click()')
+    def sendMsgAsync(self,msg):
+        if __name__ == '__main__':
+            p = Process(target=self.sendMsg, args=(msg,))
+            p.start()
+            p.join()
+
+    def sendMsg(self, msg):
         try:
             self.driver.execute_script('sendstr("'+msg+'")')
+            return True
         except:
             pass
-        #print(str(round(r,2))+" Frekvenca: "+str(1/r)+"Hz")
+
 
     def startVideoStream(self):
         if(not self.streaming):
             try:
                 self.updateIsStreaming()
                 self.driver.execute_script('document.getElementById("videoswitch").click()')
+                time.sleep(1)
             except:
                 print("mediastreamopen error")
 
