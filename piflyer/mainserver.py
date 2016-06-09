@@ -59,32 +59,33 @@ class mainserver():
         status=""
         data=""
         while self.client.connected():
-            t0=time.time()
             #self.sendThread.event.set()
             #self.controlThread.event.set()
             #self.client.startVideoStream()
             #print("read ",threading.current_thread())
-            for i in range(100):
-                data = self.client.readMsg()
+
+            t0 = time.time()
+            data = self.client.readMsg()
             print("readmsg",processingTime(t0))
+
             t0=time.time()
             #new data available
-
             if data != None:
                 status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
-
             print("update",processingTime(t0))
+
             t0=time.time()
             #Sends sensoric data to mobile device
             #should run in its own thread, independent, sending data as fast as possible
-            for i in range(100):
-                self.client.sendMsg(self.commander.sensors.getStrArr())
+            self.client.sendMsg(self.commander.sensors.getStrArr())
             print("sendmsg",processingTime(t0))
 
+            t0 = time.time()
             self.commander.control()
+            print("control", processingTime(t0))
             #self.controlThread.start()
-            time.sleep(1)
+            time.sleep(0.5)
         #self.sendThread.stopStream()
         print("out of while ")
         #self.sendThread.event.clear()
