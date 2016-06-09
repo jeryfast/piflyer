@@ -10,5 +10,6 @@ if __name__ == '__main__':
             try:
                 s.run()
             except:
+                s.client.close()
                 print(sys.exc_info())
 

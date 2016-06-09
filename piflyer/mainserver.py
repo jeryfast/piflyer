@@ -2,6 +2,11 @@ __author__ = 'Jernej'
 from commander import commander
 from comm import comm
 import threading
+import time
+
+
+def processingTime(t0):
+    return time.clock() - t0
 
 class dataSendingThread(threading.Thread):
     def __init__(self,myclient,mycommander):
@@ -48,35 +53,44 @@ class mainserver():
         print("starting sensor readings")
         self.commander.sensors.start()
 
-    def run(self):
-        try:
-            status=""
-            data=""
 
-            while self.client.connected():
-                #self.sendThread.event.set()
-                #self.controlThread.event.set()
-                #self.client.startVideoStream()
-                #print("read ",threading.current_thread())
-                data = self.client.readMsg()
-                #new data available
-                if data != None:
-                    status=self.commander.update(data)
-                    #TODO: key commands ack ... auto, alt hold, modes
-                #Sends sensoric data to mobile device
-                #should run in its own thread, independent, sending data as fast as possible
-                self.client.sendMsg(self.commander.sensors.getStrArr())
-                #print(self.commander.sensors.getStrArr())
-                self.commander.control()
-                #self.controlThread.start()
-            #self.sendThread.stopStream()
-            print("out of while ")
-            #self.sendThread.event.clear()
-            #self.controlThread.event.clear()
-            #self.commander.failsafe()
-            self.client.reset()
-        except:
-            self.client.close()
+
+    def run(self):
+        status=""
+        data=""
+        while self.client.connected():
+            t0=time.clock()
+            #self.sendThread.event.set()
+            #self.controlThread.event.set()
+            #self.client.startVideoStream()
+            #print("read ",threading.current_thread())
+
+            data = self.client.readMsg()
+            print("readmsg",processingTime(t0))
+            t0=time.clock()
+            #new data available
+
+            if data != None:
+                status=self.commander.update(data)
+                #TODO: key commands ack ... auto, alt hold, modes
+
+            print("update",processingTime(t0))
+            t0=time.clock()
+            #Sends sensoric data to mobile device
+            #should run in its own thread, independent, sending data as fast as possible
+            self.client.sendMsg(self.commander.sensors.getStrArr())
+            print("sendmsg",processingTime(t0))
+
+            self.commander.control()
+            #self.controlThread.start()
+            time.sleep(1)
+        #self.sendThread.stopStream()
+        print("out of while ")
+        #self.sendThread.event.clear()
+        #self.controlThread.event.clear()
+        #self.commander.failsafe()
+        self.client.reset()
+
 
 
 
