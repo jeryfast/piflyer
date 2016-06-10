@@ -66,13 +66,14 @@ class mainserver():
             #print("read ",threading.current_thread())
 
             t0 = time.time()
-            data = self.client.readMsg()
+            #data = self.client.readMsg()
+            data="C,10,0"
             self.processingTime(t0,"readmsg")
 
             t0=time.time()
             #new data available
             if data != None:
-                status=self.commander.update(data)
+                #status=self.commander.update(data)
                 #TODO: key commands ack ... auto, alt hold, modes
             self.processingTime(t0,"update")
 
