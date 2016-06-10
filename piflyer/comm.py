@@ -105,14 +105,17 @@ class comm():
 
     def readMsg(self):
         result=None
-        t=time.time()
-        if(t-self.rcvtimer>RCV_DELAY):
+        t0=time.time()
+        if(t0-self.rcvtimer>RCV_DELAY):
             try:
                 text=self.receiver.text
                 if(text!=self.lastmsg):
-                    self.rcvtimer = t
+                    t=time.time()
+                    dt=t-t0
+                    self.rcvtimer = round(t,2)
                     self.lastmsg=text
                     result=text
+                    print("comm:readMsg",dt)
             except:
                 pass
         return result
@@ -122,7 +125,7 @@ class comm():
         if(t-self.sendtimer>SEND_DELAY):
             try:
                 self.datadriver.execute_script('sendstr("' + msg + '")')
-                self.sendtimer = t
+                self.sendtimer = round(t,2)
                 return True
             except:
                 pass

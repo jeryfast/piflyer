@@ -51,10 +51,10 @@ class mainserver():
         self.printDelay=0
 
     def processingTime(self,t0, name):
-        t=time.time()
+        t=round(time.time(),2)
         if t-self.printDelay>0.5:
             self.printDelay=t
-            print(name,time.time() - t0)
+            print(name,time.time() - round(t0,2))
 
     def run(self):
         status=""
