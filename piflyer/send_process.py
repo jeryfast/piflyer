@@ -4,12 +4,19 @@ import time
 from random import randint
 from selenium import webdriver
 import sys
+#pi
+from pyvirtualdisplay import Display
+
 SEND=0
 RCV=1
 END=2
 ##comm class
 class comm1():
     def __init__(self):
+        #pi
+        self.display = Display(visible=0, size=(480, 320))
+        self.display.start()
+
         firefox_profile = webdriver.FirefoxProfile()
         # firefox_profile = DesiredCapabilities.FIREFOX()
         firefox_profile.set_preference('permissions.default.stylesheet', 2)
@@ -55,6 +62,7 @@ class process(Process):
                 elif (data[0] == END):
                     break;
             time.sleep(DELAY)
+        com.display.stop()
 
 def joinDelimiter(arr):
     tmp = [None] * len(arr)
