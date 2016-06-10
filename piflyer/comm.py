@@ -2,7 +2,6 @@ import random
 import string
 import time
 from selenium import webdriver
-import subprocess
 from pyvirtualdisplay import Display
 #from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
