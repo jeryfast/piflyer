@@ -3,7 +3,7 @@ from sense_hat import SenseHat
 from threading import Thread
 import time
 
-REFRESH_DELAY=0.25
+REFRESH_DELAY=0.5
 
 class sensors(Thread):
     def __init__(self):
