@@ -62,7 +62,7 @@ class mainserver():
         while self.client.connected():
             #self.sendThread.event.set()
             #self.controlThread.event.set()
-            self.client.startVideoStream()
+            #self.client.startVideoStream()
             #print("read ",threading.current_thread())
 
             t0 = time.time()
