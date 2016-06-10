@@ -55,6 +55,7 @@ class comm():
         self.lastmsgtime=0
         self.connchecktime=0
         self.sendtimer=0
+        self.connected=False
 
     def start(self):
         time.sleep(3)
@@ -96,7 +97,9 @@ class comm():
                 pass
 
             if(text!="true"):
+                self.connected=False
                 return False
+        self.connected = False
         return True
 
     def readMsg(self):
@@ -127,7 +130,7 @@ class comm():
 
 
     def startVideoStream(self):
-        if(not self.streaming):
+        if(self.connected and not self.streaming):
             try:
                 self.updateIsStreaming()
                 self.videodriver.execute_script('document.getElementById("videoswitch").click()')
