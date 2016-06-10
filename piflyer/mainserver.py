@@ -47,7 +47,7 @@ class mainserver():
         #self.sendThread.start()
         #self.controlThread=controlThread(self.commander)
         print("starting sensor readings")
-        self.commander.sensors.start()
+        #self.commander.sensors.start()
         self.printDelay=0
 
     def processingTime(self,t0, name):
@@ -62,7 +62,7 @@ class mainserver():
         while self.client.connected():
             #self.sendThread.event.set()
             #self.controlThread.event.set()
-            #self.client.startVideoStream()
+            self.client.startVideoStream()
             #print("read ",threading.current_thread())
 
             t0 = time.time()
