@@ -11,6 +11,7 @@ NULL=''
 M = 1000
 N = 13
 SEND_DELAY=0.05
+RCV_DELAY=0.02
 
 class comm():
     def __init__(self):
@@ -52,9 +53,9 @@ class comm():
         self.start()
         self.streaming=False
         self.lastmsg= ""
-        self.lastmsgtime=0
         self.connchecktime=0
         self.sendtimer=0
+        self.rcvtimer=0
         self.isConnected=False
 
     def start(self):
@@ -88,7 +89,7 @@ class comm():
     def connected(self):
         #print("check-connected")
         t=round(time.time(),1)
-        if(t-self.connchecktime>1 and t-self.lastmsgtime>3):
+        if(t-self.connchecktime>1 and t-self.rcvtimer>3):
             self.connchecktime=round(t,1)
             text=""
             try:
@@ -104,17 +105,16 @@ class comm():
 
     def readMsg(self):
         result=None
-        try:
-            text=self.receiver.text
-            if(text!=self.lastmsg):
-                self.lastmsgtime = time.time()
-                self.lastmsg=text
-                result=text
-        except:
-            pass
-        #if(text!=NULL):
-            #self.rcvclear.click()
-            #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
+        t=time.time()
+        if(t-self.rcvtimer>RCV_DELAY):
+            try:
+                text=self.receiver.text
+                if(text!=self.lastmsg):
+                    self.rcvtimer = t
+                    self.lastmsg=text
+                    result=text
+            except:
+                pass
         return result
 
     def sendMsg(self, msg):

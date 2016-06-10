@@ -66,8 +66,8 @@ class mainserver():
             #print("read ",threading.current_thread())
 
             t0 = time.time()
-            #data = self.client.readMsg()
-            data="C,10,0"
+            data = self.client.readMsg()
+            #data="C,10,0"
             self.processingTime(t0,"readmsg")
 
             t0=time.time()
