@@ -59,7 +59,7 @@ class mainserver():
     def run(self):
         status=""
         data=""
-        while self.client.isConnected():
+        while self.client.connected():
             #self.sendThread.event.set()
             #self.controlThread.event.set()
             self.client.startVideoStream()
