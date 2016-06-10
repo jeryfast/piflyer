@@ -45,7 +45,6 @@ class sensors(Thread):
 
     def run(self):
         while True:
-
             self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
