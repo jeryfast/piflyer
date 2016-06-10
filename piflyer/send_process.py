@@ -22,7 +22,7 @@ class comm1():
         self.text = self.receiver.text
 
     def read(self):
-        #print("read",self.receiver.text)
+        #print("read",receivetext)
         text = self.receiver.text
         print("rcv:",text)
 
@@ -30,12 +30,11 @@ class comm1():
         #print("send",data)
         self.datadriver.execute_script('sendstr("' + data[0] + '")')
     def connected(self):
-        text = self.connection.text
+        text = self.connected.text
 
 #global com object
 if __name__ != '__main__':
-    com = comm1()
-
+    com = comm1()    
 #process class
 class process(Process):
     def __init__(self,q):
@@ -90,11 +89,23 @@ if __name__ == '__main__':
             print("thread:", threading.get_ident())
             #0-send
             #1-read
-            q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
-            q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
-            q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
-            q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
-            q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
+            pitch = randint(3, 5)
+            roll = randint(3, 5)
+            yaw = randint(0, 2)
+            compass = randint(240, 241)
+            temp = randint(19, 20)
+            humidity = randint(43, 46)
+            pressure = randint(983, 985)
+            ax = 0.1
+            ay = 0.1
+            az = 0.1
+            altitude = 286
+            q.put([0,joinDelimiter([pitch, roll, yaw, compass, temp, humidity,pressure, ax, ay,
+                                   az, altitude])])
+            #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
+            #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
+            #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
+            #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
             #q.put([0,randint(0, 180), randint(0, 180), randint(0, 180)])
             q.put([1])
             time.sleep(1)
