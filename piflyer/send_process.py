@@ -4,7 +4,9 @@ import time
 from random import randint
 from selenium import webdriver
 import sys
-
+SEND=0
+RCV=1
+END=2
 ##comm class
 class comm1():
     def __init__(self):
@@ -32,7 +34,7 @@ class comm1():
 
 #global com object
 if __name__ != '__main__':
-    com = comm1()    
+    com = comm1()
 #process class
 class process(Process):
     def __init__(self,q):
@@ -43,15 +45,15 @@ class process(Process):
         end = False
         t = 0
         DELAY = 0.02
-        while (not end):
+        while True:
             if (not self.q.empty()):
                 data = self.q.get()
-                if (data[0] == 0):
+                if (data[0] == SEND):
                     com.send(data[1:])
-                elif (data[0] == 1):
+                elif (data[0] == RCV):
                     com.read()
-                elif (data[0] == 2):
-                    end = True
+                elif (data[0] == END):
+                    break;
             time.sleep(DELAY)
 
 def joinDelimiter(arr):
@@ -80,7 +82,7 @@ if __name__ == '__main__':
             ay = 0.1
             az = 0.1
             altitude = 286
-            q.put([0,joinDelimiter([pitch, roll, yaw, compass, temp, humidity,pressure, ax, ay,
+            q.put([SEND,joinDelimiter([pitch, roll, yaw, compass, temp, humidity,pressure, ax, ay,
                                    az, altitude])])
             #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
             #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
@@ -88,6 +90,6 @@ if __name__ == '__main__':
             #q.put([0,joinDelimiter([randint(0, 180), randint(0, 180), randint(0, 180)])])
             #q.put([0,randint(0, 180), randint(0, 180), randint(0, 180)])
             q.put([1])
-            time.sleep(1)
+            time.sleep(0.05)
         #p.join()
         sys.exit()
