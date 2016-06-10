@@ -16,11 +16,9 @@ class comm1():
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
         self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
         self.datadriver.get('http://peerclient.cloudapp.net/peer1.html')
-        time.sleep(5)
         self.receiver = self.datadriver.find_element_by_id('receiver')
         self.connection = self.datadriver.find_element_by_id('connected')
         self.text = self.receiver.text
-
     def read(self):
         #print("read",receivetext)
         text = self.receiver.text
@@ -54,24 +52,6 @@ class process(Process):
                     com.read()
                 elif (data[0] == 2):
                     end = True
-            time.sleep(DELAY)
-
-#process method-old
-class test():
-    #process run method
-    def run(q):
-        end=False
-        t=0
-        DELAY=0.02
-        while(not end):
-            if(not q.empty()):
-                data=q.get()
-                if(data[0]==0):
-                    com.send(data[1:])
-                elif (data[0] == 1):
-                    com.read()
-                elif (data[0] == 2):
-                    end=True
             time.sleep(DELAY)
 
 def joinDelimiter(arr):

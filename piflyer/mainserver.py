@@ -4,6 +4,7 @@ from comm import comm
 import threading
 import time
 
+"""
 class dataSendingThread(threading.Thread):
     def __init__(self,myclient,mycommander):
         threading.Thread.__init__(self)
@@ -37,7 +38,7 @@ class controlThread(threading.Thread):
                 self.commander.control()
             except:
                 print("Commander thread exception")
-
+"""
 class mainserver():
     def __init__(self):
         self.client=comm()

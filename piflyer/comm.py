@@ -47,8 +47,6 @@ class comm():
         #self.arr = [None] * M
         #self.driver = webdriver.Firefox()
         #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
-        self.datadriver.get('http://peerclient.cloudapp.net/peer1.html')
-        self.videodriver.get('http://peerclient.cloudapp.net/peer1.html')
         self.start()
         self.streaming=False
         self.lastmsg= ""
@@ -58,7 +56,8 @@ class comm():
         self.isConnected=False
 
     def start(self):
-        time.sleep(3)
+        self.datadriver.get('http://peerclient.cloudapp.net/peer1.html')
+        self.videodriver.get('http://peerclient.cloudapp.net/peer1.html')
         try:
             self.msg = self.datadriver.find_element_by_id('msg')
             self.sender = self.datadriver.find_element_by_id('sender')
