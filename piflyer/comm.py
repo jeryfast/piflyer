@@ -10,7 +10,7 @@ NULL=''
 
 M = 1000
 N = 13
-SEND_DELAY=0.01
+SEND_DELAY=0.05
 
 class comm():
     def __init__(self):
