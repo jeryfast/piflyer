@@ -31,10 +31,10 @@ class comm():
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
         #firefox instance
         self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
-        self.datadriver.set_window_size(800, 600)
+        self.datadriver.set_window_size(480, 320)
 
         self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile)
-        self.videodriverdriver.set_window_size(800, 600)
+        self.videodriver.set_window_size(480, 320)
 
         #ID array
         #self.arr = [None] * M
