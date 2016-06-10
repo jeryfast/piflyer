@@ -112,7 +112,7 @@ class comm():
                 if(text!=self.lastmsg):
                     t=time.time()
                     dt=t-t0
-                    self.rcvtimer = round(t,2)
+                    self.rcvtimer = t,2
                     self.lastmsg=text
                     result=text
                     print("comm:readMsg",dt)
