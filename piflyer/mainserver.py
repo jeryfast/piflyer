@@ -74,6 +74,7 @@ class mainserver():
             #new data available
             if data != None:
                 #status=self.commander.update(data)
+                pass
                 #TODO: key commands ack ... auto, alt hold, modes
             self.processingTime(t0,"update")
 
