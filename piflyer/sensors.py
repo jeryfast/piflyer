@@ -3,6 +3,8 @@ from sense_hat import SenseHat
 from threading import Thread
 import time
 
+REFRESH_DELAY=0.3
+
 class sensors(Thread):
     def __init__(self):
         Thread.__init__(self)
@@ -76,7 +78,7 @@ class sensors(Thread):
             self.az = 0.1
             self.altitude = 286
             """
-            time.sleep(0.05)
+            time.sleep(REFRESH_DELAY)
 
 
     def getStrArr(self):
