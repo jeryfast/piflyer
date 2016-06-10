@@ -30,10 +30,10 @@ class comm():
         firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
         #firefox instance
-        self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
+        self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile, timeout=5)
         self.datadriver.set_window_size(480, 320)
 
-        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile)
+        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile, timeout=5)
         self.videodriver.set_window_size(480, 320)
 
         #ID array
