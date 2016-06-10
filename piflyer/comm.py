@@ -2,11 +2,9 @@ import random
 import string
 import time
 from selenium import webdriver
-#from multiprocessing.context import Process
+import subprocess
 from pyvirtualdisplay import Display
 #from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-#from Cython.Utils import
-
 
 NULL=''
 
@@ -19,6 +17,11 @@ class comm():
         self.display = Display(visible=0, size=(480, 320))
         self.display.start()
         print("Starting firefox")
+        ##################################################
+        # How to run a subprocess
+        #subprocess.call(['python','sense.py','&'])
+        ##################################################
+
         #self.driver = webdriver.PhantomJS(executable_path=r'C:\Users\Jernej\Downloads\phantomjs-2.1.1-windows\bin\phantomjs.exe')
         firefox_profile = webdriver.FirefoxProfile()
         #firefox_profile = DesiredCapabilities.FIREFOX()
@@ -26,15 +29,19 @@ class comm():
         firefox_profile.set_preference('permissions.default.image', 2)
         firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
-        self.driver = webdriver.Firefox(firefox_profile=firefox_profile)
-        self.driver.set_window_size(800, 600)
+        #firefox instance
+        self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
+        self.datadriver.set_window_size(800, 600)
 
+        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile)
+        self.videodriverdriver.set_window_size(800, 600)
 
         #ID array
         #self.arr = [None] * M
         #self.driver = webdriver.Firefox()
         #self.driver = webdriver.Remote("http://localhost:4444/wd/hub", webdriver.DesiredCapabilities.HTMLUNITWITHJS)
-        self.driver.get('http://peerclient.cloudapp.net/peer1.html')
+        self.datadriver.get('http://peerclient.cloudapp.net/peer1.html')
+        self.videodriver.get('http://peerclient.cloudapp.net/peer1.html')
         self.start()
         self.streaming=False
         self.lastmsg= ""
@@ -45,36 +52,30 @@ class comm():
     def start(self):
         time.sleep(3)
         try:
-            self.msg = self.driver.find_element_by_id('msg')
-            self.sender = self.driver.find_element_by_id('sender')
-            self.receiver = self.driver.find_element_by_id('receiver')
-            self.videoswitch = self.driver.find_element_by_id('videoswitch')
-            self.connection = self.driver.find_element_by_id('connected')
+            self.msg = self.datadriver.find_element_by_id('msg')
+            self.sender = self.datadriver.find_element_by_id('sender')
+            self.receiver = self.datadriver.find_element_by_id('receiver')
+            self.connection = self.datadriver.find_element_by_id('connected')
+            self.videoswitch = self.videodriver.find_element_by_id('videoswitch')
         except AttributeError:
             time.sleep(0.5)
 
     def reset(self):
         #self.driver.save_screenshot('screenshot.png')
         try:
-            if(self.driver.find_element_by_id('refresh').text != 'false'):
+            if(self.datadriver.find_element_by_id('refresh').text != 'false'):
                 print("refreshing")
-                self.driver.refresh()
+                self.datadriver.refresh()
+                self.videodriver.refresh()
                 self.start()
                 self.streaming = False
         except:
             time.sleep(0.5)
 
-    def get_my_id(self):
-        if(self.connected()):
-            return self.driver.find_element_by_id('peerid').text
-
-    def get_remote_id(self):
-        if(self.connected()):
-            return self.driver.find_element_by_id('remoteid').text
-
-    #def connect(self):
+    """
     def set_attr(self, locator, attr, value):
-        self.driver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
+        self.datadriver.execute_script('document.getElementById("' + locator + '").' + attr + '="' + value + '";')
+    """
 
     def connected(self):
         #print("check-connected")
@@ -106,19 +107,11 @@ class comm():
             #self.driver.execute_script('document.getElementById("receiver").innerHTML="";')
         return result
 
-    """
-    def sendMsgAsync(self,msg):
-        if __name__ == '__main__':
-            p = Process(target=self.sendMsg, args=(msg,))
-            p.start()
-            p.join()
-    """
-
     def sendMsg(self, msg):
         t=time.time()
         if(t-self.sendtimer>SEND_DELAY):
             try:
-                self.driver.execute_script('sendstr("'+msg+'")')
+                self.datadriver.execute_script('sendstr("' + msg + '")')
                 self.sendtimer = t
                 return True
             except:
@@ -130,7 +123,7 @@ class comm():
         if(not self.streaming):
             try:
                 self.updateIsStreaming()
-                self.driver.execute_script('document.getElementById("videoswitch").click()')
+                self.videodriver.execute_script('document.getElementById("videoswitch").click()')
                 time.sleep(1)
             except:
                 print("mediastreamopen error")
@@ -138,14 +131,15 @@ class comm():
     def updateIsStreaming(self):
         print("updateIsStreaming")
         try:
-            x=self.driver.execute_script('return isMediaStreamOpen()')
+            x=self.videodriver.execute_script('return isMediaStreamOpen()')
         except:
             return
 
         self.streaming = x
 
     def close(self):
-        self.driver.close()
+        self.datadriver.close()
+        self.videodriver.close()
         self.display.stop()
 
     def generateIDs(self):
