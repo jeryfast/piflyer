@@ -29,11 +29,18 @@ class comm():
         firefox_profile.set_preference('permissions.default.image', 2)
         firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         firefox_profile.set_preference("media.navigator.permission.disabled", True);
+
+        firefox_profile1 = webdriver.FirefoxProfile()
+        # firefox_profile = DesiredCapabilities.FIREFOX()
+        firefox_profile1.set_preference('permissions.default.stylesheet', 2)
+        firefox_profile1.set_preference('permissions.default.image', 2)
+        firefox_profile1.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+        firefox_profile1.set_preference("media.navigator.permission.disabled", True);
         #firefox instance
-        self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile, timeout=5)
+        self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
         self.datadriver.set_window_size(480, 320)
 
-        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile, timeout=5)
+        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1)
         self.videodriver.set_window_size(480, 320)
 
         #ID array
