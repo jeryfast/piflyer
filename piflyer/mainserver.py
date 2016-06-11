@@ -4,41 +4,6 @@ from comm import comm
 import threading
 import time
 
-"""
-class dataSendingThread(threading.Thread):
-    def __init__(self,myclient,mycommander):
-        threading.Thread.__init__(self)
-        self.daemon = True
-        self.client=myclient
-        self.commander=mycommander
-        self.event=threading.Event()
-        self.start()
-
-    def run(self):
-        while True:
-            self.event.wait()
-            try:
-                self.client.sendMsg(self.commander.sensors.getStrArr())
-            except:
-                print("Sending thread exception")
-
-class controlThread(threading.Thread):
-    def __init__(self, mycommander):
-        threading.Thread.__init__(self)
-        self.daemon = True
-        self.commander = mycommander
-        self.freq = 10
-        self.event=threading.Event()
-        self.start()
-
-    def run(self):
-        while True:
-            self.event.wait()
-            try:
-                self.commander.control()
-            except:
-                print("Commander thread exception")
-"""
 class mainserver():
     def __init__(self):
         self.client=comm()
