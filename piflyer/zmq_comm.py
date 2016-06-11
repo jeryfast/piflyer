@@ -131,7 +131,7 @@ class comm():
     def close(self):
         self.datadriver.close()
         self.videodriver.close()
-        #self.display.stop()
+        self.display.stop()
 
 if __name__ == '__main__':
     # Publisher
@@ -161,6 +161,7 @@ if __name__ == '__main__':
             while True:
                 try:
                     msg = commander_subscriber.recv_string(zmq.DONTWAIT)
+                    msg=msg.strip(str(topic)+" ")
                     xcomm.sendMsg(msg)
                 except zmq.Again:
                     break
