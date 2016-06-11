@@ -3,14 +3,15 @@ import random
 import time
 import zmq_ports as ports
 from selenium import webdriver
+from pyvirtualdisplay import Display
 
 SEND_DELAY=0.02
 RCV_DELAY=0.02
 
 class comm():
     def __init__(self):
-        #self.display = Display(visible=0, size=(480, 320))
-        #self.display.start()
+        self.display = Display(visible=0, size=(480, 320))
+        self.display.start()
         print("Starting firefox")
 
         firefox_profile = webdriver.FirefoxProfile()
