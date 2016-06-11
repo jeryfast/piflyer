@@ -1,3 +1,3 @@
-python3 mzq_sensors.py
-python3 mzq_commm.py
-python3 mzq_commander.py
+python3 zmq_sensors.py
+python3 zmq_commm.py
+python3 zmq_commander.py
