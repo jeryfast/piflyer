@@ -20,9 +20,7 @@
         </PlaceSettings>
       </entry>
       <entry key="CommitDialog">
-        <PlaceSettings>
-          <option name="EXPAND_BY_DEFAULT" value="false" />
-        </PlaceSettings>
+        <PlaceSettings />
       </entry>
       <entry key="Default">
         <PlaceSettings />
