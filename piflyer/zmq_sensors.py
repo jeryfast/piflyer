@@ -43,7 +43,7 @@ class sensors():
 
     def run(self):
         # Comment if not running on RPI
-        self.sense = SenseHat(topic)
+        self.sense = SenseHat()
         self.sense.clear()
         self.sense.set_imu_config(True, True, True)
 

@@ -118,7 +118,7 @@ class commander:
         return self.status
 
     def control(self):
-        print("control")
+        #print("control")
         if(not self.servos_init):
             if(self.mode == MANUAL):
                 #print("Manual %f %f" % (self.pitch,self.roll))
@@ -148,7 +148,7 @@ class commander:
 
     # not tested
     def failsafe(self):
-        print("failsafe")
+        #print("failsafe")
         #TODO control in reference to altitude, speed and glide slope
         self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
         #self.motor.control(0)
