@@ -8,8 +8,8 @@ import os
 from pyvirtualdisplay import Display
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
-SEND_DELAY=0.04
-RCV_DELAY=0.04
+SEND_DELAY=0.02
+RCV_DELAY=0.02
 
 class comm():
     def __init__(self):
