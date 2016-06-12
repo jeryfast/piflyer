@@ -178,7 +178,8 @@ if __name__ == '__main__':
 
         # Tell the commander the connection state, to react with control or failsafe
         commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "0"))
-        time.sleep(0.05)
+        print("not connected")
+        time.sleep(0.1)
 
         xcomm.reset()
 
