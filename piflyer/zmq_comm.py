@@ -7,8 +7,8 @@ from selenium import webdriver
 import os
 from pyvirtualdisplay import Display
 
-SEND_DELAY=0.02
-RCV_DELAY=0.02
+SEND_DELAY=0.04
+RCV_DELAY=0.04
 
 class comm():
     def __init__(self):
