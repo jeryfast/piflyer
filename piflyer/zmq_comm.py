@@ -163,7 +163,7 @@ if __name__ == '__main__':
                 try:
                     msg = commander_subscriber.recv_string(zmq.DONTWAIT)
                     msg=msg.strip(str(topic.SENSOR_TOPIC)+" ")
-                    print(msg)
+                    #print(msg)
                     xcomm.sendMsg(msg)
                 except zmq.Again:
                     break
