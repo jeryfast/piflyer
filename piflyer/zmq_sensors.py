@@ -5,7 +5,7 @@ import zmq
 import zmq_ports as ports
 import zmq_topics as topic
 
-REFRESH_DELAY=0.05
+REFRESH_DELAY=0.005
 
 class sensors():
     def __init__(self):
