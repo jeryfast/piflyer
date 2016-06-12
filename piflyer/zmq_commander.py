@@ -160,7 +160,7 @@ class commander:
             self.failsafe()
 
 if __name__ == '__main__':
-    print("Starting commander")
+    #print("Starting commander")
     # Publisher
     context = zmq.Context()
     comm_publisher = context.socket(zmq.PUB)

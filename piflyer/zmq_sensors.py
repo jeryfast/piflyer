@@ -96,7 +96,7 @@ class sensors():
         self.pressure, self.ax, self.ay, self.az, self.altitude = [float(x) for x in string.split(',')]
 
 if __name__ == '__main__':
-    print("Starting sensors")
+    #print("Starting sensors")
     # Publisher
     context = zmq.Context()
     sensors_publisher = context.socket(zmq.PUB)
