@@ -32,8 +32,8 @@ class comm():
         self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
         self.datadriver.set_window_size(480, 320)
 
-        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1)
-        self.videodriver.set_window_size(480, 320)
+        #self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1)
+        #self.videodriver.set_window_size(480, 320)
         self.start()
         self.streaming=False
         self.lastmsg= ""
@@ -44,14 +44,14 @@ class comm():
 
     def start(self):
         self.datadriver.get('http://peerclient.cloudapp.net/peer1.html')
-        self.videodriver.get('http://peerclient.cloudapp.net/peer1.html')
+        #self.videodriver.get('http://peerclient.cloudapp.net/peer1.html')
         try:
             #time.sleep(3)
             self.msg = self.datadriver.find_element_by_id('msg')
             self.sender = self.datadriver.find_element_by_id('sender')
             self.receiver = self.datadriver.find_element_by_id('receiver')
             self.connection = self.datadriver.find_element_by_id('connected')
-            self.videoswitch = self.videodriver.find_element_by_id('videoswitch')
+            #self.videoswitch = self.videodriver.find_element_by_id('videoswitch')
         except:
             pass
 
@@ -61,7 +61,7 @@ class comm():
             if (self.datadriver.find_element_by_id('refresh').text != 'false'):
                 print("refreshing")
                 self.datadriver.refresh()
-                self.videodriver.refresh()
+                #self.videodriver.refresh()
                 #self.start()
                 self.streaming = False
         except:
@@ -114,7 +114,7 @@ class comm():
             try:
                 self.updateIsStreaming()
                 self.videodriver.execute_script('document.getElementById("videoswitch").click()')
-                time.sleep(1)
+                time.sleep(2)
             except:
                 print("mediastreamopen error")
 
@@ -128,7 +128,7 @@ class comm():
 
     def close(self):
         self.datadriver.close()
-        self.videodriver.close()
+        #self.videodriver.close()
         self.display.stop()
 
 if __name__ == '__main__':
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     while True:
         while(xcomm.connected()):
             commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "1"))
-            xcomm.startVideoStream()
+            #xcomm.startVideoStream()
             # from browser to commander
             messagedata = xcomm.readMsg()
             if messagedata != None:
