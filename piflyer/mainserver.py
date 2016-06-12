@@ -13,7 +13,7 @@ class mainserver():
         #self.sendThread.start()
         #self.controlThread=controlThread(self.commander)
         print("starting sensor readings")
-        self.commander.sensors.start()
+        #self.commander.sensors.start()
         self.printDelay=0
 
     def processingTime(self,t0, name):

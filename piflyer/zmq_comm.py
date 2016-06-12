@@ -6,6 +6,7 @@ import zmq_topics as topic
 from selenium import webdriver
 import os
 from pyvirtualdisplay import Display
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 SEND_DELAY=0.04
 RCV_DELAY=0.04
@@ -16,7 +17,6 @@ class comm():
         self.display.start()
                 
         fp = webdriver.FirefoxProfile()
-        #firefox_profile = DesiredCapabilities.FIREFOX()
         fp.set_preference('permissions.default.stylesheet', 2)
         fp.set_preference('permissions.default.image', 2)
         fp.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
@@ -25,8 +25,9 @@ class comm():
         fp.set_preference("startup.homepage_welcome_url", "about:blank")
         fp.set_preference("startup.homepage_welcome_url.additional", "about:blank")
 
+        binary = FirefoxBinary('/usr/bin/iceweasel')
+
         firefox_profile1 = webdriver.FirefoxProfile()
-        # firefox_profile = DesiredCapabilities.FIREFOX()
         firefox_profile1.set_preference('permissions.default.stylesheet', 2)
         firefox_profile1.set_preference('permissions.default.image', 2)
         firefox_profile1.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
@@ -35,11 +36,12 @@ class comm():
         fp.set_preference("startup.homepage_welcome_url", "about:blank")
         fp.set_preference("startup.homepage_welcome_url.additional", "about:blank")
 
-        self.datadriver = webdriver.Firefox(firefox_profile=fp)
+        self.datadriver = webdriver.Firefox(firefox_profile=fp,firefox_binary=binary)
         self.datadriver.set_window_size(480, 320)
 
-        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1)
+        self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1, firefox_binary=binary)
         self.videodriver.set_window_size(480, 320)
+
         self.start()
         self.getids()
         self.streaming=False
@@ -179,7 +181,7 @@ if __name__ == '__main__':
         # Tell the commander the connection state, to react with control or failsafe
         commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "0"))
         print("not connected")
-        time.sleep(0.1)
+        time.sleep(0.05)
 
         xcomm.reset()
 
