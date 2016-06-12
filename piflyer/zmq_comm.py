@@ -14,7 +14,6 @@ class comm():
     def __init__(self):
         self.display = Display(visible=0, size=(480, 320))
         self.display.start()
-        print("Starting firefox")
                 
         fp = webdriver.FirefoxProfile()
         #firefox_profile = DesiredCapabilities.FIREFOX()
@@ -125,7 +124,7 @@ class comm():
             try:
                 self.updateIsStreaming()
                 self.videodriver.execute_script('document.getElementById("videoswitch").click()')
-                time.sleep(2)
+                time.sleep(4)
             except:
                 print("mediastreamopen error")
 
