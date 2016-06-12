@@ -36,6 +36,7 @@ class comm():
         self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1)
         self.videodriver.set_window_size(480, 320)
         self.start()
+        self.getids()
         self.streaming=False
         self.lastmsg= ""
         self.connchecktime=0
@@ -47,8 +48,10 @@ class comm():
         url="file:"+os.getcwd()+os.sep+'peer1.html'
         self.datadriver.get(url)
         self.videodriver.get(url)
+
+    def getids(self):
         try:
-            #time.sleep(3)
+            # time.sleep(3)
             self.msg = self.datadriver.find_element_by_id('msg')
             self.sender = self.datadriver.find_element_by_id('sender')
             self.receiver = self.datadriver.find_element_by_id('receiver')
@@ -57,13 +60,13 @@ class comm():
         except:
             pass
 
-
     def reset(self):
         try:
             if (self.datadriver.find_element_by_id('refresh').text != 'false'):
                 print("refreshing")
                 self.datadriver.execute_script("location.reload();")
                 self.videodriver.execute_script("location.reload();")
+                self.getids()
                 time.sleep(2)
                 self.streaming = False
         except:
@@ -149,7 +152,7 @@ if __name__ == '__main__':
     while True:
         while(xcomm.connected()):
             commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "1"))
-            #xcomm.startVideoStream()
+            xcomm.startVideoStream()
             # from browser to commander
             messagedata = xcomm.readMsg()
             if messagedata != None:
