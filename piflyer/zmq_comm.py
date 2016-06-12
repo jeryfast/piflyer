@@ -6,7 +6,7 @@ import zmq_topics as topic
 from selenium import webdriver
 from pyvirtualdisplay import Display
 
-SEND_DELAY=0.02
+SEND_DELAY=0.04
 RCV_DELAY=0.02
 
 class comm():
