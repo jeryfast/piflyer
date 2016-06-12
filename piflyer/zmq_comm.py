@@ -6,8 +6,8 @@ import zmq_topics as topic
 from selenium import webdriver
 from pyvirtualdisplay import Display
 
-SEND_DELAY=0.04
-RCV_DELAY=0.02
+SEND_DELAY=0.1
+RCV_DELAY=0.1
 
 class comm():
     def __init__(self):
@@ -158,6 +158,7 @@ if __name__ == '__main__':
                 try:
                     msg = commander_subscriber.recv_string(zmq.DONTWAIT)
                     msg=msg.strip(str(topic.SENSOR_TOPIC)+" ")
+                    print(msg)
                     xcomm.sendMsg(msg)
                 except zmq.Again:
                     break
