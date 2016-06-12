@@ -65,7 +65,8 @@ class comm():
                 self.start()
                 self.streaming = False
         except:
-            pass
+            print("reset failed")
+            time.sleep(0.5)
 
     def connected(self):
         # print("check-connected")
@@ -168,6 +169,7 @@ if __name__ == '__main__':
 
         # Tell the commander the connection state, to react with control or failsafe
         commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "0"))
+        time.sleep(0.05)
 
         xcomm.reset()
 
