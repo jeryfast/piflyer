@@ -2,6 +2,7 @@ import random
 import time
 import zmq
 import zmq_ports as ports
+import zmq_topics as topic
 
 from zmq_sensors import sensors
 from elevons import elevons
@@ -38,6 +39,7 @@ class commander:
         #self.hdg_hold=False
         self.alt_hold=False
         self.auto_hold=False
+        self.is_failsafe=True
 
         self.status=c.OK
         self.servos_init=False
@@ -112,10 +114,11 @@ class commander:
             self.motor.setThrottleLimits(int(words[1]), int(words[2]))
         else:
             self.status=c.INVALID
-            print("status invalid")
+            #print("status invalid")
         return self.status
 
     def control(self):
+        print("control")
         if(not self.servos_init):
             if(self.mode == MANUAL):
                 #print("Manual %f %f" % (self.pitch,self.roll))
@@ -150,6 +153,11 @@ class commander:
         self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
         #self.motor.control(0)
 
+    def run(self):
+        if(not self.is_failsafe):
+            self.control()
+        else:
+            self.failsafe()
 
 if __name__ == '__main__':
     print("Starting commander")
@@ -158,29 +166,38 @@ if __name__ == '__main__':
     comm_publisher = context.socket(zmq.PUB)
     comm_publisher.bind("tcp://*:%s" % ports.COMMANDER_PUB)
 
-    # Subscribe to commander
-    topic = "10001"
+    # Subscribe to comm messages
     comm_subscriber = context.socket(zmq.SUB)
     comm_subscriber.connect("tcp://localhost:%s" % ports.COMM_PUB)
-    comm_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic)
+    comm_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.COMMAND_TOPIC)
+
+    # Subscrine to comm connection info
+    connection_subscriber = context.socket(zmq.SUB)
+    connection_subscriber.connect("tcp://localhost:%s" % ports.COMM_PUB)
+    connection_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.CONNECTION_TOPIC)
 
     # Subscribe to sensors
     sensors_subscriber = context.socket(zmq.SUB)
     sensors_subscriber.connect("tcp://localhost:%s" % ports.SENSORS_PUB)
-    sensors_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic)
+    sensors_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.SENSOR_TOPIC)
+
 
     # Initiate commander
     commander=commander()
 
     while True:
-        # send data
-        #topic = random.randrange(9999, 10001)
-        messagedata = random.randrange(1, 215) - 80
-        #print("%d %d" % (topic, messagedata))
-        #comm_publisher.send_string("%s %s" % (topic, "test"))
 
+        # Get connection info from comm
         while True:
-            # receive data from comm
+            try:
+                connection=connection_subscriber.recv_string(zmq.DONTWAIT)
+            except zmq.Again:
+                break
+            # process task
+            commander.is_failsafe=int(not connection.split()[1])
+
+        # Receive data from comm
+        while True:
             try:
                 data = comm_subscriber.recv_string(zmq.DONTWAIT)
             except zmq.Again:
@@ -189,16 +206,18 @@ if __name__ == '__main__':
             commander.update(data)
             #print("commander received:", msg)
 
+        # From sensors to comm, update sensors instance
         while True:
-            # from sensors to comm, update sensors instance
             try:
                 sens_data = sensors_subscriber.recv_string(zmq.DONTWAIT)
             except zmq.Again:
                 break
             # process task
-            sens_data = sens_data.strip(topic + " ")
+            sens_data = sens_data.strip(topic.SENSOR_TOPIC + " ")
 
             commander.sensors.setValues(sens_data)
-            comm_publisher.send_string("%s %s" % (topic, sens_data))
+            comm_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
+
+        commander.run()
         time.sleep(0.005)
 

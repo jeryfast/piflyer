@@ -1,7 +1,8 @@
 import zmq
 import random
 import time
-import zmq_ports as ports
+import zmq_ports as port
+import zmq_topics as topic
 from selenium import webdriver
 #from pyvirtualdisplay import Display
 
@@ -50,7 +51,6 @@ class comm():
             self.sender = self.datadriver.find_element_by_id('sender')
             self.receiver = self.datadriver.find_element_by_id('receiver')
             self.connection = self.datadriver.find_element_by_id('connected')
-            print(self.connection)
             self.videoswitch = self.videodriver.find_element_by_id('videoswitch')
         except:
             pass
@@ -69,6 +69,7 @@ class comm():
 
     def connected(self):
         # print("check-connected")
+        self.isConnected = True
         t = round(time.time(), 1)
         if (t - self.connchecktime > 1 and t - self.rcvtimer > 3):
             self.connchecktime = round(t, 1)
@@ -76,14 +77,10 @@ class comm():
             try:
                 text = self.connection.text
             except:
-                pass
-
+                self.isConnected = False
             if (text != "true"):
                 self.isConnected = False
-                self.reset()
-                return False
-        self.isConnected = True
-        return True
+        return self.isConnected
 
     def readMsg(self):
         result = None
@@ -139,35 +136,37 @@ if __name__ == '__main__':
     # Publisher
     context = zmq.Context()
     commander_publisher = context.socket(zmq.PUB)
-    commander_publisher.bind("tcp://*:%s" % ports.COMM_PUB)
+    commander_publisher.bind("tcp://*:%s" % port.COMM_PUB)
 
     # Subscribe to commander
     commander_subscriber = context.socket(zmq.SUB)
-    commander_subscriber.connect("tcp://localhost:%s" % ports.COMMANDER_PUB)
-    commander_subscriber.setsockopt_string(zmq.SUBSCRIBE, "10001")
+    commander_subscriber.connect("tcp://localhost:%s" % port.COMMANDER_PUB)
+    commander_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.SENSOR_TOPIC)
 
     xcomm=comm()
-    topic = 10001
     while True:
-        if(xcomm.connected()):
+        while(xcomm.connected()):
+            commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "1"))
             xcomm.startVideoStream()
             # from browser to commander
-            """topic = random.randrange(9999, 10005)
-            messagedata = random.randrange(1, 215) - 80
-            print("%d %d" % (topic, messagedata))"""
             messagedata = xcomm.readMsg()
             if messagedata != None:
-                commander_publisher.send_string("%d %s" % (topic, messagedata))
+                commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, messagedata))
 
             # from commander to browser
             while True:
                 try:
                     msg = commander_subscriber.recv_string(zmq.DONTWAIT)
-                    msg=msg.strip(str(topic)+" ")
+                    msg=msg.strip(str(topic.SENSOR_TOPIC)+" ")
                     xcomm.sendMsg(msg)
                 except zmq.Again:
                     break
                 # process task
                 #print("comm received:", msg)
-
             time.sleep(0.005)
+
+        # Tell the commander the connection state, to react with control or failsafe
+        commander_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, "0"))
+
+        xcomm.reset()
+

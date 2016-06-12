@@ -3,9 +3,9 @@ import random as r
 import time
 import zmq
 import zmq_ports as ports
+import zmq_topics as topic
 
 REFRESH_DELAY=0.02
-TOPIC = 10001
 
 class sensors():
     def __init__(self):
@@ -79,7 +79,7 @@ class sensors():
             self.az = 0.1
             self.altitude = 286
 
-            sensors_publisher.send_string("%d %s" % (TOPIC, self.getString()))
+            sensors_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, self.getString()))
 
             time.sleep(REFRESH_DELAY)
 
@@ -90,7 +90,7 @@ class sensors():
     # Update values if instance not doint reading with run()
     def setValues(self,string):
         self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity,\
-        self.pressure, self.ax, self.ay, self.az, self.altitude = string.split(',')
+        self.pressure, self.ax, self.ay, self.az, self.altitude = [float(x) for x in string.split(',')]
 
 if __name__ == '__main__':
     print("Starting sensors")
