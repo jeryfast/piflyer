@@ -55,12 +55,12 @@ class sensors():
             pitch, yaw, roll = self.sense.get_orientation().values()
             ax, ay, az = self.sense.get_accelerometer_raw().values()
             self.compass = round(self.sense.get_compass(), 2)
-            self.pitch = round(pitch, 2)
-            self.roll = round(roll, 2)
             if (self.pitch > 180):
                 self.pitch -= 360
             if (self.roll > 180):
                 self.roll -=  360
+            self.pitch = round(pitch, 2)
+            self.roll = round(roll, 2)
             self.yaw = round(yaw, 2)
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)
