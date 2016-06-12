@@ -15,13 +15,16 @@ class comm():
         self.display = Display(visible=0, size=(480, 320))
         self.display.start()
         print("Starting firefox")
-
-        firefox_profile = webdriver.FirefoxProfile()
+                
+        fp = webdriver.FirefoxProfile()
         #firefox_profile = DesiredCapabilities.FIREFOX()
-        firefox_profile.set_preference('permissions.default.stylesheet', 2)
-        firefox_profile.set_preference('permissions.default.image', 2)
-        firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
-        firefox_profile.set_preference("media.navigator.permission.disabled", True)
+        fp.set_preference('permissions.default.stylesheet', 2)
+        fp.set_preference('permissions.default.image', 2)
+        fp.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+        fp.set_preference("media.navigator.permission.disabled", True)
+        fp.set_preference("browser.startup.homepage", "about:blank")
+        fp.set_preference("startup.homepage_welcome_url", "about:blank")
+        fp.set_preference("startup.homepage_welcome_url.additional", "about:blank")
 
         firefox_profile1 = webdriver.FirefoxProfile()
         # firefox_profile = DesiredCapabilities.FIREFOX()
@@ -29,8 +32,11 @@ class comm():
         firefox_profile1.set_preference('permissions.default.image', 2)
         firefox_profile1.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         firefox_profile1.set_preference("media.navigator.permission.disabled", True)
+        fp.set_preference("browser.startup.homepage", "about:blank")
+        fp.set_preference("startup.homepage_welcome_url", "about:blank")
+        fp.set_preference("startup.homepage_welcome_url.additional", "about:blank")
 
-        self.datadriver = webdriver.Firefox(firefox_profile=firefox_profile)
+        self.datadriver = webdriver.Firefox(firefox_profile=fp)
         self.datadriver.set_window_size(480, 320)
 
         self.videodriver=webdriver.Firefox(firefox_profile=firefox_profile1)
@@ -137,7 +143,7 @@ class comm():
         self.display.stop()
 
 if __name__ == '__main__':
-    print("Starting comm")
+    #print("Starting comm")
     # Publisher
     context = zmq.Context()
     commander_publisher = context.socket(zmq.PUB)
