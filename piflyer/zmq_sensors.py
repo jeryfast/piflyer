@@ -21,11 +21,6 @@ class sensors():
         self.az = 0
         self.altitude = 0
 
-        # Comment if not running on RPI
-        """self.sense = SenseHat(topic, sensors_publisher)
-        self.sense.clear()
-        self.sense.set_imu_config(True, True, True)"""
-
     def joinDelimiter(self, arr):
         tmp=[None]*len(arr)
         for i in range(len(arr)):
@@ -47,6 +42,11 @@ class sensors():
         return self.joinDelimiter([pitch, roll, yaw, compass, temp, humidity, pressure, ax, ay, az, altitude])
 
     def run(self):
+        # Comment if not running on RPI
+        """self.sense = SenseHat(topic, sensors_publisher)
+        self.sense.clear()
+        self.sense.set_imu_config(True, True, True)"""
+
         while True:
             """self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
@@ -79,16 +79,21 @@ class sensors():
             self.az = 0.1
             self.altitude = 286
 
-            sensors_publisher.send_string("%d %s" % (TOPIC, self.getStrArr()))
+            sensors_publisher.send_string("%d %s" % (TOPIC, self.getString()))
 
             time.sleep(REFRESH_DELAY)
 
-    def getStrArr(self):
+    def getString(self):
         return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
                                    self.az, self.altitude])
 
-if __name__ == '__main__':
+    # Update values if instance not doint reading with run()
+    def setValues(self,string):
+        self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity,\
+        self.pressure, self.ax, self.ay, self.az, self.altitude = string.split(',')
 
+if __name__ == '__main__':
+    print("Starting sensors")
     # Publisher
     context = zmq.Context()
     sensors_publisher = context.socket(zmq.PUB)
