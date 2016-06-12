@@ -1,5 +1,10 @@
 <application>
   <component name="PyPackageService">
+    <option name="sdkToUsersite">
+      <map>
+        <entry key="C:\Users\Jernej\AppData\Local\Programs\Python\Python35-32\python.exe" value="true" />
+      </map>
+    </option>
     <option name="PY_PACKAGES">
       <map>
         <entry key="0-._.-._.-._.-._.-._.-._.-0" value="0.1" />
