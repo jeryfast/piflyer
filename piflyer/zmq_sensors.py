@@ -79,8 +79,10 @@ class sensors():
             self.az = 0.1
             self.altitude = 286
             """
-
-            sensors_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, self.getString()))
+            try:
+                sensors_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, self.getString()))
+            except:
+                pass
 
             time.sleep(REFRESH_DELAY)
 
