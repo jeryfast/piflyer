@@ -7,8 +7,8 @@ from selenium import webdriver
 import os
 from pyvirtualdisplay import Display
 
-SEND_DELAY=0.1
-RCV_DELAY=0.1
+SEND_DELAY=0.02
+RCV_DELAY=0.02
 
 class comm():
     def __init__(self):
@@ -122,9 +122,9 @@ class comm():
     def startVideoStream(self):
         if (self.isConnected and not self.streaming):
             try:
-                self.updateIsStreaming()
                 self.videodriver.execute_script('document.getElementById("videoswitch").click()')
-                time.sleep(4)
+                time.sleep(2)
+                self.updateIsStreaming()
             except:
                 print("mediastreamopen error")
 
