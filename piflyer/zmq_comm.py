@@ -4,15 +4,16 @@ import time
 import zmq_ports as port
 import zmq_topics as topic
 from selenium import webdriver
-from pyvirtualdisplay import Display
+import os
+#from pyvirtualdisplay import Display
 
 SEND_DELAY=0.1
 RCV_DELAY=0.1
 
 class comm():
     def __init__(self):
-        self.display = Display(visible=0, size=(480, 320))
-        self.display.start()
+        #self.display = Display(visible=0, size=(480, 320))
+        #self.display.start()
         print("Starting firefox")
 
         firefox_profile = webdriver.FirefoxProfile()
@@ -43,7 +44,7 @@ class comm():
         self.isConnected=False
 
     def start(self):
-        self.datadriver.get('http://peerclient.cloudapp.net/peer1.html')
+        self.datadriver.get(os.getcwd()+'\peer1.html')
         #self.videodriver.get('http://peerclient.cloudapp.net/peer1.html')
         try:
             #time.sleep(3)
@@ -60,7 +61,8 @@ class comm():
         try:
             if (self.datadriver.find_element_by_id('refresh').text != 'false'):
                 print("refreshing")
-                self.datadriver.refresh()
+                self.datadriver.execute_script("location.reload();")
+                time.sleep(2)
                 #self.videodriver.refresh()
                 #self.start()
                 self.streaming = False
@@ -129,7 +131,7 @@ class comm():
     def close(self):
         self.datadriver.close()
         #self.videodriver.close()
-        self.display.stop()
+        #self.display.stop()
 
 if __name__ == '__main__':
     print("Starting comm")
