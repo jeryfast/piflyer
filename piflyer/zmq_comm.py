@@ -44,7 +44,7 @@ class comm():
         self.isConnected=False
 
     def start(self):
-        url=os.getcwd()+os.sep+'peer1.html'
+        url="file:"+os.getcwd()+os.sep+'peer1.html'
         self.datadriver.get(url)
         self.videodriver.get(url)
         try:
