@@ -1,5 +1,5 @@
 import random as r
-#from sense_hat import SenseHat
+from sense_hat import SenseHat
 import time
 import zmq
 import zmq_ports as ports
@@ -48,7 +48,7 @@ class sensors():
         self.sense.set_imu_config(True, True, True)"""
 
         while True:
-            """self.temp = round(self.sense.get_temperature(), 1)
+            self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 2)
             self.sense.set_imu_config(True, True, True)
@@ -78,6 +78,7 @@ class sensors():
             self.ay = 0.1
             self.az = 0.1
             self.altitude = 286
+            """
 
             # sensors must initialize
             try:
