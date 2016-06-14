@@ -2,7 +2,6 @@ import random
 import time
 import zmq
 
-import delays
 import zmq_ports as ports
 import zmq_topics as topic
 
@@ -41,7 +40,7 @@ class commander:
         #self.hdg_hold=False
         self.alt_hold=False
         self.auto_hold=False
-        self.is_failsafe=True
+        self.is_connected=0
 
         self.status=c.OK
         self.servos_init=False
@@ -156,7 +155,8 @@ class commander:
         #self.motor.control(0)
 
     def run(self):
-        if(not self.is_failsafe):
+        #print(self.is_connected)
+        if(self.is_connected):
             self.control()
         else:
             self.failsafe()
@@ -195,7 +195,7 @@ if __name__ == '__main__':
             except zmq.Again:
                 break
             # process task
-            commander.is_failsafe=int(not connection.split()[1])
+            commander.is_connected=int(connection[2])
 
         # Receive data from comm
         while True:
@@ -217,7 +217,6 @@ if __name__ == '__main__':
             sens_data = sens_data.strip(topic.SENSOR_TOPIC + " ")
             commander.sensors.setValues(sens_data)
             commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
-            time.sleep(delays.SENSORS)
 
         commander.run()
         time.sleep(0.005)

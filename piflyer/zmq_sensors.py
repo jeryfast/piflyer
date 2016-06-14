@@ -19,6 +19,7 @@ class sensors():
         self.ay = 0
         self.az = 0
         self.altitude = 0
+        self.send_timer=0
 
     def joinDelimiter(self, arr):
         tmp=[None]*len(arr)
@@ -80,8 +81,10 @@ class sensors():
 
             # sensors must initialize
             try:
-                #t=time.time()
-                sensors_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, self.getString()))
+                t=time.time()
+                if(time.time()-self.send_timer>delays.BROWSER):
+                    sensors_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, self.getString()))
+                    self.send_timer=t
                 #print(time.time()-t)
             except:
                 print("sensors error")
