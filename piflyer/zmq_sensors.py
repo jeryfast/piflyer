@@ -43,9 +43,9 @@ class sensors():
 
     def run(self):
         # Comment if not running on RPI
-        """self.sense = SenseHat()
+        self.sense = SenseHat()
         self.sense.clear()
-        self.sense.set_imu_config(True, True, True)"""
+        self.sense.set_imu_config(True, True, True)
 
         while True:
             self.temp = round(self.sense.get_temperature(), 1)
