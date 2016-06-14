@@ -53,7 +53,7 @@ if __name__ == '__main__':
                 break
             # process task
             msg = msg.strip(str(topic.COMMAND_TOPIC) + " ")
-            print("from browser:", msg)
+            #print("from browser:", msg)
             # Connection state
             if(msg[0]=="Q"):
                 comm_publisher.send_string("%s %s" % (topic.CONNECTION_TOPIC, msg[1]))
