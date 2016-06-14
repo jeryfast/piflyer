@@ -40,7 +40,7 @@ if __name__ == '__main__':
     ws = create_connection("ws://localhost:9000/ws/")
 
     # Open a browser
-    browser_controller.start()
+    #browser_controller.start()
     connected=False
 
     while True:
