@@ -74,18 +74,24 @@ peer.on('close', function() {
     console.log('peer closed');
 	peer.destroy();
 	$('#refresh').text('true');
+	// not really ok
+	$('#connected').text('false');
 });
 
 peer.on('disconnected', function() {
 	console.log('disconnected from the signalling server');
 	//setInterval(function(){peer.reconnect();}, 3000);
 	$('#refresh').text('true');
+	// not really ok
+    $('#connected').text('false');
 
 });
 
 peer.on('error', function(err) {
     console.log('Error: ' + err.type);
     $('#refresh').text('true');
+    // not really ok
+    $('#connected').text('false');
 });
 
 //var conn = peer.connect('qwd5lls47d620529');
@@ -198,6 +204,31 @@ function restartCall(){
 function isMediaStreamOpen(){
     return mycall.open
 }
+
+if ("WebSocket" in window) {
+    console.log("WebSocket is supported by your browser.");
+
+    var ws = new WebSocket("ws://localhost:9000/ws/");
+    ws.onopen = function() {
+        console.log("Connection is opened ...");
+        //ws.send("Hello there!");
+    };
+
+    ws.onmessage = function (evt) {
+        var msg = evt.data;
+        //console.log("Message is received: " + msg);
+        sendstr(msg)
+    };
+
+    ws.onclose = function() {
+        console.log("Connection is closed ...");
+    };
+
+} else {
+    console.log("WebSocket not supported by your browser.");
+}
+
+
 
 </script>
 </body>

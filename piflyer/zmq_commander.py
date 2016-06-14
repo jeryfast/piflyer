@@ -1,6 +1,8 @@
 import random
 import time
 import zmq
+
+import delays
 import zmq_ports as ports
 import zmq_topics as topic
 
@@ -163,8 +165,8 @@ if __name__ == '__main__':
     #print("Starting commander")
     # Publisher
     context = zmq.Context()
-    comm_publisher = context.socket(zmq.PUB)
-    comm_publisher.bind("tcp://*:%s" % ports.COMMANDER_PUB)
+    commander_publisher = context.socket(zmq.PUB)
+    commander_publisher.bind("tcp://*:%s" % ports.COMMANDER_PUB)
 
     # Subscribe to comm messages
     comm_subscriber = context.socket(zmq.SUB)
@@ -186,7 +188,6 @@ if __name__ == '__main__':
     commander=commander()
 
     while True:
-
         # Get connection info from comm
         while True:
             try:
@@ -206,7 +207,7 @@ if __name__ == '__main__':
             commander.update(data)
             #print("commander received:", msg)
 
-        # From sensors to comm, update sensors instance
+        # From sensors to comm, update sensors instanceđ
         while True:
             try:
                 sens_data = sensors_subscriber.recv_string(zmq.DONTWAIT)
@@ -214,9 +215,9 @@ if __name__ == '__main__':
                 break
             # process task
             sens_data = sens_data.strip(topic.SENSOR_TOPIC + " ")
-
             commander.sensors.setValues(sens_data)
-            comm_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
+            commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
+            time.sleep(delays.SENSORS)
 
         commander.run()
         time.sleep(0.005)
