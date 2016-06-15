@@ -5,7 +5,7 @@ import zmq
 import zmq_ports as ports
 import zmq_topics as topic
 
-#from zmq_sensors import sensors
+from zmq_sensors import sensors
 from elevons import elevons
 from motor_handler import motor_handler
 import commands as c
@@ -53,7 +53,7 @@ class commander:
         self.altittude=0.0
 
         self.elevons = elevons()
-        #self.sensors = sensors()
+        self.sensors = sensors()
         self.motor=motor_handler()
         self.camera=camera()
 
