@@ -222,6 +222,7 @@ peer.on('call', function(call) {
     });
     call.on('error', function(err){
         console.log('Error: ' + err.type);
+        location.reload();
     });
 });
 
