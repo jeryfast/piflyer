@@ -7,8 +7,8 @@ TILT_DOWN_LIMIT=-90
 
 class elevons:
     def __init__(self):
-        self.left=servo_handler()
-        self.right=servo_handler()
+        self.left=servo_handler(1)
+        self.right=servo_handler(2)
         self.multiplier=2
         #mobile devide tilt limits
         self.pitchUpLimit=45

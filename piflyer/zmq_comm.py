@@ -1,14 +1,8 @@
 import zmq
 import random
 import time
-
-import browser_controller
 import zmq_ports as ports
 import zmq_topics as topic
-from selenium import webdriver
-import os
-from pyvirtualdisplay import Display
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from websocket import create_connection
 
 RCV_DELAY=0.01

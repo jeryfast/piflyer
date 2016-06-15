@@ -4,7 +4,7 @@ import time
 MIN = 0
 MAX = 180
 class servo_handler:
-    def __init__(self):
+    def __init__(self,channel):
         # servo position variables
         self.up = MIN
         self.down = MAX
@@ -18,7 +18,8 @@ class servo_handler:
         self.upAdd = -1
         # input intensitymultiplier
         self.multiplier=1
-        self.t=0
+        self.t = 0
+        self.channel=channel
 
     def getPosition(self):
         return self.position
@@ -62,12 +63,13 @@ class servo_handler:
 
     # resolution: 180 or abs(MAX-MIN)
     def setPosition(self,position):
-        if(position>MIN and position<MAX):
+        if(position>MIN and position<MAX and position!=self.position):
             x=time.time()
             if(x-self.t>1000):
                 t=x
-                print("position: ",position)
+                #print("position: ",position)
             self.position=position
+            setServoValue(self.channel,position)
 
     # servo movement range limits - tested!
     def setUpDownLimit(self,up,down):
@@ -143,7 +145,7 @@ class servo_handler:
 #RPi code
 #!/usr/bin/python
 
-"""from Adafruit_PWM_Servo_Driver import PWM
+from Adafruit_PWM_Servo_Driver import PWM
 import time
 
 # ===========================================================================
@@ -164,12 +166,12 @@ on=0
 def setServoPulse(channel, pulse):
   pulseLength = 1000000                   # 1,000,000 us per second
   pulseLength /= 60                       # 60 Hz
-  print "%d us per period" % pulseLength
+  print ("%d us per period" % pulseLength)
   pulseLength /= 4096                     # 12 bits of resolution
-  print "%d us per bit" % pulseLength
+  print ("%d us per bit" % pulseLength)
   pulse *= 1000
   pulse /= pulseLength
-  #pwm.setPWM(channel, 0, pulse)
+  pwm.setPWM(channel, 0, pulse)
   print(pulse)
 
 def arduino_map(x, in_min, in_max, out_min, out_max):
@@ -183,7 +185,7 @@ def setServoValue(channel, value):
 pwm.setPWMFreq(60)
 
 # Change speed of continuous servo on channel O
-for i in range(181):
-  setServoValue(0,i)
-"""
+"""for i in range(181):
+  setServoValue(0,i)"""
+
 

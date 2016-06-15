@@ -5,7 +5,7 @@ import zmq
 import zmq_ports as ports
 import zmq_topics as topic
 
-from zmq_sensors import sensors
+#from zmq_sensors import sensors
 from elevons import elevons
 from motor_handler import motor_handler
 import commands as c
@@ -53,7 +53,7 @@ class commander:
         self.altittude=0.0
 
         self.elevons = elevons()
-        self.sensors = sensors()
+        #self.sensors = sensors()
         self.motor=motor_handler()
         self.camera=camera()
 
@@ -79,8 +79,11 @@ class commander:
             self.setMode(words[1])
         elif(words[0] == CONTROL):
             self.servos_init=False
-            self.pitch=float(words[1])
-            self.roll=float(words[2])
+            try:
+                self.pitch=float(words[1])
+                self.roll=float(words[2])
+            except:
+                pass
             if(len(words)>=4):
                 self.throttle=float(words[3])
                 self.throttle_updated=True
@@ -150,8 +153,9 @@ class commander:
     # not tested
     def failsafe(self):
         #print("failsafe")
+        pass
         #TODO control in reference to altitude, speed and glide slope
-        self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
+        #self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
         #self.motor.control(0)
 
     def run(self):
@@ -195,6 +199,7 @@ if __name__ == '__main__':
             except zmq.Again:
                 break
             # process task
+            print(connection[2])
             commander.is_connected=int(connection[2])
 
         # Receive data from comm
@@ -204,6 +209,7 @@ if __name__ == '__main__':
             except zmq.Again:
                 break
             # process task
+            data = data.strip(topic.COMMAND_TOPIC + " ")
             commander.update(data)
             #print("commander received:", msg)
 
