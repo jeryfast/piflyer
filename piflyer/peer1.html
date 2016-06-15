@@ -259,8 +259,8 @@ if ("WebSocket" in window) {
 function call(){
 	var p = navigator.mediaDevices.getUserMedia(
 	{
-	    width: { min: 320, ideal: 1280, max: 1920 },
-        height: { min: 240, ideal: 720, max: 1080 },
+	    width: { min: 320, ideal: 800, max: 1920 },
+        height: { min: 240, ideal: 600, max: 1080 },
         frameRate: { ideal: 30 }
 	});
     p.then(function(mediaStream) {
