@@ -51,7 +51,7 @@ else {console.log('NO, this browser does not support webrtc');}
 util.reliable=false;
 var mystream;
 var mycall;
-var rcvtimer;
+var rcvtimer=0;
 var starttimer=new Date().getTime();
 var resetTimer=0;
 var timerout;
@@ -100,8 +100,8 @@ peer.on('disconnected', function() {
 	// not really ok
     $('#connected').text('false');
     ws.send("Q0");
-    location.reload();
 });
+
 
 peer.on('error', function(err) {
     console.log('Error: ' + err.type);
