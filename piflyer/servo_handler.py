@@ -1,5 +1,6 @@
 __author__ = 'Jernej'
 import number_range as n
+import time
 MIN = 0
 MAX = 180
 class servo_handler:
@@ -17,6 +18,7 @@ class servo_handler:
         self.upAdd = -1
         # input intensitymultiplier
         self.multiplier=1
+        self.t=0
 
     def getPosition(self):
         return self.position
@@ -61,6 +63,10 @@ class servo_handler:
     # resolution: 180 or abs(MAX-MIN)
     def setPosition(self,position):
         if(position>MIN and position<MAX):
+            x=time.time
+            if(x-self.t>1000):
+                t=x
+                print("position: ",position)
             self.position=position
 
     # servo movement range limits - tested!
