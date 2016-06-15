@@ -63,7 +63,7 @@ class servo_handler:
     # resolution: 180 or abs(MAX-MIN)
     def setPosition(self,position):
         if(position>MIN and position<MAX):
-            x=time.time
+            x=time.time()
             if(x-self.t>1000):
                 t=x
                 print("position: ",position)
