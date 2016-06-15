@@ -84,8 +84,8 @@ peer.on('connection', function(conn) {
     myconn=conn;
 	conn.on('data', function(data){
 	    //console.log('received:'+data);
-		//$( "#receiver" ).text(data);
-		console.log(data)
+		$( "#receiver" ).text(data);
+		//console.log(data);
 		CSharp.Accept(data);
   	});
 	conn.on('open', function() {
