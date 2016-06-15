@@ -262,11 +262,9 @@ function call(){
 	    audio: false,
 	    video:
 	    {
-	        //width: { min: 320, ideal: 1280, max: 1920 },
+	        //width: { min: 320, ideal: 800, max: 1920 },
             //height: { min: 240, ideal: 600, max: 1080 },
-            width: {ideal:1920},
-            height: {ideal:1080},
-            frameRate: { ideal: 30 }
+            frameRate: { min:25, ideal:35, max: 50 }
         }
 	});
     p.then(function(mediaStream) {
