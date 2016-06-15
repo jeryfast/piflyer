@@ -250,7 +250,7 @@ if ("WebSocket" in window) {
 
     ws.onclose = function() {
         console.log("Connection is closed ...");
-        location.reload();
+        setTimeout(function(){location.reload();},2000)
     };
 
 } else {
