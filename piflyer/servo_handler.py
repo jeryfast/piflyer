@@ -2,6 +2,7 @@ from __future__ import division
 import number_range as n
 import time
 import Adafruit_PCA9685
+import delays
 
 MIN = 0
 MAX = 180
@@ -14,28 +15,13 @@ pwm = Adafruit_PCA9685.PCA9685(0x41)
 # Note if you'd like more debug output you can instead run:
 # pwm = PWM(0x40, debug=True)
 
+# Set frequency to 60 Hz
+pwm.set_pwm_freq(60)
+
 # default:min 150, max 600
 servoMin = 150  # Min pulse length out of 4096
 servoMax = 600  # Max pulse length out of 4096
 on = 0
-
-def setServoPulse(channel, pulse):
-    pulseLength = 1000000  # 1,000,000 us per second
-    pulseLength /= 60  # 60 Hz
-    print("%d us per period" % pulseLength)
-    pulseLength /= 4096  # 12 bits of resolution
-    print("%d us per bit" % pulseLength)
-    pulse *= 1000
-    pulse /= pulseLength
-    pwm.set_pwm(channel, 0, pulse)
-    print(pulse)
-
-def setServoValue(channel, value):
-    value = n.arduino_map(value, 0, 180, servoMin, servoMax)
-    pwm.set_pwm(channel, on, int(value))
-
-#  Set frequency to 60 Hz
-pwm.set_pwm_freq(60)
 
 class servo_handler:
     def __init__(self, channel):
@@ -54,8 +40,29 @@ class servo_handler:
         self.multiplier = 1
         self.t = 0
         self.channel = channel
-        setServoValue(self.channel, MIN+MAX/2)
+        self.timer=0
+        self.setServoValue(self.channel, MIN + MAX / 2)
 
+    #hardware
+    def setServoPulse(channel, pulse):
+        pulseLength = 1000000  # 1,000,000 us per second
+        pulseLength /= 60  # 60 Hz
+        print("%d us per period" % pulseLength)
+        pulseLength /= 4096  # 12 bits of resolution
+        print("%d us per bit" % pulseLength)
+        pulse *= 1000
+        pulse /= pulseLength
+        pwm.set_pwm(channel, 0, pulse)
+        print(pulse)
+
+    def setServoValue(self, channel, value):
+        t = time.time()
+        if (t - self.timer > delays.SENSOR_REFRESH_DELAY):
+            servo_timer = t
+            value = n.arduino_map(value, 0, 180, servoMin, servoMax)
+            pwm.set_pwm(channel, on, int(value))
+
+    #software
     def getPosition(self):
         return self.position
 
@@ -104,7 +111,7 @@ class servo_handler:
                 t = x
                 # print("position: ",position)
             self.position = position
-            setServoValue(self.channel, position)
+            self.setServoValue(self.channel, position)
 
     # servo movement range limits - tested!
     def setUpDownLimit(self, up, down):
