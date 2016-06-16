@@ -65,10 +65,10 @@ class commander:
 
     def setHold(self,words):
         if(words[1] == ALT):
-            self.alt_hold=bool(int(words[2]))
+            self.alt_hold=bool(int(float(words[2])))
             print("ALT_HOLD: %s" % (self.alt_hold))
         elif(words[1] == AUTO):
-            self.auto_hold = bool(int(words[2]))
+            self.auto_hold = bool(int(float(words[2])))
             print("AUTO_HOLD: %s" % (self.auto_hold))
 
     #process command
@@ -103,19 +103,19 @@ class commander:
                     self.pitch=words[2]
         elif (words[0] == SERVO_INIT):
             self.servos_init=True
-            self.elevons.setServosUpDirection(int(words[1]), int(words[2]))
+            self.elevons.setServosUpDirection(int(float(words[1])), int(float(words[2])))
         elif(words[0] == SERVO_LIMIT):
             self.servos_init=True
-            self.elevons.setServosUpDownLimit(int(words[1]), int(words[2]))
+            self.elevons.setServosUpDownLimit(int(float(words[1])), int(float(words[2])))
         elif (words[0] == TILT_PITCH_LIMIT):
             self.servos_init = True
-            self.elevons.setPitchTiltLimits(int(words[1]), int(words[2]))
+            self.elevons.setPitchTiltLimits(int(float(words[1])), int(float(words[2])))
         elif (words[0] == TILT_ROLL_LIMIT):
             self.servos_init = True
-            self.elevons.setRollTiltLimits(int(words[1]), int(words[2]))
+            self.elevons.setRollTiltLimits(int(float(words[1])), int(float(words[2])))
         elif (words[0] == THROTTLE_LIMIT):
             self.servos_init = True
-            self.motor.setThrottleLimits(int(words[1]), int(words[2]))
+            self.motor.setThrottleLimits(int(float(words[1])), int(float(words[2])))
         else:
             self.status=c.INVALID
             #print("status invalid")
