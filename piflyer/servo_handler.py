@@ -6,6 +6,36 @@ import Adafruit_PCA9685
 MIN = 0
 MAX = 180
 
+# RPi code
+# !/usr/bin/python
+
+# Initialise the PWM device using the default address
+pwm = Adafruit_PCA9685.PCA9685(0x41)
+# Note if you'd like more debug output you can instead run:
+# pwm = PWM(0x40, debug=True)
+
+# default:min 150, max 600
+servoMin = 150  # Min pulse length out of 4096
+servoMax = 600  # Max pulse length out of 4096
+on = 0
+
+def setServoPulse(channel, pulse):
+    pulseLength = 1000000  # 1,000,000 us per second
+    pulseLength /= 60  # 60 Hz
+    print("%d us per period" % pulseLength)
+    pulseLength /= 4096  # 12 bits of resolution
+    print("%d us per bit" % pulseLength)
+    pulse *= 1000
+    pulse /= pulseLength
+    pwm.set_pwm(channel, 0, pulse)
+    print(pulse)
+
+def setServoValue(channel, value):
+    value = n.arduino_map(value, 0, 180, servoMin, servoMax)
+    pwm.set_pwm(channel, on, int(value))
+
+#  Set frequency to 60 Hz
+pwm.set_pwm_freq(60)
 
 class servo_handler:
     def __init__(self, channel):
@@ -24,6 +54,7 @@ class servo_handler:
         self.multiplier = 1
         self.t = 0
         self.channel = channel
+        setServoValue(self.channel, MIN+MAX/2)
 
     def getPosition(self):
         return self.position
@@ -145,47 +176,3 @@ class servo_handler:
         if (not val):
             val = 1
         self.setPosition(self.position - val * self.upAdd)
-
-
-# RPi code
-# !/usr/bin/python
-
-# Initialise the PWM device using the default address
-pwm = Adafruit_PCA9685.PCA9685(0x41)
-# Note if you'd like more debug output you can instead run:
-# pwm = PWM(0x40, debug=True)
-
-# default:min 150, max 600
-servoMin = 150  # Min pulse length out of 4096
-servoMax = 600  # Max pulse length out of 4096
-# added
-on = 0
-
-
-def setServoPulse(channel, pulse):
-    pulseLength = 1000000  # 1,000,000 us per second
-    pulseLength /= 60  # 60 Hz
-    print("%d us per period" % pulseLength)
-    pulseLength /= 4096  # 12 bits of resolution
-    print("%d us per bit" % pulseLength)
-    pulse *= 1000
-    pulse /= pulseLength
-    pwm.set_pwm(channel, 0, pulse)
-    print(pulse)
-
-
-def arduino_map(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
-
-
-def setServoValue(channel, value):
-    value = arduino_map(value, 0, 180, servoMin, servoMax)
-    pwm.set_pwm(channel, on, value)
-
-
-#  Set frequency to 60 Hz
-pwm.set_pwm_freq(60)
-
-# Change speed of continuous servo on channel O
-"""for i in range(181):
-  setServoValue(0,i)"""
