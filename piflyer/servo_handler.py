@@ -58,7 +58,7 @@ class servo_handler:
     def setServoValue(self, channel, value):
         t = time.time()
         if (t - self.timer > delays.SENSOR_REFRESH_DELAY):
-            servo_timer = t
+            self.timer = t
             value = n.arduino_map(value, 0, 180, servoMin, servoMax)
             pwm.set_pwm(channel, on, int(value))
 
@@ -106,10 +106,7 @@ class servo_handler:
     # resolution: 180 or abs(MAX-MIN)
     def setPosition(self, position):
         if (position > MIN and position < MAX and position != self.position):
-            x = time.time()
-            if (x - self.t > 1000):
-                t = x
-                # print("position: ",position)
+            # print("position: ",position)
             self.position = position
             self.setServoValue(self.channel, position)
 
