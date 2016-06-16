@@ -92,7 +92,7 @@ class elevons:
         # print("servo L, R: %d %d"%(self.left.getPosition(),self.right.getPosition()))
 
     ## Stabilize and Autopilot mode methods - not tested!, just draft
-
+    """
     def turnRight(self, val=1):
         self.left.add(val)
         self.right.sub(val)
@@ -108,6 +108,7 @@ class elevons:
     def pullDown(self):
         self.left.sub()
         self.right.sub()
+    """
 
     # stabilize mode algorithm
     def control(self, target_pitch, target_roll, pitch, roll):
