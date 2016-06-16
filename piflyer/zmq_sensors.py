@@ -50,20 +50,20 @@ class sensors():
         while True:
             self.temp = round(self.sense.get_temperature(), 1)
             self.humidity = round(self.sense.get_humidity(), 1)
-            self.pressure = round(self.sense.get_pressure(), 2)
+            self.pressure = round(self.sense.get_pressure(), 1)
             self.sense.set_imu_config(True, True, True)
             pitch, yaw, roll = self.sense.get_orientation().values()
             ax, ay, az = self.sense.get_accelerometer_raw().values()
-            self.compass = round(self.sense.get_compass(), 2)
+            self.compass = round(self.sense.get_compass(), 1)
             if (pitch > 180):
                 pitch -= 360
-            self.pitch = round(pitch, 2)
-            self.roll = round(roll, 2)
-            self.yaw = round(yaw, 2)
+            self.pitch = round(pitch, 1)
+            self.roll = round(roll, 1)
+            self.yaw = round(yaw, 1)
             self.ax = round(ax, 2)
             self.ay = round(ay, 2)
             self.az = round(az, 2)
-            self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),2)
+            self.altitude = round((288.15 / -0.0065) * ((self.pressure * 100 / 101325) ** (-(8.31432 * -0.0065) / (9.80665 * 0.0289644)) - 1),1)
             """
             self.pitch = r.randint(3, 5)
             self.roll = r.randint(3, 5)
@@ -99,7 +99,7 @@ class sensors():
         self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity,\
         self.pressure, self.ax, self.ay, self.az, self.altitude = [float(x) for x in string.split(',')]
         if (self.roll > 180):
-            self.roll=round(self.roll - 360,2)
+            self.roll=round(self.roll - 360,1)
 
 if __name__ == '__main__':
     #print("Starting sensors")
