@@ -143,7 +143,7 @@ class commander:
 
             # not tested
             elif (self.mode == STABILIZED):
-                print("Stabilized %f %f" % (self.pitch, self.roll))
+                #print("Stabilized %f %f" % (self.pitch, self.roll))
                 if (self.alt_hold):
                     print("Alt hold, controlling roll")
                 else:
