@@ -29,7 +29,6 @@
     <!--<video id="video" autoplay></video>-->
     <video id="video"></video>
     <div id="receiver"></div>
-    <div id="refresh"></div>
 
 </div>
 
@@ -52,8 +51,7 @@ else {console.log('NO, this browser does not support webrtc');}
 util.reliable=false;
 var mystream;
 var mycall;
-var rcvtimer=0;
-var starttimer=new Date().getTime();
+var rcvtimer=18446744073709551616;
 var resetTimer=0;
 var timerout;
 var conn;
@@ -80,16 +78,9 @@ peer.on('open',function(id){
     timeout=setTimeout(function(){location.reload();},3000)
 });
 
-/*function checkResetTimer(){
-    if(new Date().getTime()-starttimer>3){
-            location.reload();
-        }
-}*/
-
 peer.on('close', function() {
     console.log('peer closed');
 	peer.destroy();
-	$('#refresh').text('true');
 	// not really ok
 	$('#connected').text('false');
 	ws.send("Q0");
@@ -99,7 +90,6 @@ peer.on('close', function() {
 peer.on('disconnected', function() {
 	console.log('disconnected from the signalling server');
 	//setInterval(function(){peer.reconnect();}, 3000);
-	$('#refresh').text('true');
 	// not really ok
     $('#connected').text('false');
     ws.send("Q0");
@@ -108,7 +98,6 @@ peer.on('disconnected', function() {
 
 peer.on('error', function(err) {
     console.log('Error: ' + err.type);
-    $('#refresh').text('true');
     // not really ok
     $('#connected').text('false');
     ws.send("Q0");
@@ -121,7 +110,6 @@ conn.on('open', function() {
 	console.log('connection open');
 	$('#remoteid').text(conn.peer);
 	$('#connected').text(conn.open);
-	$('#refresh').text('false');
 	ws.send("Q1");
 	call();
 });
@@ -138,14 +126,12 @@ conn.on('data', function(data) {
 conn.on('error',function(err){
     console.log('Error: ' + err.type);
     $('#connected').text(conn.open);
-    $('#refresh').text('true');
     ws.send("Q0");
     location.reload();
 });
 conn.on('close', function() {
     console.log('connection closed')
     $('#connected').text(conn.open);
-    $('#refresh').text('true');
     ws.send("Q0");
     location.reload();
 });
