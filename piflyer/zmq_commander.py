@@ -103,8 +103,10 @@ class commander:
                     self.pitch=words[2]
         elif (words[0] == SERVO_INIT):
             self.servos_init=True
-            print(words[1],words[2])
-            self.elevons.setServosUpDirection(int(float(words[1])), int(float(words[2])))
+            try:
+                self.elevons.setServosUpDirection(int(float(words[1])), int(float(words[2])))
+            except:
+                print("error")
         elif(words[0] == SERVO_LIMIT):
             self.servos_init=True
             self.elevons.setServosUpDownLimit(int(float(words[1])), int(float(words[2])))
