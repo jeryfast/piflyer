@@ -1,3 +1,4 @@
+from __future__ import division
 import number_range as n
 import time
 import Adafruit_PCA9685
