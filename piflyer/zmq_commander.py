@@ -84,8 +84,8 @@ class commander:
         elif (words[0] == CONTROL):
             if (len(words) >= 3):
                 self.servos_init = False
-                self.pitch = int(words[1])
-                self.roll = int(words[2])
+                self.pitch = int(float(words[1]))
+                self.roll = int(float(words[2]))
             if (len(words) >= 4):
                 self.throttle = int(words[3])
                 self.throttle_updated = True
