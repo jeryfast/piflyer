@@ -195,7 +195,6 @@ peer.on('call', function(call) {
   console.log('call event fired');
   call.answer();
 
-
   call.on('stream', function(stream) {
       // `stream` is the MediaStream of the remote peer.
       // Here you'd add it to an HTML video/canvas element.
@@ -238,7 +237,7 @@ if ("WebSocket" in window) {
 
     ws.onclose = function() {
         console.log("Connection is closed ...");
-        setTimeout(function(){location.reload();},2000)
+        //setTimeout(function(){location.reload();},2000)
     };
 
 } else {
