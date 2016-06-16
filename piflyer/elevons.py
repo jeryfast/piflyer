@@ -113,7 +113,7 @@ class elevons:
     def control(self, target_pitch, target_roll, pitch, roll):
         # idea: map target-sensor values difference to pitch and roll control
         self.setPitchRoll(target_pitch - pitch, target_roll - roll)
-        print("control pitch/roll", pitch, "/", roll)
+        print("control pitch/roll", target_pitch - pitch, "/", target_roll - roll)
 
         """
         if(target_pitch<pitch):
