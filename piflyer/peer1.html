@@ -74,7 +74,7 @@ var peer = new Peer(
 peer.on('open',function(id){
 	console.log('My peer ID is: ' + id);
 	$('#peerid').text(id);
-    conn = peer.connect('qwd5lls47d620529');
+    //conn = peer.connect('qwd5lls47d620529');
     timeout=setTimeout(function(){location.reload();},3000)
 });
 
@@ -104,7 +104,7 @@ peer.on('error', function(err) {
     location.reload();
 });
 
-//conn= = peer.connect('qwd5lls47d620529');
+conn= peer.connect('qwd5lls47d620529');
 conn.on('open', function() {
     clearTimeout(timeout);
 	console.log('connection open');
