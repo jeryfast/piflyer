@@ -46,6 +46,7 @@
     }
 })();
 
+
 if (util.supports.data && util.supports.binary) {console.log('OK, this browser supports webrtc'); }
 else {console.log('NO, this browser does not support webrtc');}
 util.reliable=false;
@@ -55,7 +56,10 @@ var rcvtimer=0;
 var starttimer=new Date().getTime();
 var resetTimer=0;
 var timerout;
+var wsOpen=false;
+var conn;
 
+//peerjs
 var peer = new Peer(
 	{host:'peerserver.cloudapp.net', port:80},
 	{key: 'gsixocef254gqfr',
@@ -73,8 +77,10 @@ var peer = new Peer(
 peer.on('open',function(id){
 	console.log('My peer ID is: ' + id);
 	$('#peerid').text(id);
-	conn = peer.connect('qwd5lls47d620529');
-	timeout=setTimeout(function(){location.reload();},3000)
+	if(wsOpen){
+	    conn = peer.connect('qwd5lls47d620529');
+	}
+	//timeout=setTimeout(function(){location.reload();},3000)
 });
 
 /*function checkResetTimer(){
@@ -112,10 +118,9 @@ peer.on('error', function(err) {
     location.reload();
 });
 
-//var conn = peer.connect('qwd5lls47d620529');
-var conn = peer.connect('qwd5lls47d620529');
+//conn= = peer.connect('qwd5lls47d620529');
 conn.on('open', function() {
-    clearTimeout(timeout);
+    //clearTimeout(timeout);
 	console.log('connection open');
 	$('#remoteid').text(conn.peer);
 	$('#connected').text(conn.open);
@@ -231,12 +236,15 @@ function isMediaStreamOpen(){
     return mycall.open
 }
 
+//websockets
 if ("WebSocket" in window) {
     console.log("WebSocket is supported by your browser.");
 
     var ws = new WebSocket("ws://localhost:9000/ws/");
     ws.onopen = function() {
         console.log("Connection is opened ...");
+        wsOpen=true;
+
     };
 
     ws.onmessage = function (evt) {
@@ -248,12 +256,14 @@ if ("WebSocket" in window) {
 
     ws.onclose = function() {
         console.log("Connection is closed ...");
+        wsOpen=false;
         setTimeout(function(){location.reload();},2000)
     };
 
 } else {
     console.log("WebSocket not supported by your browser.");
 }
+
 
 function call(){
 	var p = navigator.mediaDevices.getUserMedia(
