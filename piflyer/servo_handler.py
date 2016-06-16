@@ -105,7 +105,11 @@ class servo_handler:
 
     # resolution: 180 or abs(MAX-MIN)
     def setPosition(self, position):
-        if (position > MIN and position < MAX and position != self.position):
+        if (position != self.position):
+            if(position<MIN):
+                position=MIN
+            elif(position>MAX):
+                position=MAX
             # print("position: ",position)
             self.position = position
             self.setServoValue(self.channel, position)

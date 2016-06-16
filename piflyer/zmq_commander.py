@@ -168,9 +168,9 @@ class commander:
     # not tested
     def failsafe(self):
         #print("failsafe")
-        pass
+
         #TODO control in reference to altitude, speed and glide slope
-        #self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
+        self.elevons.control(0,0,self.sensors.pitch,self.sensors.roll)
         #self.motor.control(0)
 
     def run(self):
