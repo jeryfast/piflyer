@@ -77,7 +77,7 @@ peer.on('open',function(id){
 	console.log('My peer ID is: ' + id);
 	$('#peerid').text(id);
     conn = peer.connect('qwd5lls47d620529');
-	//timeout=setTimeout(function(){location.reload();},3000)
+    timeout=setTimeout(function(){location.reload();},3000)
 });
 
 /*function checkResetTimer(){
@@ -117,7 +117,7 @@ peer.on('error', function(err) {
 
 //conn= = peer.connect('qwd5lls47d620529');
 conn.on('open', function() {
-    //clearTimeout(timeout);
+    clearTimeout(timeout);
 	console.log('connection open');
 	$('#remoteid').text(conn.peer);
 	$('#connected').text(conn.open);
