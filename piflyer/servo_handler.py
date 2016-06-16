@@ -170,7 +170,7 @@ def setServoPulse(channel, pulse):
     print("%d us per bit" % pulseLength)
     pulse *= 1000
     pulse /= pulseLength
-    pwm.setPWM(channel, 0, pulse)
+    pwm.set_pwm(channel, 0, pulse)
     print(pulse)
 
 
@@ -180,11 +180,11 @@ def arduino_map(x, in_min, in_max, out_min, out_max):
 
 def setServoValue(channel, value):
     value = arduino_map(value, 0, 180, servoMin, servoMax)
-    pwm.setPWM(channel, on, value)
+    pwm.set_pwm(channel, on, value)
 
 
 #  Set frequency to 60 Hz
-pwm.setPWMFreq(60)
+pwm.set_pwm_freq(60)
 
 # Change speed of continuous servo on channel O
 """for i in range(181):
