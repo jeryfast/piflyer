@@ -98,6 +98,8 @@ class sensors():
     def setValues(self,string):
         self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity,\
         self.pressure, self.ax, self.ay, self.az, self.altitude = [float(x) for x in string.split(',')]
+        if (self.roll > 180):
+            self.roll -= 360
 
 if __name__ == '__main__':
     #print("Starting sensors")
