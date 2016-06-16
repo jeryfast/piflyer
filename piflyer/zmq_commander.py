@@ -63,6 +63,7 @@ class commander:
 
     def setMode(self, mode):
         self.mode = mode
+        print("mode: ",mode)
 
     def setHold(self, words):
         if (words[1] == ALT):
