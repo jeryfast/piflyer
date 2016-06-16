@@ -1,6 +1,6 @@
 import number_range as n
 import time
-from Adafruit_PCA9685 import PCA9685
+import Adafruit_PCA9685
 
 MIN = 0
 MAX = 180
@@ -150,7 +150,7 @@ class servo_handler:
 # !/usr/bin/python
 
 # Initialise the PWM device using the default address
-pwm = PCA9685(0x41)
+pwm = Adafruit_PCA9685.PCA9685(0x41)
 # Note if you'd like more debug output you can instead run:
 # pwm = PWM(0x40, debug=True)
 
