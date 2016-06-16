@@ -80,12 +80,12 @@ class commander:
         elif(words[0] == CONTROL):
             self.servos_init=False
             try:
-                self.pitch=float(words[1])
-                self.roll=float(words[2])
+                self.pitch=int(words[1])
+                self.roll=int(words[2])
             except:
                 pass
             if(len(words)>=4):
-                self.throttle=float(words[3])
+                self.throttle=int(words[3])
                 self.throttle_updated=True
         elif(words[0] == CAMERA):
             self.camera.takeShot()
