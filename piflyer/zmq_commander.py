@@ -64,6 +64,7 @@ class commander:
         self.mode=mode
 
     def setHold(self,words):
+        if (len(words) == 3):
         if(words[1] == ALT):
             self.alt_hold=bool(int(float(words[2])))
             print("ALT_HOLD: %s" % (self.alt_hold))
@@ -71,66 +72,62 @@ class commander:
             self.auto_hold = bool(int(float(words[2])))
             print("AUTO_HOLD: %s" % (self.auto_hold))
 
+
     #process command
     def update(self,arg=""):
         self.status=c.OK
         words=arg.split(',')
         if (words[0] == MODE):
-            self.setMode(words[1])
+            if (len(words) == 2):
+                self.setMode(words[1])
+
         elif(words[0] == CONTROL):
-            self.servos_init=False
-            try:
+            if (len(words) >= 3):
+                self.servos_init=False
                 self.pitch=int(words[1])
                 self.roll=int(words[2])
-            except:
-                pass
             if(len(words)>=4):
                 self.throttle=int(words[3])
                 self.throttle_updated=True
+
         elif(words[0] == CAMERA):
             self.camera.takeShot()
+
         elif(words[0] == RECORD):
-            self.camera.recording(words[1])
+            if (len(words) == 2):
+                self.camera.recording(words[1])
+
         #hold functions
         elif (words[0] == HOLD):
             self.setHold(words)
+
         elif (words[0] == AUTO):
-            if(self.auto_hold):
+            if(len(words)==3 and self.auto_hold):
                 self.compass=float(words[1])
                 if (self.alt_hold):
                     self.altittude=float(words[2])
                 else:
                     self.pitch=words[2]
         elif (words[0] == SERVO_INIT):
-            try:
+            if (len(words) == 3):
                 self.servos_init=True
                 self.elevons.setServosUpDirection(int(float(words[1])), int(float(words[2])))
-            except:
-                pass
         elif(words[0] == SERVO_LIMIT):
-            try:
+            if (len(words) == 3):
                 self.servos_init=True
                 self.elevons.setServosUpDownLimit(int(float(words[1])), int(float(words[2])))
-            except:
-                pass
         elif (words[0] == TILT_PITCH_LIMIT):
-            try:
+            if (len(words) == 3):
                 self.servos_init = True
                 self.elevons.setPitchTiltLimits(int(float(words[1])), int(float(words[2])))
-            except:
-                pass
         elif (words[0] == TILT_ROLL_LIMIT):
-            try:
+            if (len(words) == 3):
                 self.servos_init = True
                 self.elevons.setRollTiltLimits(int(float(words[1])), int(float(words[2])))
-            except:
-                pass
         elif (words[0] == THROTTLE_LIMIT):
-            try:
+            if (len(words) == 3):
                 self.servos_init = True
                 self.motor.setThrottleLimits(int(float(words[1])), int(float(words[2])))
-            except:
-                pass
         else:
             self.status=c.INVALID
             #print("status invalid")
