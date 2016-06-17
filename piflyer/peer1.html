@@ -26,8 +26,6 @@
         <input placeholder="Message:" id="msg" type="text"/>
         <input  id="sender" type="submit" value="Send"/>
     </form>
-    <!--<video id="video" autoplay></video>-->
-    <video id="video"></video>
     <div id="receiver"></div>
 
 </div>
@@ -53,7 +51,8 @@ var mystream;
 var mycall;
 var rcvtimer=18446744073709551616;
 var resetTimer=0;
-var timerout;
+var connTimer=0
+var timeout;
 var conn;
 
 //peerjs
@@ -62,19 +61,18 @@ var peer = new Peer(
 	{key: 'gsixocef254gqfr',
 	debug:3,
 	config: {'iceServers': [
-
 	{url:'stun:piflyerproxy.cloudapp.net'},
     {url:'turn:piflyerproxy.cloudapp.net:443',
      credential:'youhavetoberealistic',
-     username:'ninefingers'
-     }
-	  ]}
+     username:'ninefingers'}
+	]}
 });
+
+conn = peer.connect('qwd5lls47d620529');
 
 peer.on('open',function(id){
 	console.log('My peer ID is: ' + id);
 	$('#peerid').text(id);
-    conn= peer.connect('qwd5lls47d620529');
     timeout=setTimeout(function(){location.reload();},3000)
 });
 
@@ -161,33 +159,7 @@ $( "#sender" ).click(function(){
 });
 
 $( "#videoswitch" ).click(function() {
-	$('#receiver').empty();
-	console.log('dela');
-	if (util.supports.audioVideo) { console.log("I support media"); }
-	else {console.log("No media support");}
-
-	var p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
-
-    p.then(function(mediaStream) {
-    mystream=mediaStream;
-    /*var video = document.querySelector('#video');
-    video.src = window.URL.createObjectURL(mediaStream);
-        video.onloadedmetadata = function(e) {
-        // Do something with the video here.
-        // Call a peer, providing our mediaStream
-        var remid=$('#remoteid').text();
-        mycall = peer.call(remid,mediaStream);
-        console.log(mycall.peer);
-        };*/
-    var remid=$('#remoteid').text();
-    mycall = peer.call(remid,mediaStream);
-    console.log(mycall.peer);
-    });
-
-    p.catch(function(err) {
-     console.log(err.name);
-    }); // always check for errors at the end.
-
+	call();
 });
 
 peer.on('call', function(call) {
@@ -195,12 +167,6 @@ peer.on('call', function(call) {
   console.log('call event fired');
   call.answer();
 
-  call.on('stream', function(stream) {
-      // `stream` is the MediaStream of the remote peer.
-      // Here you'd add it to an HTML video/canvas element.
-      var video = document.querySelector('#video');
-      video.srcObject = stream;
-    });
     call.on('close',function(){
         console.log('stream closed');
     });
@@ -237,13 +203,12 @@ if ("WebSocket" in window) {
 
     ws.onclose = function() {
         console.log("Connection is closed ...");
-        //setTimeout(function(){location.reload();},2000)
+        setTimeout(function(){location.reload();},2000)
     };
 
 } else {
     console.log("WebSocket not supported by your browser.");
 }
-
 
 function call(){
 	var p = navigator.mediaDevices.getUserMedia(
@@ -254,7 +219,6 @@ function call(){
 	        width: { min: 256, ideal: 320, max: 800 },
             height: { min: 192, ideal: 240, max: 600 },
             frameRate: { min:25, ideal:35, max: 50 }
-
         }
 	});
     p.then(function(mediaStream) {
@@ -273,11 +237,11 @@ function stopStream(){
 }
 
 // Make sure things clean up properly.
-/*window.onunload = window.onbeforeunload = function(e) {
+window.onunload = window.onbeforeunload = function(e) {
   if (!!peer && !peer.destroyed) {
     peer.destroy();
   }
-};*/
+};
 
 
 

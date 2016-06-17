@@ -33,7 +33,6 @@
     <div id="remoteid"></div>
     <div id="receiver"></div>
     <form action="javascript:void(0);">
-        <input id="rcvclear" type="button" value="Clear received"/>
         <input placeholder="Message:" id="msg" type="text" />
         <input  id="sender" type="submit" value="Send"/>
     </form>
@@ -65,13 +64,11 @@ var peer = new Peer(pid,
 	{key: 'gsixocef254gqfr',
 	debug:3,
 	config: {'iceServers': [
-
 	{url:'stun:piflyerproxy.cloudapp.net'},
     {url:'turn:piflyerproxy.cloudapp.net:443',
      credential:'youhavetoberealistic',
-     username:'ninefingers'
-     }
-	  ]}
+     username:'ninefingers'}
+	]}
 });
 
 peer.on('open', function(id) {
@@ -83,9 +80,7 @@ peer.on('open', function(id) {
 peer.on('connection', function(conn) {
     myconn=conn;
 	conn.on('data', function(data){
-	    //console.log('received:'+data);
 		$( "#receiver" ).text(data);
-		//console.log(data);
 		CSharp.Accept(data);
   	});
 	conn.on('open', function() {
@@ -111,21 +106,15 @@ peer.on('connection', function(conn) {
 	conn.on('close', function() {
 		console.log('connection closed');
 		$('#connected').text(conn.open);
-	    //location.reload();
 	    CSharp.HideVideo();
 	    CSharp.Reconnect();
 	});
-
 });
 
 peer.on('close', function() {
-	//console.log('peer closed');
-	//peer.disconnect();
 	peer.destroy();
-	//location.reload();
 	CSharp.HideVideo();
 	CSharp.Reconnect();
-
 });
 
 peer.on('disconnected', function() {
@@ -144,81 +133,37 @@ peer.on('error', function(err) {
 
 });
 
-
-$( "#rcvclear" ).click(function() {
-	$('#receiver').empty();
-	console.log('dela');
-	if (util.supports.audioVideo) { console.log("I support media"); }
-	else {console.log("No media support");}
-
-	/*var p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
-
-    p.then(function(mediaStream) {
-    var video = document.querySelector('#video');
-    video.src = window.URL.createObjectURL(mediaStream);
-        video.onloadedmetadata = function(e) {
-        // Do something with the video here.
-        // Call a peer, providing our mediaStream
-        var remid=$('#peerid').text();
-        call = peer.call(remid,mediaStream);
-        console.log(call.peer);
-        console.log("media connection active?:"+call.open);
-        };
-    });
-    p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
-    */
-    var remid=$('#peerid').text();
-    call = peer.call(remid,window.localStream);
-    console.log(call.peer);
-    console.log("media connection active?:"+call.open);
-});
-
-/*peer.on('call', onReceiveCall);
-
-function onReceiveCall(call){
-    console.log('peer is calling...');
-    console.log(call);
-    call.answer();
-    console.log('answering call started...');
-    call.on('stream', onReceiveStream);
-    call.on('close',function(){
-    console.log('stream closed');
-    });
-    call.on('error', function(err){
-        console.log('Error: ' + err.type);
-    });
-}*/
-
 peer.on('call', function(call) {
     // Answer the call, providing our mediaStream
     mycall=call
-    console.log('peer is calling...');
     console.log('answering call started...');
     call.answer();
 
     call.on('stream', function(stream) {
-      // `stream` is the MediaStream of the remote peer.
-      // Here you'd add it to an HTML video/canvas element.
       var video = document.querySelector('#video');
       video.src = window.URL.createObjectURL(stream);
-      //video.load();
       $("#video").attr('class', 'fullscreen');
       video.play();
       $("#text").attr('class', 'hide');
-
       CSharp.ShowVideo();
     });
+
     call.on('close',function(){
         console.log('stream closed');
         $("#text").attr('class', 'show');
         $("#video").attr('class', 'hide');
+        mycall.close();
         CSharp.HideVideo();
+
     });
+
     call.on('error', function(err){
-        console.log('Error: ' + err.type);
+        console.log('call error: ' + err.type);
         $("#text").attr('class', 'show');
         $("#video").attr('class', 'hide');
+        mycall.close();
         CSharp.HideVideo();
+
     });
 });
 
@@ -237,6 +182,7 @@ function sendstr(str)
 	}
   else{
     $('#connected').text(myconn.open);
+    console.log('datachannel error');
   }
 }
 
