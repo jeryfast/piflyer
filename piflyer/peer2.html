@@ -98,9 +98,9 @@ peer.on('connection', function(conn) {
 	conn.on('error',function(err){
 		console.log(err.type);
 		$('#connected').text(conn.open);
-		//location.reload();
 		CSharp.HideVideo();
-		CSharp.Reconnect();
+		//CSharp.Reconnect();
+		location.reload();
 	});
 
 	conn.on('close', function() {
@@ -108,6 +108,7 @@ peer.on('connection', function(conn) {
 		$('#connected').text(conn.open);
 	    CSharp.HideVideo();
 	    CSharp.Reconnect();
+	    //location.reload();
 	});
 });
 
@@ -115,21 +116,22 @@ peer.on('close', function() {
 	peer.destroy();
 	CSharp.HideVideo();
 	CSharp.Reconnect();
+	//location.reload();
 });
 
 peer.on('disconnected', function() {
 	console.log('disconnected from the signalling server');
 	//setInterval(function(){peer.reconnect();}, 3000);
-	//location.reload();
 	CSharp.HideVideo();
 	CSharp.Reconnect();
+	//location.reload();
 });
 
 peer.on('error', function(err) {
 	console.log('Error: ' + err.type);
-	//location.reload();
 	CSharp.HideVideo();
 	CSharp.Reconnect();
+	//location.reload();
 
 });
 
