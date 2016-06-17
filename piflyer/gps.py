@@ -2,7 +2,6 @@
 # Written by Dan Mandle http://dan.mandle.me September 2012
 # License: GPL 2.0
 
-"""
 
 import os
 from gps import *
@@ -62,4 +61,4 @@ if __name__ == '__main__':
         gpsp.running = False
         gpsp.join()  # wait for the thread to finish what it's doing
     print("Done.\nExiting.")
-    """
+

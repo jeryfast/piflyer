@@ -74,7 +74,7 @@ var peer = new Peer(
 peer.on('open',function(id){
 	console.log('My peer ID is: ' + id);
 	$('#peerid').text(id);
-    //conn = peer.connect('qwd5lls47d620529');
+    conn= peer.connect('qwd5lls47d620529');
     timeout=setTimeout(function(){location.reload();},3000)
 });
 
@@ -89,7 +89,7 @@ peer.on('close', function() {
 
 peer.on('disconnected', function() {
 	console.log('disconnected from the signalling server');
-	//setInterval(function(){peer.reconnect();}, 3000);
+	setInterval(function(){peer.reconnect();}, 3000);
 	// not really ok
     $('#connected').text('false');
     ws.send("Q0");
@@ -104,7 +104,7 @@ peer.on('error', function(err) {
     location.reload();
 });
 
-conn= peer.connect('qwd5lls47d620529');
+
 conn.on('open', function() {
     clearTimeout(timeout);
 	console.log('connection open');
@@ -273,11 +273,11 @@ function stopStream(){
 }
 
 // Make sure things clean up properly.
-window.onunload = window.onbeforeunload = function(e) {
+/*window.onunload = window.onbeforeunload = function(e) {
   if (!!peer && !peer.destroyed) {
     peer.destroy();
   }
-};
+};*/
 
 
 
