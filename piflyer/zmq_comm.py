@@ -30,6 +30,11 @@ if __name__ == '__main__':
     browser_subscriber.connect("tcp://localhost:%s" % ports.TORNADO_PUB)
     browser_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.COMMAND_TOPIC)
 
+    # Subscribe to gps
+    gps_subscriber = context.socket(zmq.SUB)
+    gps_subscriber.connect("tcp://localhost:%s" % ports.GPS_PUB)
+    gps_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.GPS_TOPIC)
+
     # Web scoket for sending data to the browser
     ws = create_connection("ws://localhost:9000/ws/")
 
@@ -55,7 +60,7 @@ if __name__ == '__main__':
             else:
                 comm_publisher.send_string("%s %s" % (topic.COMMAND_TOPIC, msg))
 
-        # from commander to browser
+        # from commander to browser - sensor data
         while True:
             try:
                 msg = commander_subscriber.recv_string(zmq.DONTWAIT)
@@ -68,6 +73,18 @@ if __name__ == '__main__':
             if(connected):
                 ws.send("_" + msg)
             #print("comm received:", msg)
+
+        # from commander to browser - gps data
+        while True:
+            try:
+                gps_data = gps_subscriber.recv_string(zmq.DONTWAIT)
+            except zmq.Again:
+                break
+            # process task
+            gps_data = gps_data.strip(topic.GPS_TOPIC + " ")
+            if(connected):
+                ws.send("_g" + msg)
+
         time.sleep(0.005)
 
     ws.close()

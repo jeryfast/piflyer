@@ -237,7 +237,7 @@ if __name__ == '__main__':
             commander.sensors.setValues(sens_data)
             commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
 
-        # From gps to comm, update gps instance
+        # From gps to me - update gps data
         while True:
             try:
                 gps_data = gps_subscriber.recv_string(zmq.DONTWAIT)
@@ -246,9 +246,6 @@ if __name__ == '__main__':
             # process task
             gps_data = gps_data.strip(topic.GPS_TOPIC + " ")
             commander.gps.setValues(gps_data)
-            commander_publisher.send_string("%s %s" % (topic.GPS_TOPIC, gps_data))
-            print(gps_data)
-            time.sleep(1)
 
         commander.run()
         time.sleep(0.005)
