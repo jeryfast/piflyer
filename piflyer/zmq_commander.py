@@ -10,7 +10,7 @@ from elevons import elevons
 from motor_handler import motor_handler
 import commands as c
 from camera import camera
-from zmq_gps import gps
+from zmq_gps import gpsdata
 
 MODE = "M"
 CONTROL = "C"
@@ -55,7 +55,7 @@ class commander:
 
         self.elevons = elevons()
         self.sensors = sensors()
-        self.gps = gps()
+        self.gps = gpsdata()
         self.motor = motor_handler()
         self.camera = camera()
 
