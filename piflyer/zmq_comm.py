@@ -84,6 +84,9 @@ if __name__ == '__main__':
             # process task
             if(connected):
                 ws.send("_g" + msg)
+                print("comm received:", msg)
+            else:
+                print("not connected")
 
         time.sleep(0.005)
 
