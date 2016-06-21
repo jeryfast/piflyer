@@ -85,6 +85,8 @@ if __name__ == '__main__':
             if(connected):
                 ws.send("_g" + msg)
                 print(msg)
+            else:
+                print("not connected")
 
         time.sleep(0.005)
 
