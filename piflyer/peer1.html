@@ -199,9 +199,9 @@ if ("WebSocket" in window) {
 
     ws.onmessage = function (evt) {
         var msg = evt.data;
-        console.log("Message is received: " + msg);
+        //console.log("Message is received: " + msg);
         if(conn.open){
-            sendstr(msg)}
+            sendstr(msg);}
     };
 
     ws.onclose = function() {
