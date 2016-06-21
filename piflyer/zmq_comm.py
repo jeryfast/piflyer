@@ -77,16 +77,13 @@ if __name__ == '__main__':
         # from commander to browser - gps data
         while True:
             try:
-                gps_data = gps_subscriber.recv_string(zmq.DONTWAIT)
+                msg = gps_subscriber.recv_string(zmq.DONTWAIT)
+                msg = msg.strip(topic.GPS_TOPIC + " ")
             except zmq.Again:
                 break
             # process task
-            gps_data = gps_data.strip(topic.GPS_TOPIC + " ")
             if(connected):
                 ws.send("_g" + msg)
-                print(msg)
-            else:
-                print("not connected")
 
         time.sleep(0.005)
 
