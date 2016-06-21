@@ -84,6 +84,7 @@ if __name__ == '__main__':
             gps_data = gps_data.strip(topic.GPS_TOPIC + " ")
             if(connected):
                 ws.send("_g" + msg)
+                print(msg)
 
         time.sleep(0.005)
 
