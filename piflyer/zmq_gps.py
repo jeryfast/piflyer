@@ -89,7 +89,7 @@ if __name__ == '__main__':
     context = zmq.Context()
     gps_publisher = context.socket(zmq.PUB)
     gps_publisher.bind("tcp://*:%s" % ports.GPS_PUB)
-    gps=gps()
+    gps=gpsdata()
     gps.run()
 
 
