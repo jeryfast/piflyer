@@ -85,6 +85,7 @@ class servo_handler:
         return n.arduino_map(position, self.down, self.up, self.downTilt, self.upTilt)
 
     """
+    # Should not be used
     # reference limits of tilt controls
     def setTiltLimits(self, up, down):
         self.upTilt = up

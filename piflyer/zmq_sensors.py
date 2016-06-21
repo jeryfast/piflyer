@@ -11,7 +11,7 @@ class sensors():
         self.pitch = 0
         self.roll = 0
         self.yaw = 0
-        self.compass = 10
+        self.heading = 10
         self.temp = 0
         self.humidity = 0
         self.pressure = 0
@@ -54,7 +54,7 @@ class sensors():
             self.sense.set_imu_config(True, True, True)
             pitch, yaw, roll = self.sense.get_orientation().values()
             ax, ay, az = self.sense.get_accelerometer_raw().values()
-            self.compass = round(self.sense.get_compass(), 1)
+            self.heading = round(self.sense.get_compass(), 1)
             if (pitch > 180):
                 pitch -= 360
             self.pitch = round(pitch, 1)
@@ -91,12 +91,12 @@ class sensors():
             time.sleep(delays.SENSOR_REFRESH_DELAY)
 
     def getString(self):
-        return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity, self.pressure, self.ax, self.ay,
+        return self.joinDelimiter([self.pitch, self.roll, self.yaw, self.heading, self.temp, self.humidity, self.pressure, self.ax, self.ay,
                                    self.az, self.altitude])
 
     # Update values if instance not doint reading with run()
     def setValues(self,string):
-        self.pitch, self.roll, self.yaw, self.compass, self.temp, self.humidity,\
+        self.pitch, self.roll, self.yaw, self.heading, self.temp, self.humidity, \
         self.pressure, self.ax, self.ay, self.az, self.altitude = [float(x) for x in string.split(',')]
         if (self.roll > 180):
             self.roll=round(self.roll - 360,1)

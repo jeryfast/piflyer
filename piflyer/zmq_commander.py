@@ -10,6 +10,7 @@ from elevons import elevons
 from motor_handler import motor_handler
 import commands as c
 from camera import camera
+from zmq_gps import gps
 
 MODE = "M"
 CONTROL = "C"
@@ -54,6 +55,7 @@ class commander:
 
         self.elevons = elevons()
         self.sensors = sensors()
+        self.gps = gps()
         self.motor = motor_handler()
         self.camera = camera()
 
@@ -194,6 +196,11 @@ if __name__ == '__main__':
     sensors_subscriber.connect("tcp://localhost:%s" % ports.SENSORS_PUB)
     sensors_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.SENSOR_TOPIC)
 
+    # Subscribe to gps
+    gps_subscriber = context.socket(zmq.SUB)
+    gps_subscriber.connect("tcp://localhost:%s" % ports.GPS_PUB)
+    gps_subscriber.setsockopt_string(zmq.SUBSCRIBE, topic.GPS_TOPIC)
+
     # Initiate commander
     commander = commander()
 
@@ -219,7 +226,7 @@ if __name__ == '__main__':
             commander.update(data)
             # print("commander received:", msg)
 
-        # From sensors to comm, update sensors instanceđ
+        # From sensors to comm, update sensors instance
         while True:
             try:
                 sens_data = sensors_subscriber.recv_string(zmq.DONTWAIT)
@@ -229,6 +236,19 @@ if __name__ == '__main__':
             sens_data = sens_data.strip(topic.SENSOR_TOPIC + " ")
             commander.sensors.setValues(sens_data)
             commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
+
+        # From gps to comm, update gps instance
+        while True:
+            try:
+                gps_data = gps_subscriber.recv_string(zmq.DONTWAIT)
+            except zmq.Again:
+                break
+            # process task
+            gps_data = gps_data.strip(topic.GPS_TOPIC + " ")
+            commander.gps.setValues(gps_data)
+            commander_publisher.send_string("%s %s" % (topic.GPS_TOPIC, gps_data))
+            print(gps_data)
+            time.sleep(1)
 
         commander.run()
         time.sleep(0.005)

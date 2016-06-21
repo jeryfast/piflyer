@@ -35,10 +35,12 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             client=clients.pop()
             count-=1
             if client!=self:
+                #message for browser
                 if message[0]=='_':
                     #print("sending message to browser")
                     message = message.strip('_')
                     client.write_message(message)
+                #message for communicator
                 else:
                     browser_publisher.send_string("%s %s" % (topic.COMMAND_TOPIC, message))
 

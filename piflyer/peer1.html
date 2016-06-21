@@ -116,9 +116,13 @@ conn.on('data', function(data) {
 	//console.log('Received: '+data);
 	if(data=="restartCall")
 	    restartCall();
-	ws.send(data);
-	rcvTimer=new Date().getTime();
-  	$( "#receiver" ).text(data);
+	else if(data=="Q0")
+	    conn.close();
+	else{
+        ws.send(data);
+        rcvTimer=new Date().getTime();
+        $('#receiver').text(data);
+    }
 });
 
 conn.on('error',function(err){
@@ -172,7 +176,6 @@ peer.on('call', function(call) {
     });
     call.on('error', function(err){
         console.log('Error: ' + err.type);
-        location.reload();
     });
 });
 
@@ -236,13 +239,13 @@ function stopStream(){
     mystream.getVideoTracks().stop();
 }
 
-// Make sure things clean up properly.
-window.onunload = window.onbeforeunload = function(e) {
+
+$(window).on('beforeunload', function() {
   if (!!peer && !peer.destroyed) {
     peer.destroy();
-  }
-};
-
+    ws.send("Q0");
+    }
+});
 
 
 </script>
