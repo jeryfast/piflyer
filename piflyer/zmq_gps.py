@@ -46,9 +46,7 @@ class gpsdata():
         pass
 
     def run(self):
-        gpsp = GpsPoller()  # create the thread
         try:
-            gpsp.start()  # start it up
             while True:
                 self.latitude = gpsd.fix.latitude
                 self.longitude = gpsd.fix.longitude
@@ -89,8 +87,12 @@ if __name__ == '__main__':
     context = zmq.Context()
     gps_publisher = context.socket(zmq.PUB)
     gps_publisher.bind("tcp://*:%s" % ports.GPS_PUB)
-    gps=gpsdata()
-    gps.run()
+    # create, start thread
+    gpsp = GpsPoller()
+    gpsp.start()
+    #
+    mygps = gpsdata()
+    mygps.run()
 
 
 
