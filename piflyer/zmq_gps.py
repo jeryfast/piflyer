@@ -72,12 +72,12 @@ class gpsdata():
     def getString(self):
         return self.joinDelimiter(
             [self.latitude, self.longitude, self.altitude, self.speed, self.climb, self.track, self.epx, self.epv,
-             self.time, self.mode, self.nsatellites])
+             self.mode, self.nsatellites])
 
     # Update values if instance not doint reading with run()
     def setValues(self,string):
         self.latitude, self.longitude, self.altitude, self.speed, self.climb, self.track, self.epx, self.epv, \
-        self.time, self.mode, self.nsatellites = [float(x) for x in string.split(',')]
+        self.mode, self.nsatellites = [float(x) for x in string.split(',')]
         self.mode = int(self.mode)
         self.nsatellites = int(self.nsatellites)
 
