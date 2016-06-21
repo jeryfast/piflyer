@@ -84,6 +84,8 @@ if __name__ == '__main__':
             # process task
             if(connected):
                 ws.send("_g," + msg)
+                print("_g," + msg)
+                time.sleep(1)
 
         time.sleep(0.005)
 

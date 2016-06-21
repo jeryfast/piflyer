@@ -54,8 +54,8 @@ class gpsdata():
                 self.speed = gpsd.fix.speed
                 self.climb = gpsd.fix.climb
                 self.track = gpsd.fix.track
-                self.epx = gpsd.fix.epx
-                self.epv = gpsd.fix.epv
+                self.epx = round(gpsd.fix.epx,1)
+                self.epv = round(gpsd.fix.epv,1)
                 self.utc = gpsd.utc
                 self.time = gpsd.fix.time
                 self.mode = gpsd.fix.mode
