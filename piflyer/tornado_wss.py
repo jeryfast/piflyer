@@ -39,6 +39,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 if message[0]=='_':
                     #print("sending message to browser")
                     message = message.strip('_')
+                    print("after " + message)
                     client.write_message(message)
                 #message for communicator
                 else:
