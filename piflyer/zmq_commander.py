@@ -10,7 +10,7 @@ from elevons import elevons
 from motor_handler import motor_handler
 import commands as c
 from camera import camera
-from zmq_gps import gpsdata
+from gpsstorage import gpsdata
 
 MODE = "M"
 CONTROL = "C"
