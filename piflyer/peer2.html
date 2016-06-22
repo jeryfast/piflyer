@@ -75,7 +75,7 @@ var peer = new Peer(pid,
 peer.on('open', function(id) {
     console.log('My peer ID is: ' + id);
     $('#peerid').text(id);
-    timeout=setTimeout(function(){location.reload();},20000)
+    //timeout=setTimeout(function(){location.reload();},20000)
 });
 
 //receive
