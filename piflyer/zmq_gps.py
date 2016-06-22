@@ -61,12 +61,13 @@ class gpsdata():
                 self.mode = gpsd.fix.mode
                 self.nsatellites = len(gpsd.satellites)
                 gps_publisher.send_string("%s %s" % (topic.GPS_TOPIC, self.getString()))
-                time.sleep(delays.GPS_REFRESH_DELAY)  # set to whatever
+                time.sleep(delays.GPS_REFRESH_DELAY)
 
-        except (KeyboardInterrupt, SystemExit):  # when you press ctrl+c
+        except (KeyboardInterrupt, SystemExit):
+            # when you press ctrl+c
             print("\nKilling Thread...")
             gpsp.running = False
-            gpsp.join()  # wait for the thread to finish what it's doing
+            gpsp.join()
         print("Done.\nExiting.")
 
     def getString(self):
@@ -82,7 +83,6 @@ class gpsdata():
         self.nsatellites = int(self.nsatellites)
 
 if __name__ == '__main__':
-    #print("Starting sensors")
     # Publisher
     context = zmq.Context()
     gps_publisher = context.socket(zmq.PUB)
