@@ -9,13 +9,18 @@ class camera:
         self.w=1920
         self.h=1080
     def takeShot(self):
-        with PiCamera() as camera:
+        sleep(1)
+        c=PiCamera()
+        try:
             # do something with the camera
             camera.resolution = (1920, 1080)
-            sleep(2)
+            sleep(1)
             camera.capture("/home/pi/camera/img"+str(self.count)+".jpg")
             self.count+=1
             print("Shot taken")
+        finally:
+            c.close()
+
     def recording(self,state):
         if(state ==  '0'):
             self.stopRecording()
