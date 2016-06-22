@@ -49,7 +49,7 @@ else {console.log('NO, this browser does not support webrtc');}
 util.reliable=false;
 var mystream;
 var mycall;
-var rcvtimer=18446744073709551616;
+var rcvTimer=18446744073709551616;
 var resetTimer=0;
 var connTimer=0
 var timeout;
@@ -149,7 +149,8 @@ function send()
 function sendstr(str)
 {
   var t=new Date().getTime();
-  if(conn.open && t-rcvTimer<5000){
+  //if(conn.open && t-rcvTimer<5000){
+  if(conn.open){
 	conn.send(str);
 	}
   else{
