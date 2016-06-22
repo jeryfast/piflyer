@@ -151,8 +151,8 @@ function send()
 function sendstr(str)
 {
   var t=new Date().getTime();
-  //if(conn.open && t-rcvTimer<5000){
-  if(conn.open){
+  if(conn.open && t-rcvTimer<5000){
+  //if(conn.open){
 	conn.send(str);
 	}
   else{
