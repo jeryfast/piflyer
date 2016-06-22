@@ -114,8 +114,10 @@ conn.on('open', function() {
 
 conn.on('data', function(data) {
 	//console.log('Received: '+data);
-	if(data=="restartCall")
-	    restartCall();
+	if(data=="stopStream")
+	    mystream.stop();
+	else if(data=="startStream")
+	    call();
 	else if(data=="Q0")
 	    conn.close();
 	else{
@@ -200,9 +202,15 @@ if ("WebSocket" in window) {
 
     ws.onmessage = function (evt) {
         var msg = evt.data;
-        //console.log("Message is received: " + msg);f
+        //console.log("Message is received: " + msg);
         if(conn.open){
-            sendstr(msg);}
+            if(msg=="stopStream")
+                stopStream();
+            else if (msg=="startStream")
+                call();
+            else
+                sendstr(msg);
+            }
     };
 
     ws.onclose = function() {

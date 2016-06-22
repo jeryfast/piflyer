@@ -91,7 +91,10 @@ class commander:
                     self.throttle_updated = True
 
             elif (words[0] == CAMERA):
+                #should change SENSOR_TOPIC to something else
+                commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, "stopStream"))
                 self.camera.takeShot()
+                commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, "startStream"))
 
             elif (words[0] == RECORD):
                 self.camera.recording(words[1])
