@@ -32,6 +32,8 @@ TILT_PITCH_LIMIT = "PL"
 TILT_ROLL_LIMIT = "RL"
 THROTTLE_LIMIT = "TL"
 
+SPEED = "V"
+
 
 class commander:
     def __init__(self):
@@ -41,6 +43,7 @@ class commander:
         # self.hdg_hold=False
         self.alt_hold = False
         self.auto_hold = False
+        self.speed_hold = False
         self.is_connected = 0
 
         self.status = c.OK
@@ -52,6 +55,7 @@ class commander:
         self.throttle = 0.0
         self.compass = 0.0
         self.altittude = 0.0
+        self.speed = 0
 
         self.elevons = elevons()
         self.sensors = sensors()
@@ -73,6 +77,9 @@ class commander:
         elif (words[1] == AUTO):
             self.auto_hold = bool(int(float(words[2])))
             print("AUTO_HOLD: %s" % (self.auto_hold))
+        elif (words[1] == SPEED):
+            self.speed = bool(int(float(words[2])))
+            print("SPEED HOLD: %s" % (self.speed))
 
     # process command
     def update(self, arg=""):
@@ -112,6 +119,9 @@ class commander:
                         self.altittude = float(words[2])
                     else:
                         self.pitch = float(int(words[2]))
+                    if (self.speed_hold):
+                        self.speed = float(int(words[2]))
+
             elif (words[0] == SERVO_INIT):
                 self.servos_init = True
                 self.elevons.setServosUpDirection(int(float(words[1])), int(float(words[2])))
@@ -152,10 +162,10 @@ class commander:
                 #print("Stabilized %f %f" % (self.pitch, self.roll))
                 # auto on
                 if(self.auto_hold):
-                    # alt on, auto on
+                    # alt on, auto on, autothrottle
                     if (self.alt_hold):
                         print("controlling hdg, alt")
-                    # alt off, auto on
+                    # alt off, auto on, autothrottle
                     else:
                         print("controlling hdg, pitch")
                 # auto off
