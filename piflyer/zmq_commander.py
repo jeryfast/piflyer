@@ -111,7 +111,7 @@ class commander:
                     if (self.alt_hold):
                         self.altittude = float(words[2])
                     else:
-                        self.pitch = words[2]
+                        self.pitch = float(int(words[2]))
             elif (words[0] == SERVO_INIT):
                 self.servos_init = True
                 self.elevons.setServosUpDirection(int(float(words[1])), int(float(words[2])))
