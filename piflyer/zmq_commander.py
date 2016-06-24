@@ -84,7 +84,8 @@ class commander:
 
             elif (words[0] == CONTROL):
                 self.servos_init = False
-                self.pitch = int(float(words[1]))
+                if(not self.alt_hold):
+                    self.pitch = int(float(words[1]))
                 self.roll = int(float(words[2]))
                 if (len(words) >= 4):
                     self.throttle = int(words[3])
@@ -149,13 +150,25 @@ class commander:
             # not tested
             elif (self.mode == STABILIZED):
                 #print("Stabilized %f %f" % (self.pitch, self.roll))
-                if (self.alt_hold):
-                    print("Alt hold, controlling roll")
+                # auto on
+                if(self.auto_hold):
+                    # alt on, auto on
+                    if (self.alt_hold):
+                        print("controlling hdg, alt")
+                    # alt off, auto on
+                    else:
+                        print("controlling hdg, pitch")
+                # auto off
                 else:
-                    self.elevons.control(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
-                if (self.throttle_updated):
-                    self.throttle_updated = False
-                    self.motor.setThrottleFromInput(self.throttle)
+                    # alt on, auto off
+                    if (self.alt_hold):
+                        print("controlling roll")
+                    # alt off, auto off
+                    else:
+                        self.elevons.control(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
+                    if (self.throttle_updated):
+                        self.throttle_updated = False
+                        self.motor.setThrottleFromInput(self.throttle)
 
             # not tested
             elif (self.mode == RESQUE):
