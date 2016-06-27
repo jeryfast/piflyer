@@ -73,7 +73,7 @@ conn = peer.connect('qwd5lls47d620529');
 peer.on('open',function(id){
 	console.log('My peer ID is: ' + id);
 	$('#peerid').text(id);
-    timeout=setTimeout(function(){location.reload();},3000)
+    timeout=setTimeout(function(){location.reload();},6000)
 });
 
 peer.on('close', function() {
