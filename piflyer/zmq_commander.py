@@ -53,7 +53,7 @@ class commander:
         self.pitch = 0.0
         self.roll = 0.0
         self.throttle = 0.0
-        self.compass = 0.0
+        self.heading = 0.0
         self.altittude = 0.0
         self.speed = 0
 
@@ -114,7 +114,7 @@ class commander:
 
             elif (words[0] == AUTO):
                 if (self.auto_hold):
-                    self.compass = float(words[1])
+                    self.heading = float(words[1])
                     if (self.alt_hold):
                         self.altittude = float(words[2])
                     else:
@@ -168,6 +168,8 @@ class commander:
                     # alt off, auto on, autothrottle
                     else:
                         print("controlling hdg, pitch")
+                        self.controlHdgPitchWing()
+
                 # auto off
                 else:
                     # alt on, auto off
@@ -175,14 +177,14 @@ class commander:
                         print("controlling roll")
                     # alt off, auto off
                     else:
-                        self.elevons.control(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
+                        self.elevons.stabilize(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
                     if (self.throttle_updated):
                         self.throttle_updated = False
                         self.motor.setThrottleFromInput(self.throttle)
 
             # not tested
             elif (self.mode == RESQUE):
-                self.elevons.control(0, 0, self.sensors.pitch, self.sensors.roll)
+                self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
                 # self.motor. ...
 
     # not tested
@@ -190,7 +192,7 @@ class commander:
         # print("failsafe")
 
         # TODO control in reference to altitude, speed and glide slope
-        self.elevons.control(0, 0, self.sensors.pitch, self.sensors.roll)
+        self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
         # self.motor.control(0)
 
     def run(self):
@@ -199,6 +201,20 @@ class commander:
             self.control()
         else:
             self.failsafe()
+
+    # not tested
+    def controlHdgPitchWing(self):
+        hdgdiff = self.heading-self.sensors.heading
+        sign = hdgdiff/abs(hdgdiff)
+        if(abs(hdgdiff)>10 and abs(self.sensors.pitch)<5):
+            print("turn")
+            done=self.elevons.turn(30*sign, self.sensors.roll, 20)
+            if(done):
+                self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
+        else:
+            print("pitch")
+            self.elevons.stabilize(self.pitch,0,self.sensors.pitch,self.sensors.roll)
+
 
 
 if __name__ == '__main__':

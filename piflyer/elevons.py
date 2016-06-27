@@ -111,7 +111,7 @@ class elevons:
     """
 
     # stabilize mode algorithm
-    def control(self, target_pitch, target_roll, pitch, roll):
+    def stabilize(self, target_pitch, target_roll, pitch, roll):
         # idea: map target-sensor values difference to pitch and roll control
         self.setPitchRoll(target_pitch - pitch, target_roll - roll)
         #print("control pitch/roll", target_pitch - pitch, "/", target_roll - roll)
@@ -129,3 +129,17 @@ class elevons:
         if(target_roll>roll):
             self.turnLeft()
         """
+
+    """def controlHdgPitch(self, hdg, pitch):
+        # idea: level the plane, set the bank angle, turn the plane, level the plane, set to parameters
+        if(hdg)
+        self.control()
+    """
+
+    def turn(self, target_roll, roll, pitch):
+        # idea: set roll, apply pitch to turn
+        rolldiff = target_roll-roll
+        if(abs(rolldiff)>10):
+            self.setRollFromInput(rolldiff)
+        else:
+            self.setPitch(pitch)
