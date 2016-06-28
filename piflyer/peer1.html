@@ -115,7 +115,7 @@ conn.on('open', function() {
 
 conn.on('data', function(data) {
 	//console.log('Received: '+data);
-	if(data!=lastData)
+	if(data!=lastData && data != '!')
 	{
         lastData=data;
         if(data=="stopStream")
