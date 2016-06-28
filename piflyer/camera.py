@@ -8,8 +8,8 @@ class camera:
         #testing only
         self.camera="camera"
         self.count=0
-        self.w=2592
-        self.h=1944
+        self.w="2592"
+        self.h="1944"
         self.busy=False
 
     def takeShot(self):
