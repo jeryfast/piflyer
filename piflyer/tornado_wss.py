@@ -28,7 +28,6 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         #self.write_message("Welcome!")
 
     def on_message(self, message):
-        print ("New message {}".format(message))
         clients=list(self.clients)
         count = clients.__len__()
         while count >= 1:
