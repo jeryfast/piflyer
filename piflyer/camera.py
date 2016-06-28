@@ -1,5 +1,6 @@
 from picamera import PiCamera
 from time import sleep
+import threading
 import os
 
 class camera:
@@ -12,10 +13,15 @@ class camera:
         self.busy=False
 
     def takeShot(self):
-        os.system("v4l2-ctl --set-fmt-video=width="+self.w+",height="+self.h+",pixelformat=3")
-        os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=/home/pi/camera/img"+str(self.count)+".jpg")
-        os.system("v4l2-ctl --set-fmt-video=width=720,height=480,pixelformat=H264 -p 30")
+        t=threading.Thread(target=self.take(),args=())
+        t.daemon=True
+        t.start()
         print("Shot taken")
+
+    def take(self):
+        os.system("v4l2-ctl --set-fmt-video=width=" + self.w + ",height=" + self.h + ",pixelformat=3")
+        os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=/home/pi/camera/img" + str(self.count) + ".jpg")
+        os.system("v4l2-ctl --set-fmt-video=width=720,height=480,pixelformat=H264 -p 30")
 
     def recording(self,state):
         if(state ==  '0'):
