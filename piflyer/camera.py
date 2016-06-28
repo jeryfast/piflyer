@@ -17,8 +17,9 @@ class camera:
         #t.daemon=True
         #t.start()
         #t.join()
+        sleep(1)
         self.take()
-        sleep(2)
+        sleep(1)
         print("Shot taken")
 
     def take(self):
