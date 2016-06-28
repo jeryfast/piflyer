@@ -105,6 +105,7 @@ class commander:
                 self.camera.takeShot()
                 while(self.camera.busy):
                     time.sleep(0.5)
+                print("starting stream")
                 commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, "startStream"))
 
             elif (words[0] == RECORD):
