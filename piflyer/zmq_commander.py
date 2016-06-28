@@ -84,10 +84,12 @@ class commander:
     # process command
     def update(self, arg=""):
         try:
+
             self.status = c.OK
             words = arg.split(',')
             if (words[0] == MODE):
                 self.setMode(words[1])
+                print("updating mode:" + arg)
 
             elif (words[0] == CONTROL):
                 self.servos_init = False
@@ -267,6 +269,7 @@ if __name__ == '__main__':
                 break
             # process task
             data = data.strip(topic.COMMAND_TOPIC + " ")
+            print("commander: sent:" + data)
             commander.update(data)
             # print("commander received:", msg)
 
