@@ -28,7 +28,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         #self.write_message("Welcome!")
 
     def on_message(self, message):
-        #print ("New message {}".format(message))
+        print ("New message {}".format(message))
         clients=list(self.clients)
         count = clients.__len__()
         while count >= 1:
@@ -43,6 +43,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 #message for communicator
                 else:
                     browser_publisher.send_string("%s %s" % (topic.COMMAND_TOPIC, message))
+                    print("tornado sent:"+message)
 
     def on_close(self):
         print ("Connection closed")
