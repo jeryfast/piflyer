@@ -22,6 +22,7 @@ class camera:
         os.system("v4l2-ctl --set-fmt-video=width=" + str(self.w) + ",height=" + str(self.h) + ",pixelformat=3")
         os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=/home/pi/camera/img" + str(self.count) + ".jpg")
         os.system("v4l2-ctl --set-fmt-video=width=720,height=480,pixelformat=H264 -p 30")
+        self.count+=1
 
     def recording(self,state):
         if(state ==  '0'):
