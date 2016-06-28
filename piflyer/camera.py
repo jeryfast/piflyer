@@ -13,11 +13,12 @@ class camera:
         self.busy=False
 
     def takeShot(self):
-        t=threading.Thread(target=self.take(),args=())
-        t.daemon=True
-        t.start()
-        t.join()
-        sleep(3)
+        #t=threading.Thread(target=self.take(),args=())
+        #t.daemon=True
+        #t.start()
+        #t.join()
+        self.take()
+        sleep(2)
         print("Shot taken")
 
     def take(self):
