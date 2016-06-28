@@ -1,25 +1,23 @@
 from picamera import PiCamera
 from time import sleep
+import os
 
 class camera:
     def __init__(self):
         #testing only
         self.camera="camera"
         self.count=0
-        self.w=1920
-        self.h=1080
+        self.w=2592
+        self.h=1944
+        self.busy=False
+
     def takeShot(self):
-        sleep(1)
-        c=PiCamera()
-        try:
-            # do something with the camera
-            camera.resolution = (1920, 1080)
-            sleep(1)
-            camera.capture("/home/pi/camera/img"+str(self.count)+".jpg")
-            self.count+=1
-            print("Shot taken")
-        finally:
-            c.close()
+        self.busy = True
+        os.system("v4l2-ctl --set-fmt-video=width="+self.w+",height="+self.h+",pixelformat=3")
+        os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=/home/pi/camera/img"+str(self.count)+".jpg")
+        print("Shot taken")
+        self.busy=False
+
 
     def recording(self,state):
         if(state ==  '0'):

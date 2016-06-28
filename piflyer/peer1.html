@@ -115,7 +115,7 @@ conn.on('open', function() {
 conn.on('data', function(data) {
 	//console.log('Received: '+data);
 	if(data=="stopStream")
-	    mystream.stop();
+	    stopStream();
 	else if(data=="startStream")
 	    call();
 	else if(data=="Q0")
@@ -248,9 +248,9 @@ function call(){
 }
 
 function stopStream(){
-    mystream.getVideoTracks().stop();
+    //mystream.getVideoTracks().stop();
+    mycall.localStream.stop();
 }
-
 
 $(window).on('beforeunload', function() {
   if (!!peer && !peer.destroyed) {
