@@ -269,7 +269,6 @@ if __name__ == '__main__':
                 break
             # process task
             data = data.strip(topic.COMMAND_TOPIC + " ")
-            print("commander: sent:" + data)
             commander.update(data)
             # print("commander received:", msg)
 

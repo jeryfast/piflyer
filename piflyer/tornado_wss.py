@@ -43,7 +43,6 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
                 #message for communicator
                 else:
                     browser_publisher.send_string("%s %s" % (topic.COMMAND_TOPIC, message))
-                    print("tornado sent:"+message)
 
     def on_close(self):
         print ("Connection closed")

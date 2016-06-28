@@ -59,7 +59,6 @@ if __name__ == '__main__':
                 connected=msg[1]
             else:
                 comm_publisher.send_string("%s %s" % (topic.COMMAND_TOPIC, msg))
-                print("comm: sent:"+msg)
 
         # from commander to browser - sensor data
         while True:

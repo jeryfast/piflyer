@@ -54,6 +54,7 @@ var resetTimer=0;
 var connTimer=0
 var timeout;
 var conn;
+var lastData="";
 
 //peerjs
 var peer = new Peer(
@@ -114,16 +115,20 @@ conn.on('open', function() {
 
 conn.on('data', function(data) {
 	//console.log('Received: '+data);
-	if(data=="stopStream")
-	    stopStream();
-	else if(data=="startStream")
-	    call();
-	else if(data=="Q0")
-	    conn.close();
-	else{
-        ws.send(data);
-        rcvTimer=new Date().getTime();
-        $('#receiver').text(data);
+	if(data!=lastData)
+	{
+        lastData=data;
+        if(data=="stopStream")
+            stopStream();
+        else if(data=="startStream")
+            call();
+        else if(data=="Q0")
+            conn.close();
+        else{
+            ws.send(data);
+            rcvTimer=new Date().getTime();
+            $('#receiver').text(data);
+        }
     }
 });
 
