@@ -16,8 +16,8 @@ class camera:
         t=threading.Thread(target=self.take(),args=())
         t.daemon=True
         t.start()
-        sleep(3)
         t.join()
+        sleep(3)
         print("Shot taken")
 
     def take(self):
