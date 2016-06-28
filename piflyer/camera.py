@@ -8,8 +8,8 @@ class camera:
         #testing only
         self.camera="camera"
         self.count=0
-        self.w="2592"
-        self.h="1944"
+        self.w=2592
+        self.h=1944
         self.busy=False
 
     def takeShot(self):
@@ -19,7 +19,7 @@ class camera:
         print("Shot taken")
 
     def take(self):
-        os.system("v4l2-ctl --set-fmt-video=width=" + self.w + ",height=" + self.h + ",pixelformat=3")
+        os.system("v4l2-ctl --set-fmt-video=width=" + str(self.w) + ",height=" + str(self.h) + ",pixelformat=3")
         os.system("v4l2-ctl --stream-mmap=3 --stream-count=1 --stream-to=/home/pi/camera/img" + str(self.count) + ".jpg")
         os.system("v4l2-ctl --set-fmt-video=width=720,height=480,pixelformat=H264 -p 30")
 
