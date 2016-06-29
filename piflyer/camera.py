@@ -36,6 +36,8 @@ class camera:
             self.startRecording()
     def startRecording(self):
         print("Recording on")
+        #v4l2-ctl --set-fmt-video=width=1920,height=1088,pixelformat=4
+        #v4l2-ctl --stream-mmap=3 --stream-count=100 --stream-to=somefile.264
 
     def stopRecording(self):
         print("Recording off")
