@@ -11,6 +11,7 @@ from motor_handler import motor_handler
 import commands as c
 from camera import camera
 from gpsstorage import gpsdata
+import rpi
 
 MODE = "M"
 CONTROL = "C"
@@ -33,6 +34,8 @@ TILT_ROLL_LIMIT = "RL"
 THROTTLE_LIMIT = "TL"
 
 SPEED = "V"
+
+SHUTDOWN = "X"
 
 
 class commander:
@@ -140,6 +143,8 @@ class commander:
             elif (words[0] == THROTTLE_LIMIT):
                 self.servos_init = True
                 self.motor.setThrottleLimits(int(float(words[1])), int(float(words[2])))
+            elif(words[0] == SHUTDOWN):
+                rpi.shutdown()
             else:
                 self.status = c.INVALID
                 # print("status invalid")
