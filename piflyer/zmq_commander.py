@@ -144,6 +144,7 @@ class commander:
                 self.servos_init = True
                 self.motor.setThrottleLimits(int(float(words[1])), int(float(words[2])))
             elif(words[0] == SHUTDOWN):
+                print("shutdown")
                 rpi.shutdown()
             else:
                 self.status = c.INVALID
