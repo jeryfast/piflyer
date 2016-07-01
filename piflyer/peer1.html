@@ -257,6 +257,14 @@ function stopStream(){
     mycall.localStream.stop();
 }
 
+function getQRFromUrl()
+{
+   var url = window.location.href
+   var captured = /pid=([^&]+)/.exec(url)[1]; // Value is in [1] ('384' in our case)
+   var result = captured ? captured : 'myDefaultValue';
+   console.log(result);
+}
+
 $(window).on('beforeunload', function() {
   if (!!peer && !peer.destroyed) {
     peer.destroy();

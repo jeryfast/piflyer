@@ -1,0 +1,342 @@
+Povzetek
+	V diplomski nalogi bom predstavil zgodbo od samega začetka, od motivacije in idejne zasnove, do raziskovanja in razvoja in testiranja rešitve.
+uvod (motivacija, zakaj)
+	
+krmilni sistemi (za predstavo)
+	splošno
+		uvod 
+		delovanje	
+	krmilni sistemi v tehnologiji letalstva
+	krmilni sistemi brezpilotnih letal		
+	
+analiza problema
+		obstoječe standardne rešitve in izboljšave
+			navio2, ardupilot, powerup, carbon flyer, micro drone			
+				Obstoječe rešitve brezpilotnih naprav za podatkovno/video komunikacijo, nadzor in telemetrijo uporabljajo analogne-radijske rešitve 433Mhz(EU) ali 915MHz(ZDA) za telemetrijo,  2.4GHz za krmiljenje, 
+				5.8GHz za video, ali 2.4GHz povezavo s pomočjo standardnega 802.11b/g/n/ wifi protokola. Večja frekvenca zagotavlja večjo pasovno širino in s tem večjo zanesljivost. 
+				Nasprotno, manjša frekvenca zagotavlja večji doseg pri istih pogojih. Radijski protokoli načeloma (v osnovi) ne zagotavljajo zanesljivosti po principu potrjevanja, kot to deluje pri omrežnih 
+				protokolih (TCP) pri TCP/IP modelu. Za delovanje potrebujejo tako sprejemnik kot oddajnik, ti pa se lahko med seboj motijo - zato se uporabljajo različne frekvence. Dodatni sprejemniki, 
+				predvsem pa oddajniki predstavljajo dodatno težo, prostor, načeloma neugoden vir toplote, višjo ceno in vzdrževanje - dodatne baterije itd. Za popolno avtonomni sistem brezpilotnega letala potrebujemo
+				krmilni sprejemnik in oddajnik, video sprejemnik in oddajnik, avtopilotni krmilni sistem, gps spremejnik, kamero, 2 ali celo 3 ločene vire napajalnja. Za daljši doseg potrebujemo ali usmerjeno anteno, 
+				ki jo lahko vodimo sami ročno ali za to namenjen sledilnik (ki primerja gps lokaciji obeh sistemov). In seveda samo napravo. Potrebno je tudi nekaj osnovnega znanja elektrotehnike ali vsaj strokovnih
+				izrazov, kar pa je za večino uporabnikov, ki se s tem profesionalno ne ukvarjajo, prezahtevno in tako finančno, kot tudi časovno predrago. S tako opremo hitro pridemo do par tisoč evrov opreme, brez avtopilota
+				pa tudi nujno znanje pilotiranje brezpilotnega letala/večrotornika. Nekatere komercialne rešitve omogočajo enostavno uporabo izdelkov, ki pa so za kakršnokoli resno uporabo nepraktični in nezmogljivi,
+				nemodularni ali neprilagodljivi. Druge rešitve so zelo zmogljive in omogočajo uporabo z raznimi senzorji RADAR, LIDAR, SONAR itd., vendar je za nepoznavalca izrazov, ki se tičejo letalstva, enostavno preveč.
+			namen, prednosti
+				Z rešitvijo poskušamo prinesti prednosti brezpilotnih letal s pomočjo sodobne tehnologije slehernemu tehnološkemu ali letalskemu navdušencu. Ključni prednosti so neomejen doseg (glede na pokritost s signalom),
+				razširljivost na vse vrste brezpilotnih letal, modularnost, edinstvenost FPV izkušnje na lastni mobilni napravi s pomočjo intuitivnih kontrol z nagibi in nazornimi ukazi. Hkrati pa orodja avtopilota za enostavno 
+				in sproščeno letenje. Ni potrebna izobrazna elektrotehnike ali računalništva in programiranja, niti zahtevno branje navodil in dokumentacije. Rešitev je enostavna, saj bi vsak moral imeti možnost doživetja ptičje perspektive.
+			pomanjkljivosti
+				Pomanjkivost oziroma slabost rešitve je plačljiv prenos podatkov, sicer relativen glede na naročniški paket. Še vedno pa je tako s stališča enostavnosti, pa tudi cenovno, vsekakor v prednosti. Prav tako se količine zakupljenega
+				mobilnega prenosa podatko povečuje, cene nižajo, cene gostovanja po EU so se oziroma se bodo kmalu poenotile. prav tako pa naj bi leta 2017 izšel mobilni standard 5G in s tem večja pokritost, hitrosti in nižje latence.
+		zasnova ideje za rešitev			
+			tehnike programiranja
+				uporabnost, modularnost, razširljivost, prilagodljivost, neodvnisnost
+					Rešitev želimo izdelati tako, da bo njena uporabnost večkratna. Spremenjem program lahko z nekaj znanja programiranja omogoči uporabo dveh pogonskih motorjev. Dodan modul lahko omogoči uporabo drugačne konfiguracije letala,
+					z drugačnim številom krmilnih površin, zakrilcami, zračnimi zavorami, aktuatorji,
+					pogoni - tako več elektro pogonov, kot tudi možnost fosilnih goriv ali reaktivnih in raketnih vrst motorjev. Z nekaj truda bi bilo možno sprogramirati večuporabniško rešitev nad istim izdelkom,
+					vendar se zaenkrat razvoj glede na potrebo in zahtevnost, ne zdi relevantem.
+		
+načrtovanje, raziskovanje in razvoj
+	strojna oprema rešitve		
+		mikrokrmilnik in računalnik raspberry pi 2
+			Raspberry Pi 2 Model B+ je trenutno predzadnja verzija generacije Raspberry Pi. Zmogljiv SoC združuje 900MHz 4-jedrni CPU ARM Cortex-A7, 1GB pomnilnika RAM
+			in VideoCore IV GPU. Glavni vhodi/izhodi, pomembni na nas so pini GPIO (pri tem je pomembno I2C vodilo), vrata USB, vrata CSI za priklop podprte strojno pospešene kamere
+			in vrata micro USB za napajanje. Ostalo - priključki HDMI, ethernet so bili ključni le v zgodnjih fazah razvoja.
+		dodatek servo hat
+			Čeprav je Raspberry Pi zmogljiv računalnik, za krmiljenje servo motorjev, zaradi poganjanja jedra operacijskega sistema Linux, ki ne teče v realnem času,
+			potrebuje dodatek - eden teh je 16-kanalni razvojni dodatek (HAT), ki omogoča natačno krmiljenje do 16 servo/brezkrtačnih motorjev. Ti namreč delujejo s pomočjo krmilnega 
+			signala PWM. Na ta način ne obremenjujemo CPUja na mikrokrmilniku Raspberry Pi, hkrati pa dosegamo krmiljenje z do 12-bitno natančnostjo na do 992 servo motorjih (preko vodila I2C).		
+			Sam krmilni čip PCA9685 se napaja preko reguliranega 3.3V izhoda na RPi, ker pa RPi ne ponuja vira napetosti, ki bi podpiral nad 40mA obremenitve, potrebujemo zunanje
+			napajanje za same servo motorje.
+		dodatek sense hat
+			Plod projekta Astro Pi, ki je omogočal poganjanje programov učencev in dijakov iz celega sveta na mednarodni vesoljski postaji ISS, je bil dodatek Sense Hat. Ta vsebuje žiroskop, pospeškomer,
+			magnetomer, temperaturni, vlažnostni in tlačni senzor. Vsi so pomembni za delovanje naše rešitve, razen matrike LED velikosti 8x8 in majhna krmilna palica. Prva je v pomoč pri izpisu
+			lokalnega IP-ja, če nimamo monitorja, da se lahko potem preko vmesnika SSH povežemo na RPi.
+		picamera
+			Vpogled v svet in pomemben del zaznavanja omogoča video kamera PiCamera, ki je bila posebej razvita s strani fundacije Raspberry Pi, za učinkovito strojno pospešeno kodiranje
+			in dekodiranje ter obdelovanje videa s pomočjo GPU in posebej napisanih gonilnikov. Za naš izdelek je bila uporabljena verzija V1, ki se od pozneje razvite novejše verzije V2 najbolj opazno razlikuje
+			v resoluciji 8MP, kar je 3MP več od verzije V1. Za naše potrebe je več kot dovolj prva. 
+		mrežna kartica usb wifi 
+			Uradna brezžična usb mrežna kartica je bila ključna do poznih faz razvoja, saj je omogočala brezhibno in brezstroškovno komunikacijo preko omrežne dostopne točke, 
+			postavljene na usmerjevalniku ali računalniku.
+		lte modul
+			Mobilna usb mrežna kartica  Huawei E3372 4G LTE s hitrostjo 150/50 Mb/s je ključna za povezavo RPi v internetno omrežje, brez posebnih omejitev razdalj, saj obstoječa infrastruktura omogoča dokaj široko
+			razširjeno povezljivost na 3G ali 4G omrežje. Ker podpira možnost spominske naprave, če ji vstavimo še spominsko kartico, zelo olajša snemanje videa na (ločeno) spominsko kartico.
+		gps modul		
+			GPS sprejemnik U-blox Neo-6M je v poznih fazah razvoja doprinesel k zanesljivosti, udobnosti kakovosti uporabe naše rešitve. Najbolj pomembne lastnosti so natančnost do 3m, čas do prve povezavo pod 30s,
+			frekvenca osvežitve podatkov 5hHz, natančnost hitrosti glede na zemljo 0.1m/s, široka podpora različnih standardov satelitov, protokolov (NTP, PPP) in do 50 kanalov spremljanja ter 20 kanalov uporabe. Število kanalov pove, koliko 
+			podatkov različnih satelitov lahko GPS sprejemnik sledi.
+		napajanje - napajalnik, baterija,		
+			Za napajanje RPi potrebujemo napajalnik s priklopom microUSB, ki zmore tok 1-2A (odvisno od porabnikov). Priklop na konektor microUSB omogoča varno uporaba RPi, saj tok teče preko varovalke in nato na različne napetostne tokokroge.
+			Za testiranje je napajalnik super, za mobilno uporabo pa je potrebno poskrbeti za napajanje iz baterije primerje vrste, napetosti in toka. Možnosti je več, zaradi enostavnosti uporabimo ustrezno LiPo baterijo, ki lahko hkrati poganja
+			pogonski elektromotor in servo motorje, hkrati pa lahko napaja RPi, vse iz enega vira.
+		kartica sd
+			Spominska kartica je način, na katerega lahko RPi deluje, saj iz nje naloži operacijski sistem, hkrati pa jo uporablja kot spominski medij. Priporočljiva je velikost 16GB+, odvisno pa seveda od namena uporabe.
+	dodatna strojna oprema testnega okolja
+		servo motorji			
+		brezkrtačni motorji		
+		krmilnik ESC
+			Za krmiljenje brezkrtačnega motorja potrebujejo še poseben krmilnik, to pa zato, ker ta vsebuje potrebno vezje, da iz ločenega tokokroga napaja motor na napetosti (tipično 14, lahko tudi do 30V+), ki bi takoj uničila mikrokrmilnik.
+			Sam način uporabe je identičen krmiljenju servo motorjev, glavna razlika videna uporabniku je varnostna inicializacija, ki preprečuje nenamerne poškodbe zaradi človeške nepazljivosti.
+	programska oprem
+		programska rešitev na mikrokrmilnem sistemu Raspberry pi	
+			tehnologije ... i2c, boot- problems with gnome, boot w/o hdmi, usb power, no monitor, vnc, 
+			gps .. baud rate, gpsd
+			
+		Vzpostavitev delovnega okolja	
+			Za vzpostavitev osnovnega delovnega okolja je bilo potrebno kar nekaj korakov, saj smo hoteli robustno arhitekturo, ki ni odvisna od končne arhitekture. To pomeni, da lahko razvijamo stvari kljub temu, da nimamo priklopljenega RPi na monitor, tipkovnico, miško, ethernet kabel (pomanjkanje monitorja in HDMI kabla večina časa , prenosljivost, problem ethernet dostopa v študentskem domu) oziroma mikrokrmilnika sploh nimamo zraven. Za določene stvari je bil dovolj računalnik in testiranje Python programov kar lokalno, kar je omogočalo prenosljivost in lažje testiranje. Končna konfiguracija je izgledala tako: Rpi je povezan v električno omrežje z adapterjem, preko Wifi usb mrežne kartice je priklopljen na omrežje preko dostopne točke, vzpostavljene na računalniku s programsko omremo MHotspot.
+			Do njega dostopamo z ssh protokolom v programu Putty ali podobnim, ker pa poganja VNC servis, tudi z VNC clientom preko X11 tehnologije naravnost do grafičnega vmesnika X.
+		programska rešitev na nadzornem sistemu/aplikaciji Android
+			načrtovanje uporabniškega vmesnika
+				osnutek
+					Prvi osnutki vključujejo t.i. wireframing oziroma načrtovanje osnovnega poteka dogodkov. Par ključnih besed za vsak korak ter kasneje slika uporabniškega vmesnika na papir je dovolj, da razumemo, kaj bi uporabnik želel, pričakoval
+					od aplikacije, katere informacije ga zanimajo, kaj se bo dogajalo in kako si sledijo dogodki. Na tem koraku se še ne obremenjujemo s podrobnostmi, saj so trenutno prvi koraki najbolj pomembni.
+					S pomočjo enostavne postavitve elementov ter teorije, kako uporabniki držijo mobijo napravo - večino časa za določen primer uporabe oz. "use case", si lahko pomagamo, da bodo uporabniki naše ciljne skupine enostavno dostopali 
+					do kontrolnih grafičnih elementov na vmesniku, saj tako izboljšamo udobje same uporabe, njeno intuitivnost in prijetno uporabniško izkušnjo.
+				popravki
+					Čeprav so prvi koraki najbolj pomembni, ni nič narobe, celo prav je, da se osnovni skiciran načrt spremeni. Saj tekom razvoja, analize in testiranja sproti odkrijemo pomanjkljivosti in včasih tudi neprimernosti, in za kakovost razvoja
+					boljše prilagajati osnovni načrt (če si izposodimo to smernico iz agilnih metodologij), kot da se držimo starih prepričanj ali celo konzervativnih načrtov, v katere smo bili takrat dokaj prepričani. Razvoj je namreč živ sistem in zato
+					se zahteve ali spreminjajo ali pa ugotovimo, da smo jih "samo" napačno razumeli.
+				custom elementi
+					Grafični elementi za android omogočajo kar nekaj izbire, kljub temu pa moramo za resnejšno uporabo marsikaj spremeniti - to je uporabiti zunanje knjižnice, ali pa sami implementirati in povoziti metode, ki jih potrebujemo drugačne.
+				dodatki
+				ux, landscape mode, holding devices theory
+				
+		programska rešitev za komunikacijo preko omrežja
+			problem
+				Osnovni cilj oziroma zahteva je bila, da rešitev deluje v različnih omrežjih, torej ne glede na lokacijo, tip, internetnega ponudnika, morajo delovati vse kombinacije lokalno, javno: wifi-wifi, mobilno-wifi, mobilno-mobilno. Želimo naprej neomejen doseg, 
+				saj s tem ustrezamo zahtevam, ki so bile postavljene tako zaradi želenih specifikacij, kot tudi zaradi precej možnih želja uporabnikov in konkurenčne prednosti. 			
+			raziskovanje in razvoj						
+				Zaradi nefunkcinalne zahteve - nizkega zamika oz. latence je želen tip omrežja 4G-LTE, ki omogoča pod 20ms zamika. Sama pasovna širina 150/50 Mb/s ni ključna, saj promet dosega le delček sposobnosti, poleg tega pa je pomembna tudi stroškovna učinkovitost.
+				Razvoj je potekal bolj kot ne iterativno oziroma prototipno po modulih. Potrebno je bilo raziskati način možne povezave preko različnih omrežij. Prva ideja so bila klasični vtičniki oziroma socketi, ki omogočajo komunikacijo preko TCP/UDP protokola na omrežni plasti.
+				Spisan je bil testni program, ampak se je izkazalo, da to ne bo možna rešitev. Namreč za medomrežno povezovanje potrebujemo port-forwarding oziroma posredovanje vrat na usmerjevalniku, dostop do tega pa ima v mobilnih omrežjih samo operatih. Odkrita storitev no-ip bi nam omogočala
+				dinamičen dostop do strežnika, ki bi se izvajal na RPi, vendar pa to ni bilo iskanje rešitve v pravi smeri, ampak vsekakor širjenje obzorja. Na informacijo o odpritosti portov je internetni mobilni ponudnih odgovoril, da povezava ni možna, saj je zaradi varnosti vzpostavljeno
+				zasebno lokalno omrežje znotraj mobilnega operaterja in so povezave navzven nemogoče. Tukaj se je podrla prvotna zahteva zaradi omejenosti. Sledilo je raziskovanje, kaj je vzrok, kjer je problem, kako se ga reši. Raziskovanje je privedno do sprva navideznih rešitev,
+				ki pa so se izkazale za nepravilne - socks5, proxyji in vpn, ki omogočajo samo polovično rešitev problema - torej na eni strani, ali pa zahtevajo dodatno zahtevno konfiguracijo od uporabnika (vpn), zato se je raziskovanje nadaljevalo. Vse je vodilo do odprtosti vrat, požarnih zidov 
+				in naprav NAT in požarnih zidov (network address translation), ki preslikujejo množico zasebnih naslovov ip na vrata, da lahko z enih javnim naslovom ip več naprav deluje nemoteno. NAT je tudi varnostni element, poznamo pa 4 vrsti teh naprav:
+					statični, ki dovoljuje ves promet v obe smeri (notri, ven)
+					dinamični, ki filtrira naslove ip (notranja naprava sprejme pakete iz naslova, na katere je predhodno poslala paket)
+					dinamični, ki filtrira naslove ip in vrata (notranja naprava sprejme pakete iz naslova in vrat, na katere je predhodno poslala paket)
+					dinamični simetrični, ki so zahtevni za naš problem, saj uporabljajo dvosmerno preslikavo (mapping) in jih uporabljajo velika podjetja in korporacije. Naslednji logični način bi bil opustiti direktno povezavo, vzpostaviti strežnik, ki bi bil posrednik za vse cliente, ki bi se nanj povezali.
+					Izkazalo se je, da bi to bila draga rešitev, saj bi ves promet potekal čez strežnik. Vse poti so vodile k novi vrsti komunikacije - p2p (peer to peer). Direktni način komunikacije s posebnimi triki, na način, preko katerega delujejo storitve Skype z dodatkom supervozlišč (supernode).					
+					WEBRTC
+						Uvod
+							Komunikacija v realnem času (real time communication - RTC) je bila dolgo izziv. Zahtevala je uporabo dragih audio in video licenc. Google je tehnike RTC uporabljal že v storitvi Google Talk, leta 2011 pa je z odptjem tehnologij, ki jo je zazvil GIPS postavil temelje za prihodnost. 
+							V maju istega leta pa je Ericsson razvil prvi implementacijo WebRTCja. RTC uporablja tudi Skype in Facebook. Potreba po odprtokodni rešitvi p2p komunikacije za potrebe spleta so vodile v razvoj protokola WebRTC, aplikacijskega vmesnika, tako za brskalnike, mobilne naprave in IoT naprave.
+							Iniciativo WebRTC podpira Google, Mozilla, Opera in ostala podjetja.
+						Podpora
+							WebRTC podpira večina brskalnikov, vendar odvisno od verzije do verzije (Chrome, Firefox, Opera, Android, iOS)
+						Arhitektura
+							Protokol omogoča bogato komunikacijo v realnem času, od podatkovne, glasovne do video komunikacije, brez dodatnih vtičnikov, prenosov in namestitev, saj brkalniki implementirajo WebRTC v svojem jedru. https://webrtc.org/architecture/ Veliko prednost je uporaba Googlovega video kodeka VP8, ki omogoča
+							nizko latenco komunikacije zaradi močnega algoritma za kodiranje/dekodiranje in kompresijo. Za razliko od kodeka H.264 in MJPEG je brezplačen za uporabo.
+					Signalizacijski strežnik 
+						Za uspešno komunikacijo z WebRTC protokolom potrebujemo signalizacijski strežnik. Za poskrbi, da se izmenjajo informacije za nadzor povezave, informacije o IP naslovih in vratih in nivo podpore za audio in video komunikacijo. 
+					STUN (Simple Traversal of UDP through NATs (Network Address Translation)) strežnik
+						Prvi način komunikacije je preko UDP protokola, ta je nizko latenčni, z majhnimi omrežnimi okvirji, nezanesljiv in brez potrjevalnih algoritmov na samem transportnem protokolu. Prav zato lahko dosežemo visoke hitrosti prenosa preko protokola UDP. Problem nastane, ko med komunikacijo med končnima napravama 
+						obstaja NAT. STUN je standardizirana množica tehnik v omrežnem protokolu, ki omogoča končnim napravam odkritje svojega javnega IP naslova in vrat, ki mu ga je dodelila naprava NAT za javni internetni dostop. To STUN strežnik naredi tako, da clientu, ki mu je
+						poslal zahtevo, v odgovoru pošlje podatke o clientu (IP naslov, vrata), kot jih vidi sam. Zaradi tega, ker samo izmenjuje podatke, lahko podpira na tisoče zahtev hkrati in to na manj zmogljivih strežnikih. Še vedno pa STUN strežnik ni vedno rešitev. Deluje namreč v primeru treh vrst NATa, ne deluje pa na simetričnih NATih. Problematične so povezave, pri katerih sta obe končni napravi za simetrično NAT napravo. Teh povezav je po statističnih podatkih 8-15%. Lahko bi trdili, da obstaja možnost, da kateri od mobilnih internetnih ponudnikov
+						mobilnih storitev uporabljajo prav simetrične NAT naprave v svoji topologiji. Za to vrsto problema potrebujemo drugačen strežnik. 
+					
+					TURN (Traversal Using Relays around NAT) posredniški strežnik
+						Ko v opisanem primeru STUN strežnik ni dovolj, če potrebujemo delovanje v 100% primerov ne glede na topologijo omrežja in vljučenost NAT naprav in požarnih zidov, potrebujemo TURN strežnik. Ta deluje tako preko UDP in TCP protokola, gre pa za čisto drugačen pristop. Namenjen je povezavi računalnikov 1-1 tako, da deluje kot posrednik (relay). Posredništvo pa deluje na naslednji način. Odjemalec A pošlje določeno zahtevo na TURN strežnik, ta pa mu v primeru prostora v smislu zmogljivosti odgovori s podatki o transportnem naslovu, preko katerega bo komuniciral z odjemalcem B.
+						TURN strežnik se nato poveže še z odjemalcem B in obvesti odjemalca A, da je povezava vzpostavljena.
+						Vsak odjemalec, ki je povezan na TURN strežnik ima 2 načina, na katera lahko pošilja podatke, ampak se ne bomo spuščali v podrobnosti. Sporočila se nato pošiljajo preko UDP datagramov. V kratkem opisu smo videli, kako je TURN strežnik robustnejši od STUN strežnika, vendar pa ima tudi svoje slabosti. Način komunikacije, ki v celoti poteka preko posrednika, zahtevo precej večjo pasovno širino kot STUN protokol, ki odjemalcem samo izmenjuje podatke o javnih IP naslovih in vratih, da se lahko povežejo med sabo. Obstaja pa način, ki rešuje slabosti STUN in TURN strežnika.
+						
+					ICE (Interactive Connectivity Establishment)
+						Protokol in tehnika povezovanja v komunikacijskih omrežjiih na področju NAT razreševanja. Uporablja STUN in TURN prokol tako, da najprej poskuša vzpostaviti povezavo preko STUN protokola, če pa zaradi kakršnegakoli razloga to ni mogoče, uporabi TURN protokol. Tako omogoča povezljivost v 100% primerov, hkrati pa ne obremenjuje TURN strežnika, ampak samo za povezave, za katere ni drugega načina. Lahko se uporablja za katerikoli protokol, ki uporablja model offer/answer (npr. SIP).
+					
+					Razvoj
+						Uporaba WebRTC protokola sicer ni vesoljska znanost, pa vseeno ni mačji kašelj za uporabo. Ker za cilje te diplomske naloge ali kakršnegakoli projekta ni odkrivanje že odkritega, si pomagamo z obstoječimi rešitvami, da rešitev izdelamo bolj učinkovito, hitreje, enostavneje in modularno. Če bi razvijali izključno WebRTC aplikacijo, potem bi bila uporaba surovega WebRTC aplikacijskega vmesnika logična izbira. Tako pa je WebRTC del komunikacijskega dela naše rešitve in iščemo ustrezne podporne rešitve, ki so vzdrževane in aktualne.
+						Raziskovanje je privedno do več aplikativnih možnosti. Nekatere od teh so bile socket.io, holla, peerjs, skylink.js, easyRTC, SimpleWebRTC, simplepeer, rtceverywhere itd. Izbrali smo rešitev PeerJS, na to so vplivale enostavnost vmesnika, precej dobra dokumentacija in tudi kakšnen uporaben primer. Kasneje se je izkazalo, da nekaj stvari ni dokumentiranih in komunikacija brez prekonfiguracije vrat, uporabe ssl protokola, vzpostavitve svojega strežnika za namen signalizacije itd. deluje samo v lokalnih omrežjih, in bi bila mogoče kakšna druga rešitev lažja za implementacijo.
+						
+						Primeri implementacij WebRTC.
+							https://bloggeek.me/nodejs-webrtc/
+							https://github.com/contra/holla
+							http://peerjs.com/
+							https://easyrtc.com/docs/guides/easyrtc_faq.php
+							https://simplewebrtc.com/
+							https://github.com/feross/simple-peer
+							https://github.com/contra/rtc-everywhere
+							https://github.com/Temasys/SkylinkJS
+							https://janus.conf.meetecho.com/
+						Primeri aplikacij/storitev zgrajenih na WebRTC
+							https://opentokrtc.com/
+							https://talky.io/
+							https://apprtc.appspot.com/
+							https://www.uber.com/
+							https://www.twilio.com/
+							Več: 
+								http://www.webrtcworld.com/webrtc-list.aspx
+								https://webrtchacks.com/vendor-directory/
+						Več o webrtc
+							http://www.doodle3d.com/help/webrtc
+							https://webrtchacks.com/whats-in-a-webrtc-javascript-library/
+							https://mozilla.github.io/webrtc-landing/
+						
+						Potek
+							Vzpostavitev komunikacije med dvema brksalnikoma je potekala modularno in ločeno od ostalega projekta. Da ne bi pisali nepotrebne kode, je programiranje potekalo s pomočjo dokumentacije. Tako je nastal minimalni delujoč program. 
+							Za enostavno implementacijo poskusimo uporabiti signalizacijski strežnik, ki ga peerjs daje zastonj za uporabo. Za ta namen pridobimo API ključ, s katerim se pridobimo dostop pošiljanja podatkov na njihov signalizacijski strežnik. Za delovanje smo zaradi enostavnosti uporabili enega ali več javnih zastonjskih Googlovih STUN strežniških storitev. Ko povezava deluje in smo prepričani, da je peerjs res možna rešitev, moramo vzpostavimo svoj signalizacijski strežnik, saj njihov javni sprejema povezave na vratih 3000,
+							kar pa onemogoča povezavo, če usmerjevalnik, preko katerega dostopamo do interneta, blokira vrata 3000 in nimamo dostopa do port forwardinga. Prav tako to predstavlja dodatno konfiguracijo omrežja,kar je za nas neustrezna rešitev. Lastni signalizacijski strežnik, ki teče v Node.js je bil postavljen na Azure cloud virtualnem linux strežniku. Tam je bilo potrebno odpreti določena vrata za vhodni/izhodni promet tako v nastavitvah oblaka s pomočjo grafičnega vmesnika, kot na samem strežniku s pomočjo komandnega aplikacijskega programa iptables.
+							Povezava je delovala v lokalnem omrežju, kar je bilo dovolj za nadaljni razvoj na ostalih področjih. Pri testiranju povezav med različnimi omrežji pa smo ugotovili, da bo potrebno dodati tudi TURN strežnik. Ta storitev se za razliko od STUN strežniške storitev ne ponuja zastonj, ker kot vemo, celotna komunikacija poteka preko TURN postrednika in za ponudnika teh storitev nastanejo stroški. 
+							Nekateri ponudniki teh storitev so:
+								XirSys http://xirsys.com/technology/
+								ZeroTier https://www.zerotier.com/, za katerega lahko kot zanimivost povemo, da nikjer ne razkrije, da za svojo storitev uporablja STUN/TURN strežnike
+								Twilio  https://www.twilio.com/stun-turn
+								AnyFirewall http://www.eyeball.com/products/stun-turn-server/
+								Estos http://help.estos.com/help/en-US/procall/5/erestunservice/dokumentation/htm/IDD_FUNCTIONALITY.htm
+								https://www.frozenmountain.com/products/icelink
+							Obstajajo pa tudi odprtokodne rešitve STUN/TURN/ICE, da jih lahko postavimo na lastni oz. gostujoči privatni/virtualni strežnik:
+								https://github.com/jitsi/turnserver
+								http://turnserver.sourceforge.net/
+								http://www.pjsip.org/pjnath/docs/html/
+								http://www.creytiv.com/restund.html
+								http://creytiv.com/re.html
+								https://github.com/coturn/rfc5766-turn-server/
+								https://github.com/coturn/coturn (rfc5766-turn-server nadgradnja)
+							
+							Za naše potrebe smo izbrali coturn implementacijo TURN strežnika, ki se zdela robustna (podpira load-balancing, različne operacijske sisteme), vzdrževana in za uporabo enostavna reštev Postavili smo jo na Azurejev linux strežnik, kjer je že uspešno tekel signalizacijski strežnik. Kljub enostavni namestitvi, pa delovanje ni bilo trivialno vzpostaviti. STUN strežnik deloval normalno, TURN strežnik pa samo lokalno. To smo ugotovili z v rešitev vključenimi testi in lastnim testiranjem. Zaradi pomanjkanja časa v tem obdobju razvoja, se je odprava napake vlekla čez več mesecev v dolgih presledkih. S pomočjo spletnega testnega orodja za testiranje STUN/TURN funkcionalnosti
+							imenovane trickle-ice https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/ smo testirali različne konfiguracije. Končno smo odkrili, da je bil vzrok za nedelovanje strežnika to, da WebRTC z nekim datumom več ne podpira TURN funkcionalnosti preko nešifriranih povezav. Tako je bilo configuracijo strežnika spremeniti, da je uporabljal ssl protokol. Privzeta vrata za TURN protokol so 3478 - spet ovira za usmerjevalnik na mobilnem omrežju. Tudi tukaj smo porabili kar nekaj časa za ugotovit in odpravo napake. Za rešitev smo vzpostavili
+							nov linux strežnik v Azure oblaku, namestili TURN strežnik in ga konfigurirali na vrata 443 (ssl). Pozneje smo odkrili zastonjsko STUN/TURN/ICE storitev Kalifornijskega R&D podjetja Viagenie http://numb.viagenie.ca/. Zaradi zanesljivosti pa ostajamo na svojem strežniku.
+							
+							Vsak WebRTC odjemalec pa za svoje delovanje uporablja za uporabljen signalizacijski strežnik unikaten identifikacijski niz. Tako se lahko, če seveda za trenutek odmislimo vse stvari, ki se dogajajo v ozadju, dva odjemalca povežeta med sabo, če vsaj eden ve ID od drugega. Za izmenjevanje te informacije seveda ne more poskrbeti WebRTC in potrebujemo lastno komunikacijsko rešitev, odvisno od tematike in vrste našega problema. Po tem naj bi komunikacija delovala brezhibno. Preko WebRTC protokola lahko pošiljamo nekaj različnih vrst podatkovnih struktur. Stvari pa se zapletejo, če se hočemo večkrat povezati povezati na signalizacijski strežni z istim ID-jem. To v splošnem ni 
+							priporočeno, saj signalizacijski id ni namenjen identifikaciji samih naprav, ampak vzpostavitvi povezave. Vseeno pa to želimo, če naša rešitev vključuje povezavanje na isto napravo in nočemo vedno znova izmenjevati idjev. To bi bilo za isto napravo nesmiselno in nepotrebno delo, prav tako na netransparentno in neugodno za končnega uporabnika. Problem nastane, ker odjemalec svojega idja ne odjavi iz signalizacijskega strežnika in za drugega odjemalca vse izgleda, kot da je povezava še vedno vzpostavljena, vsaj v primeru knjižnice PeerJS. Ker posebej ne piše, da odjava ne steče transparentno, smo ta problem v intervalih opravljali do poznih faz razvoja. Na to je delno vplivala modularna zgradba,
+							ki je omogočala nadaljni razvoj kljub tej napaki. Le večkrat je bilo potrebno ponovno zagnati signalizacijski strežnik, ne kot virtualko, ampak kot aplikacijsko programsko opremo. To s primerno skripto ne traja več od sekunde. V poznih fazah, kjer je nadaljni razvoj zahteval zanesljivost povezave, smo ugotovili, da je potrebno na dogodku, ko se ustavlja javascript v brskalniku, implicitno klicati odjavo iz signalizacijskega strežnika in tako omogočiti ponovno prijavo z istim IDjem. To seveda deluje brezhibno na računalnikih brskalnikih, na mobilnih napravah in v ostalih vmesnikih pa je drugačna zgodba že na nivoju samih brskalnikov (https://github.com/peers/peerjs/issues/108). Za vzdrževanje povezave je potrebno osveženjanje strani, saj drugače po daljši neaktivnosti postane nedostopen.
+							Tako se je že v začetnih fazah razvilo 2 različni spletni aplikaciji, ker gre za 2 različni funkcionalnosti, kar se je tudi pozneje se je to izkazalo za dobro izbiro. Zaradi modularnosti in vzdrževanja se je postavilo tretji strežnik v Azure oblaku, ki poganja spletni strežnik Apache in gosti ti dve spletni aplikaciji.
+							WebRTC podpira tudi videoklice. V našem primeru potrebujemo enosmerni videoklic, kar pomeni, da če hočemo iz naprave A tok videa prenašati na napravo B in ga tam predvajati (v realnem času), mora klic sprožiti naprava A, naprava B pa mora na klic odgovoriti, pri čemer ne poda svojega toka videa. Pri implementaciji smo ugotovili nedelovanje pretoka med nekaterimi brskalniki. Za pretok video mora namreč brskalnik pridobiti dovoljenje in vse potrebno preko gonilnika video kamere in potem tok videa pošiljati preko WebRTC aplikacijskega vmesnika. Zajem slike ni uspel delovati, zaradi nepodpiranja različnih verzij aplikacijskega vmesnika za video in verzije brskalnik. Paziti moramo tudi na združljivost med različnimi brskalniki(http://iswebrtcreadyyet.com/). Tudi na splošno je bila večja
+							zanesljivost in kakovost povezave tako, da odjemalec, ki pošilja pretočni video, teče v brskalniku Mozilla Firefox (kar ni bilo dokončna odločitev), odjemalec, ki pretočni video sprejema, pa v brskalniku Google Chrome. V ozadju seveda ne gre za brskalnik, ampak pogon (in pod njim video podporo), ki ga brskalnik uporablja, torej Gecko za Firefox in WebKit za Chrome. Še vedno video pretok ni deloval. Za analizo in odpravo problemom je bilo potrebno preveriti log datoteke o webrtc vmesniku v brskalniku Chrome na naslovu chrome://webrtc-logs, ker je bila napaka očitno v PeerJS knjižnici. Po mesecih intervalnega ugotavljanja in testiranja smo v poznejših fazah odkrili, da obstaja druga, novejša knjižnica z izboljšavami in najbrž vsaj delno odpravljenimi napakami, 
+							imenuje se skyway peerjs https://nttcom.github.io/skyway/en/docs/, gre pa za produkt kitajskega komunikacijskega podjetja Nttcom, ki jo je razvilo za potrebe spletnega servisa SkyWay (http://nttcom.github.io/skyway/), ponujajo pa tudi SDK za iOS in Android. Vendar pa ima tudi ta svoje pomanjkljivosti za nas primer. Prvo je, da njihov signalizacijski strežnik vsaj v tisti fazi razvoja ni deloval, drugo pa je, da identifikacijske številke ID ni možno ročno izbrati, ampak je vsakih dodeljena samodejno. Namen in cilj tega je seveda dober, preprečiti možnost neuspeha, če bi hotela dva odjemalca isti id. Za naš projekt pa je to neugodno. Vseeno pa smo se odločili za delno uporabo te knjižnice, ker uspešno rešuje problem pretoka videa. Delno uporabo pravimo zato, 
+							ker smo za odpravo obeh pomanjkljivosti na eni strani morali uporabiti knjižnico peerjs, na drugi pa skyway peerjs.	V poznih fazah razvoja se je dodalo še websocket povezave.						
+						
+							Razvoj komunikacijskega dela na nivoju brskalnika je bil tako v veliki meri neovisen in zato lahko delno vzporeden od ostalega projekta. Opisana komunikacijska rešitev predstavlja razširljivost in jo lahko uporabimo za razvoj kot kombinacijo na drugih mobilnih napravah denimo iOS, Windows phone in mikrokrmilnikih ranga Rapsberry Pi (Beaglebone, BananaPI, Arduino Yun, Intel Galileo), ki imajo možnost poganjati WebRTC. 
+							Še vedno pa rešitev omogoča komunikacijo med brskalniki. Za naše potrebe pa potrebujemo komunikacijo med Android napravo in RPi Python programom. 
+							Ideja je bila naslednja, na strani Android naprave smo ugotovili, da bo najbolj modularno in zanesljivo, če bomo uporabili WebView element, ki je načeloma Androidov grafični element, ki omogoča podporo Googlovega pogona WebKit. Sicer obstajajo tudi programska orodja kot je Crosswalk(https://crosswalk-project.org/) in skywayev sdk, ampak Xamarin Android že privzeto podpira WebView. 
+							Nekaj časa je trajalo učenje potrebnega za komunikacijo med javascriptom WebView elementa in preostalim programom. Potrebno je namreč spremeniti nastavitve WebView elementa in med drugim v njem omogočiti javascript. Potrebno je bila implementacija javascript vmesnika in njegovih metod, da jih WebView deklarira v js in jih lahko potem kličemo naravnost iz js. Tudi vmesnik more biti modularen in nespecifičen za naš problem. Po tem komunikacija z WebViewjem ni bila več problematična, razen tega, da se funkcija za odjavo iz signalizacijskega strežnika iz komunikacijskega dela rešitve ni izvajala. Tako je bilo posebej poskrbeti za reševanje tega problema, ki nastane zaradi malo drugačnega obnašanje WebView elementa od samega brskalnika, pa tudi zaradi življenjskega cikla Android aplikacij, saj je reševanje problema trenutno oviralo to, se ob osvežitvi spletne strani podere delovanje zaradi akcije, ki ni bila sprožena v glavni niti. To se je popravljalo v poznih fazah razvoja na drugačen način.
+							Več problemov je bilo na strani komunikacijskega kanala in sicer na RPi, saj je bilo potrebno več ciklov raziskovanja, razvoja in testiranja, da smo ugotovili ustrezen način, ki bo sploh deloval. Ideja je bila še vedno uporabiti obstoječo rešitev. Operacijski sistem bi torej poganjal brskalnik, Python pa bi na nek način komuniciraj z njim in obratno. Samo za odkrivanje pravega brskalnika je bilo veliko dela. Testirani so bili različni brskalniki: Dillo, Empathy, Epiphany Web Browser,NetSurfWebBrowser, Chromium Web Browser in Iceweasel. Iceweasel je prejšnji Firefox za Debian sisteme ker se je za nekaj časa med razvojem diplomske naloge ustavil razvoj firefoxa, sedaj se spet imenuje firefox-esr, vendar obstaja še tudi verzija iceweasel-firefox-esr. Nekaj časa se iščeš tudi pri tem, če nikjer uradno ni obvestila, da trenutno firefox ni več na voljo.
+							Iseweasel in Firefox sta trenutno od teh, ki so bili testirani, edina, ki podpirata WebRTC protokol na Debian sistemu. Sledilo je raziskovanje in testiranje deluječe Python knjižnice za komunikacijo z javascriptom. 
+							Preizkušene so bile naslednje: 
+								PyQt4(uporaba QWebView elementa) - ni delovalo, potrebna je draga licenca za Qt,
+								PySide - ni podpore za WebRTC (https://github.com/PySide/Examples/tree/master/examples)
+								PyExecJS (https://pypi.python.org/pypi/PyExecJS) - ni podpore za WebRTC
+								http://pyjs.org/ - ni podpore za WebRTC
+								in ostale
+							Kazalo je slabo, sledila je ideja, da bi osnova tekla v brskalniku in python v njemu. Za ta namen smo testirali knjižnice:
+								Skulpt http://www.skulpt.org/
+								Brython http://www.brython.info/
+							Problem obeh je bila počasnost izvajanja proti "native" pythonu, zato je bila v celoti je bila ideja ovržena.
+							Odkrita je bila nova možnost, to je bila precej popularna in robustna rešitev za testiranje programske opreme, natančneje spletnih aplikacij. 
+							Imenuje se Selenium. 
+								https://pypi.python.org/pypi/selenium
+								http://www.seleniumhq.org/
+								https://blog.andyet.com/2015/07/28/selenium-travis-webrtc/
+								http://selenium-python.readthedocs.io/api.html
+								https://realpython.com/blog/python/headless-selenium-testing-with-python-and-phantomjs/
+								Ta ima vmesnik tudi za Python, zato se je naš razvoj lahko nadaljeval. Ob prvih nekaj primerih se je izkazala za dovolj hitro komunikacijsko rešitev med Pythonom in javascriptom, kasneje pa smo jo še pohitrili tako, da smo počasnejše funkcije SendKeys zamenjali naravnost z javascriptExecutor objekti, ter uporabili headless način (na začetku v Xvfb, pozneje z namenskim ukazom Seleniuma), ter poskus uporabe PhantomJS spletnega pogona, ki pa žal ne podpira WebRTC protokola.
+								Na temo optimizacijo je poteklo kar nekaj razvojnih dni. Na kratko pa Več o nasvetih za optimizacijo:
+									https://seleniumjava.com/2015/12/12/how-to-make-selenium-webdriver-scripts-faster/
+									http://www.installationpage.com/selenium/how-to-run-selenium-headless-firefox-in-ubuntu/
+									http://scraping.pro/use-headless-firefox-scraping-linux/
+									http://www.danstraw.com/running-selenium-tests-on-debian-headlessly-using-iceweasel-and-firefox/2010/11/24/
+									https://realpython.com/blog/python/headless-selenium-testing-with-python-and-phantomjs/
+							Selenium se je uporabljal do poznih faz razvoja, saj se je po nadgradnji brskalnikov izkazalo, da je podpora novih verzij za selenium gonilnik še zelo slaba, izboljšav pa ni dobro pričakovati kaj kmalu. Konkretno, čas pošiljaja ukaza Python-javascript ali obratno, je trajal prej 30ms, potem 70ms. To je nesprejemljivo in neuporabno na naš namen, saj je potrebno preverjati povezljivost, sprejemati ukaze itd. V poznih fazah se je komunikacija python brskalnik zamenjala z lastno rešitvijo z uporabo websocketov.
+							Celoten razvoj je potekal modularno, zato se je tudi Selenium del, razen osnovnega testa delovanja, testiral na računalniku in spletni kameri prenosnika. Prav posebej izziv komunikacije direktno iz RPi je bil prenos slike, kar se je popravljalo v poznih fazah razvoja.
+							Za ta namen so bile testirane in uporabljene naslednje knjižnice in možnosti:
+								
+								
+																			
+								nitenje, paralelelno izvajanje, več procesov
+								python GIL, medprocesna komunikacija-vrste, cevovodi, latenca ukazov, nova verzija ff, merjenje s testi
+								IPC - komunikacija browser-python zmq socket/tcp socket/ws
+							ws - clients, server-autobahn, easywebsocket, websockify, tornado, arhitektura
+							IPC-MPI, zeromq, performance tests, messaging patterns
+					prenos slike
+						programska oprema
+							gstreamer
+							ffmjpeg
+							stream v browser in naprej
+							janus, jitsi meet, xmpp bridge, jabber
+							just chat: barc, simplewebrtc, easyrtc
+							kurento - ni za arm
+							rpicamwebinterface
+							http(s), rtp(s), h264, mp4, mjpeg, img, video, mediastream
+							uv4l software, driver, zaznavanje kamere v brskalniku
+							jitski
+							v4l2 - pretok in fotografiranje, snemanje, latenca, parametri (intra-gOP, keyframe, )
+							latency theory in general
+											
+				lokalno in javno omrežje
+					stun, turn, ice, coturn server, porti, 80, 443, https, nodejs
+					socket.io, zerotier, xirsys, trickle ice, anyfirewall
+					mobilna omrežja
+					
+			programska rešitev na strani strežnikov
+				linux: peerserver signalizacijski server .. problemi,  coturn - problemi ..., apache webserver
+						odprtost vrat - azure cloud, netstat, iptables
+			programska rešitev na strani odjemalcev
+				peerjs-webrtc - klicanje, ponovna vzpostavitev, bugs
+	tehnologije
+		
+testiranje
+	uporabljeni postopki
+		testiranje enot
+			simulacija realnih podatki z dummy podatki in sistemi, to omogoča modularnost enot
+		testiranje sistema
+			uporabniško testiranje
+		merjenje zmogljivosti nefunkcionalnih zahtev
+			zamik med ukazi, lanenca podatkov, slike, obremenitve procesorjev, spomin
+			top-iris mode, bmon grapphical, 
+			
+
+rpi
+	adafruit-pca9685
+	picamera
+	medprocesna komunikacija ZMQ
+	komunikacija python proces-brskalnik-ws
+
+razvojna orodja
+	xamarin android	
+			
+integrirana razvojna okolja 
+	pycharm
+	visual studio
+pripomočki		
+	putty
+	mhotspot
+	gimp
+	
+programski, skriptni in strukturni jeziki
+	C#
+	python
+	bash
+	javascript, jquery
+	html
+	css
+	
+	
+aplikacijski vmesniki in servisi
+	Google play services
+		google maps api
+		android speech-to-text
+		android text-to-speech
+		google elevation service		
+	
+	
+	
+	
+		
+		
+		virtualni strežniki v oblaku Microsoft Azure z operacijskimi sistemu linux
+		
+		
+		
+	
+
+raziskovanje
+
+razvoj
+
+testiranje
+
+sklepne ugotovitve
+
+literatura
