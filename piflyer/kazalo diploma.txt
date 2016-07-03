@@ -3,7 +3,7 @@ Povzetek
 uvod (motivacija, zakaj)
 	Zanima me več področij znanosti in tehnologije, med drugim tudi letalstvo, aeronavtika in aerodinamika. Vse tri znanosti poznam zelo površno in na zelo amaterskem nivoju. Bolj me zanima računalništvo (computer science) in nekaj let sem naredil prvi korak v povezovanju teh stvari. Eno poletje sem namreč delal na projektu autonomnega letala z mikrokrmilnikom arduino. Poskus se je sicer končal neuspespešno s stališča samega projekta, saj ni bil niti konceptualno niti finančno dobro podprt.
 	Neuspeli poskus pa sam vidim kot ogromno naučenega znanja, ker sem ogromno stvari delal od začetka oz. "from scratch", kar z inženirskega vidika nikakoor ni dobra praksa. Naučil sem se tudi netehnične stvari, predvsem to, da si je včasih pri delu potrebno priznati, da projektu ne gre najboljše, ker ni bil dobro zasnovan že v načrtu, ker ima pomanjkljivosti, ker izumljamo toplo novo ali kaj tretjega in si priznati, da projekt ne bo izpeljan do konca.
-	Nekaj leta za tem sem poleg rednega dela na fakulteti "obiskoval" spletni tečaj aeronavtike, ker me je zanimalo področje aerodinamike in ostalih stvari, ki jih je možno z nekaj enačbami preračunati, in ga uspešno opravil in pridobil certifikat (https://s3.amazonaws.com/verify.edx.org/downloads/60b6addb529c4bce952d89867e450f6e/Certificate.pdf). Moje zanimanje je vodilo k enem izmed interdisciplinarnih projektov na temo brezpilotnih letalnikov, kmalu zatem pa soudeležbo na mednarodnem tekmovanju DBF, kjer smo z ekipo 20 članov osvojili zmago v Tucsonu, ZDA (April 2015).
+	Nekaj leta za tem sem poleg rednega dela na fakulteti "obiskoval" trimesečni spletni tečaj aeronavtike, ker me je zanimalo področje aerodinamike in ostalih stvari, ki jih je možno z nekaj enačbami preračunati, in ga uspešno opravil in pridobil certifikat (https://s3.amazonaws.com/verify.edx.org/downloads/60b6addb529c4bce952d89867e450f6e/Certificate.pdf). Moje zanimanje je vodilo k enem izmed interdisciplinarnih projektov na temo brezpilotnih letalnikov, kmalu zatem pa soudeležbo na mednarodnem tekmovanju DBF, kjer smo z ekipo 20 članov osvojili zmago v Tucsonu, ZDA (April 2015).
 	Po zanimanju za teorijo delovanja raket, letal, satelitov, roverjev, ostalih robotov in projektov NASE in ESE, predvsem pa avtonomnih brezpilotnih letal in znanju programiranja spletnih in mobilnih aplikacij je nastopilo intenzivnejše obdobje zanimanja za mikrokrmilnike. Tako sem se hotel poglobiti v novi, popularni in zmogljivi mikrokrmilniški sistem Raspberry Pi, ki je sposoben poganjati Linux operacijski sistem. Potrebno je bilo obnoviti in poglobiti znanje linux komandnih ukazov, samega sistema, razvoja Androida preko Xamarin razvojnega orodja in Androida nasploh,
 	programskih jezikov C#, javascript in python, arhitekturnih in razvijalskih vzorcev, minimalnih elektrotehniških osnov, komunikacijskih omrežij, organizacije in vzdrževanja kode in ogromno ostalih inženirskih in programerskih izzivov in veliko razvojno-raziskovalnega dela na poti do rezultata.
 krmilni sistemi (za predstavo)
@@ -45,7 +45,8 @@ krmilni sistemi (za predstavo)
 			DJI naza http://www.dji.com/product/naza-m-v2
 			Piccolo http://www.cloudcaptech.com/products/detail/piccolo-ii
 			Hse UAV autopilot http://www.hse-uav.com/autopilot.htm
-	
+		Brezpilotna letala uporabljajo podobne senzorje in principe kot pravi letalski sistemi, vendar namenu, cenovni dostopnosti primerne velikosti, kakovosti in natančnosti. Prav tako se uporabljajo temperaturni, vlažnostni senzorji, barometri za merjenje tlaka in izračun višine, pitotova cev za merjenje zračne hitrosti, žiroskopi in pospeškomeri za merjenje pospeškov in nagibov letala, gps sistemi za pozicioniranje letala, merilniki električnega toka itd.
+		
 analiza problema
 		obstoječe standardne rešitve, podobne in delne rešitve, ideje in izboljšave, motivacije in projekti
 		https://www.indiegogo.com/projects/carbon-flyer-cell-phone-controlled-plane#/
@@ -84,7 +85,7 @@ analiza problema
 				in sproščeno letenje. Ni potrebna izobrazna elektrotehnike ali računalništva in programiranja, niti zahtevno branje navodil in dokumentacije. Rešitev je enostavna, saj bi vsak moral imeti možnost doživetja ptičje perspektive.
 			pomanjkljivosti
 				Pomanjkivost oziroma slabost rešitve je plačljiv prenos podatkov, sicer relativen glede na naročniški paket. Še vedno pa je tako s stališča enostavnosti, pa tudi cenovno, vsekakor v prednosti. Prav tako se količine zakupljenega
-				mobilnega prenosa podatkov povečuje, cene nižajo, cene gostovanja po EU so se oziroma se bodo kmalu poenotile. prav tako pa naj bi leta 2017 izšel mobilni standard 5G in s tem večja pokritost, hitrosti in nižje latence.
+				mobilnega prenosa podatkov povečuje, cene nižajo, cene gostovanja po EU so se oziroma se bodo kmalu poenotile. prav tako pa naj bi leta 2017 prišel mobilni standard 5G in s tem večja pokritost, hitrosti in nižje latence.
 				
 		zasnova ideje za rešitev			
 			tehnike programiranja
@@ -331,7 +332,7 @@ načrtovanje, raziskovanje in razvoj
 								http://www.catb.org/gpsd/gpsd-time-service-howto.html
 							python knjižnica	
 								http://www.danmandle.com/blog/getting-gpsd-to-work-with-python/
-						Ko smo imeli delujoč primer, smo integrirali v obstoječ sistem in dodali nekaj stvari v naš komunikacijski protokol.						
+						Ko smo imeli delujoč primer, smo integrirali v obstoječ sistem in dodali nekaj stvari v naš komunikacijski protokol. Kasneje je komunikacija gps-Rpi potekala preko serijskega vmesnika.						
 						Mogoče kot zanimivost, ker se pri medprocesni komunikaciji dodaja znake za temo, in kasneje briše, da dobimo originalno sporočilo, je prišlo do zanimivega hrošča, ko smo pri uporabi številčnih tem pri brisanju s python funkcijo pobrisali tudi del koordinate in pri tem se naj bi nahajali nekje v Afriki.
 					4G usb modem
 						V poznih fazah razvoja smo kupili še ustrezen 4G modem, namestili ustrezno programsko opremo Sakis3G (http://www.sakis3g.com/), ki omogoča samodejno konfiguracijo 3G/4G modemov na Linux sistemih. Slabost kupljenega modema Huawei e3372h se je izkazalo intenzivno gretje same naprave. Na ta problem se bomo vrnili pozneje (2.7.2016).
@@ -346,7 +347,7 @@ načrtovanje, raziskovanje in razvoj
 						gps_storage
 							Razred, ki skrbi za shranjevanje gps podatkov in posredovanje le teh na zahtevo
 						tornado_wss
-							Websocket strežnik, ki  skrbi za posredovanje sporočil med (dvema odjemalcema) brskalniškim javascriptom preko in komunikatorjem preko websocket povezave.
+							Websocket strežnik, ki skrbi za posredovanje sporočil med (dvema odjemalcema) brskalniškim javascriptom preko in komunikatorjem preko websocket povezave.
 						zmq_comm
 							Komunikator, ki skrbi za posredovanje sporočil med tornado_wss (in posledično brskalniškim javascriptom) preko websocket povezave in IPC preko tcp povezav. Preko IPC je povezan tudi na zmq_gps in zmq_commander.
 						zmq_commander
@@ -397,7 +398,92 @@ načrtovanje, raziskovanje in razvoj
 					Grafični elementi za android omogočajo kar nekaj izbire, kljub temu pa moramo za resnejšno uporabo marsikaj spremeniti - to je uporabiti zunanje knjižnice, ali pa sami implementirati in povoziti metode, ki jih potrebujemo drugačne.
 				dodatki
 				ux, landscape mode, holding devices theory
-			načrtovanje aplikacije
+			Razvoj	
+				načrt
+				
+				potek
+					Razvoj Android aplikacije je prav tako potekal neodvisno, a vseeno povezavo z napredkom ostalih delov. Prvi koraki so bili učenje osnov razvoja v Xamarin android in postavljanje grafičnih elementov, njihova rotacija in premiki. Za namen sprotnega testiranja delovanja smo uporabljali kar senzorje na mobilni napravi, ki jih bomo potrebovali tudi pozneje. Za ta namen se je razvil neodvisen del branja senzorjev, ki smo ga kasneje integrirali v lastni TiltService servis za namen enostavne uporabe in držanje strukture aplikacije. Za prikaz naklonov pa 2 smereh (pitch, roll) smo uporabili scrollView in 2 imaageView elementa. Ker nismo našli primernih grafik za naš namen, smo začasno ustvarili sami v orodju Gimp. Seekbar element, ki v rešitvi služi nadzoru pogonskega elektromotorja, je služil za testiranje simuliranja kompasa in naklonov.
+					
+					Sledila je postavitev ozadja in webView elementa v času razvoju komunikacijskega dela rešitve. Potrebno je bilo razviti del komunikacije tudi na android strani in sicer zato, da je lahko potekala komunikacija med javascriptom spletnega odjemalca in našim programom. Uporabili smo javascript vmesnik in naredili svoj razred MyJSInterface, ki je skrbel za ta del komunikacije, in razred Message, ki je skrbel za shranjevanje podatkov v enostavni obliki. Ko smo usposobili našo senzorsko ploščo na Rpi do te mere, da je smo lahko brali in pošiljali podatke vsaj preko lokalne povezave, smo lahko preverili tudi delovanje naših postavljenih grafičnih elementov. 
+					Pokazalo se je, da se imajo izhodne vrednosti senzorjev na android sistemu in senzorične plošče različne obsege in oblike. Tako smo s pretvorbo določenih spremenljivk dosegli skladnost obeh strani. Zgradili smo preprost algoritem za računanje zamika med ukazi ter postavili grafične elemente za prikazovanje ostalih senzorjev (temperature, smeri, vlažnosti in tlaka, stanje napolnjenosti baterije) in njim primerne simbole. Stanje napolnjenosti baterije še ni implementirana funkionalnost (3.7.16), saj vezje po meri, ki jo merilo tako napetost kot električni tok, še ni izdelano. Prvi prototip uporabniškega vmesnika je počasi nastajal po zgledu osnutna, narisanega na papir. Gumbe za rešitev v sili, vklop držanja višine, smeri in gumb autopilot so bili t.i. "dummy" gumbi, ki niso nič pametnega počeli. Na podlagi vmesnika pa smo lažje predstavljali celotno aplikacijo, njene zmožnosti in nadaljni razvoj. Ugotovili smo, da bi bilo smiselno imeti funkcionalnost za fotografiranje in snemanje videa. V poznejših fazah razvoja (časovno gledano) smo bolj specifično določili načine letenja, katerih princip pa se je večkrat spremenil, domnevno zaradi pomanjkanja razumevanja in razliko potreb končnega uporabnika proti skladu standardov letalnih standardov. 
+					Izluščili smo za uporabnikov pogled 3 načine letenja:
+						ročni ali akrobatski - uporabnikov vhod direktno krmili zakrilca brez popravkov
+						stabilizacijski ali pametni - naklon telefona je enak naklonu letala
+						avtopilot - nastavljanje parametrov kot so smer, naklon in višina z gumbi, pri čemer letalo samo skrbi za doseganje ciljev in premagovanje razlik med dejanskim in željenim stanjem
+						rešilni način - ki v primeru zahteve uporabnika, ki je izgubil nadzor nad letalom, sproži poravnavo letala v vodoravno lego
+					Na vrsti je bil razred Commander, ki smo ga izdelali zato, lahko ukaze na RPi pošiljanjo s preprostimi klici metod. Ta skupaj z Commanderjev na RPi strani uporablja isti komunikacijski protokol - oznake in njihov pomen, da komunikacija poteka konsistentno in enostavno, hkrati pa je lažje ugotavljanje kakršnihkoli napak na obeh straneh.
+					Med drugim je bilo potrebno dodati tudi z vidika celotne rešitve "malenkosti" kot so splashscreen oziroma začetni zaslon, da medtem, ko je aplikacija v zagonu, uporabnik nima neprijetnega občutka, da aplikacijo deluje počasi ali nepravilno.
+					Ko je bil aktuatorski del razvit do mere delovanja za namen testiranja, se je v ta namen razvil nov podprogram Settings, ki je omogočal premikanje in nastavljanje občutljivosti in mej servo motorjev in območja ukaznega naklona mobilnega telefona. Poskrbeti je bilo tudi za ustrezen življenski cikel elementa WebView, da je komunikacijski del neomejeno deloval ne glede na to, v katerem podprogramu se uporabnik nahaja. Ko smo določene dele na obeh straneh razvili, smo lahko odpravili simulacije večine ali vseh sklopov in preverili celotno delovanje sistema.
+					Proti koncu razvoju trenutnega prototipa, ko smo na RPi strani dodali GPS sprejemnik, smo dodali potreben protokol tudi na Android strani in sedaj prikazovali tudi podatek o hitrosti na uporabniškem vmesniku. Nekaj razmišljanja pa nas je vodilo, da če uporabnik rešitev uporablja na tak način in v takem okolju, da ne ve točno, kje se njegovo letalo nahaja, bi cenil to informacijo kljub sliki v živo, ki mu v kombinaciji s podatkom o smeri in višini, ne podaja dovolj natančne informacije o samem položaju. V ta namen je raziskovanje vodilo go Google Maps API vmesnika, ki nam omogoča uporabo robustne Googlove storitve. Potrebno se je registrirati in v aplikacijo dodati unikaten API ključ, ki nam omogoča uporabo njihovih storitev, in to brezplačno do določene meje. 
+					Dodali smo nov podprogram MapActivity, ki skrbi za prikaz zemljevida, naše lokacije in lokacije Rpi. V začetkih je bil izziv vzpostavitev same storitve zaradi nepoznavanja principa delovanja. Kmalu pa smo risali markerje, poti in računali in prikazovali relevantne podatke o razdaljah. Ta podprogram bo služil avtonomnemu letu po predhodno nastaljeni poti. Poleg tega bo preko elevation servisa preverjal nadmorsko višina terena pred in pod sabo in uporabniku omogočal koristne informacije, ki so pomembne za varnost samega letenja.
+					Dodali smo tudi ne tako nujno, ampak vseno zanimivo funkcionalnost - komponento VoiceProcessor, ki uporablja androidovo storitev speech-to-text in text-to-speech in izvaja ukaze v načinu autopilota, če želimo nastaviti višino ali smer, oziroma če nas zanimajo okoljski podatki, ki jih meri Rpi.
+						
+				arhitektura
+					glavne kompomente in njihove naloge
+						Android je organiziran tako, da je vsaka aplikacija strukturirana po principu MVVM modela (model-view-viewmodel) in podobno kot Windows Phone, od nas zahteva ločen uporabniški vmesnik od podatkov in programske logike.
+						MainActivity 
+							glavni program, backend za glavno grafično postavitev (main.xaml)
+							Myreceviver (broadcast receiver)
+								Naročnik na broadcast sporočila določenih tipov
+						Commander
+							Metode s skupnim ukazno-komunikacijskim protokolom za pošiljanje ukazov na RPi
+						LazyScrollView
+							Razred po meri - prirejen scrollview
+						MapActivity
+							drugi del glavnega programa, ki skrbi za prikaz lokacije Rpi in je uporabniški vmesnik za načrtovanje misij in avtonomen let na sploh
+						Message 
+							podatkovni singleton razred, ki sprejme, oddela in hrani prejete, ki so zatem na voljo celotni aplikaciji
+						MyJSInterface
+							javascript vmesnik za komunikacijo z brskalnikom (WebView) 
+						MyRangeSliderView
+							Grafični element po meri, s katerim lahko določamo obseg med dvemi vrednosti
+						MyWebViewClient
+							WebView odjemalec minimalno spremenjen za pravilno delovanje programa
+						Rotation
+							Enostaven pripomoček za upravljanje z obračanjem grafičnega elementa
+						Settings
+							tretji del glavnega programa, ki skrbi na nastavitve servo motorjem in zaustavitev Rpi
+						SplashActivity
+							backend začetnega zaslona, ko se aplikacija nalaga
+						StableTimer
+							Časovnik po meri za namen odštevanja reševalno-stabilizacijskega dialoga
+						TiltService
+							Servis, ki bere podatke senzorjev mobitela (pospeškomer, žiroskop), preračuna naklone in jih shrani v Message
+						VoiceProcessor
+							Skrbi za pravilen ukrep ob prepoznavanju govora storitve speech-to-text		
+				
+				funkcionalnosti aplikacije
+					izvajanje WebView in TiltService kot podporni storitvi
+					komunikacija z WebView, sprejem podatkov in prikaz video pretoka na celotnem zaslonu
+					Prikaz podatkov v ustreznih grafičnih elementih podatkov Rpi
+						zamik med ukazi
+						temperatura
+						vlažnost
+						tlak
+						preračunana višina iz barometra ali gps sprejemnika
+					    naklon po 2 smereh
+						kompas
+						apliciran "plin" v auto načinu
+						hitrost iz gps
+						preklop na zmanjšan nabor prebranih podatkov
+					Prikaz prometa
+					izbira načina manual ali stabilized
+					uporaba držanja smeri in višine/višinskega naklona
+					uporaba držanja nadmorkse višine
+					nastavitev višine in smeri preko zaslona ali glasovno
+					uporaba načina rešitve
+					fotograiranje in snemanje na strani RPi
+					dostop do nastavitev
+						nastavitev mej, občutljivosti, smeri servo motorjev
+						nastavitev mej branja senzorjev na mobitelu
+						nastavitev mej plina
+						zaustavitev Rpi
+					Prikaz zemljevida in lokacije Rpi
+					Postavitev cilja za avtonomni let
+					Postavitev več točk za avtonomni let
+					Risanje poti za avtonomni let.
+					Preračun in prikaz Razdalje od zadnje točke do doma, do vzletne točke in poti letenja
+					Pridobitev nadmorske višine terena na določeni lokaciji iz Google maps API.
 				
 		programska rešitev za komunikacijo preko omrežja
 			problem
@@ -570,6 +656,7 @@ načrtovanje, raziskovanje in razvoj
 						
 						
 						TODO:
+					arduino zaradi analognih vhodov, custom voltage, current meter
 					prenos slike
 						programska oprema							
 							ffmjpeg			
