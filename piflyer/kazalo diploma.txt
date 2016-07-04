@@ -294,6 +294,7 @@ načrtovanje, raziskovanje in razvoj
 					Še vedno pa je bilo potrebno odpraviti eno ogromno slabost - sekvenčnost programa, ki je niso rešili niti multithreading niti multiprocessing.
 					Rešila nas je knjižnica Zero-MQ (od tukaj tudi poimenovanje mnogih komponent), ki rešuje problem hitre in učinkovite medprocesne komunikacije na različnih operacijskih sistemih in v različnih programskih jezikih.
 					Za našo rešitev je bil idealen sporočevalni vzorec publish-subscribe, saj ne povzroča dodatnega "overheada", saj je potrebna enosmerna komunikacija in ni pomena, da vsakič zahtevamo podatek, kot to dela request-reply. Poleg tega pa naročniki (subscriberji) lahko filtrirajo sporočila, ki njim niso namenjena - s pomočjo teme (TOPIC).
+						https://en.wikipedia.org/wiki/Inter-process_communication
 						http://zeromq.org/community	
 						http://zeromq.org/intro:read-the-manual
 						http://zeromq.org/bindings:python
@@ -748,6 +749,35 @@ aplikacijski vmesniki in servisi
 	android text-to-speech
 		Obratno od tega, kar počne speech-to-text		
 						
+######
+specifikacija zahtev
+	potek
+		zahteve
+		analiza (trenutno stanje, obstoječe rešitve, potencialni uporabniki, predlogi in izboljšave)
+		specifikacija 
+		valiacija
+	vrste
+		uporabniške zahteve, sistemske
+		funkcionalne, nefukncionalne
+		prednostne
+		Metrika za nefunkcionalne zahteve
+			Lastnost Mera
+			hitrost število obdelanih transakcij na sekundo;
+			odzivni čas uporabnika/dogodka;
+			čas osveževanja zaslona
+			velikost megabiti;
+			število čipov ROM
+			enostavnost uporabe čas urjenja;
+			število oken s pomočjo
+			zanesljivost povprečen čas do napake;
+			verjetnost nerazpoložljivosti;
+			odstotek pojavitve napak;
+			razpoložljivost
+			robustnost čas ponovnega zagona po napaki;
+			odstotek dogodkov, ki povzročijo napako;
+			verjetnost okvare podatkov ob napaki
+			prenosljivost odstotek stavkov, odvisnih od sistema;
+			število ciljnih sistemov
 
 raziskovanje
 
