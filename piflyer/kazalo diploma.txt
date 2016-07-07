@@ -150,7 +150,7 @@ načrtovanje, raziskovanje in razvoj
 		idejne zasnove in prve ideje
 			Ker idejna zasnova ni bila osnovana na p2p komunikaciji, so temu primerni drugi razredi. Mogoče ni običajen način v končnem izdelku opisovati stare ideje in opuščene ali spremenjene načrte, ampak znajo pokazati razliko pogleda na problem v začetnih fazah projekta, med projektom in na koncu projekta.
 			S tem bi radi pokazali, kako je razvoj dinamičen in se spreminja, hkrati pa se pokaže tako časovno kot tudi razvojno kompleksnost izdelave take rešitve.
-			Vidi se nivo abstrakcije in enostavnosti razmišljanja, ko problema še ne poznamo dovolj in samo načrtujemo smernice njegovih rešitev. Skozi diplomsko delo bomo lahko tako ocenili tudi količino naučenega znanja in pridobljenih izkušenj ter cenili vrednost tako same rešitve, kot tudi diplomskega dela, ko ga bo bral nekdo, ki za to področje zanima.
+			Vidi se nivo abstrakcije in enostavnosti razmišljanja, ko problema še ne poznamo dovolj in samo načrtujemo smernice njegovih rešitev. Skozi diplomsko delo bomo lahko tako ocenili tudi količino naučenega znanja in pridobljenih izkušenj ter cenili vrednost tako same rešitve, kot tudi diplomskega dela, ko ga bo bral nekdo, ki ga to področje zanima.
 			Pri branju idejne zasnove bodimo pozorni, da so to samo prvotni, lahko bi rekli primitivni načrti, ki ne bi nikakor delovali v zastavljenem problemu na takšen način, prednost take zasnove pa je vsekakor korak naprej za organizacijo in management samega razvoja.
 			Stran rešitve in njene komponente:
 				Raspberry pi2
@@ -755,7 +755,7 @@ specifikacija zahtev
 		zahteve
 		analiza (trenutno stanje, obstoječe rešitve, potencialni uporabniki, predlogi in izboljšave)
 		specifikacija 
-		valiacija
+		validacija
 	vrste
 		uporabniške zahteve, sistemske
 		funkcionalne, nefukncionalne
