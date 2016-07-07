@@ -194,6 +194,7 @@ class commander:
             # not tested
             elif (self.mode == RESQUE):
                 self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
+                self.motor.setThrottleFromInput(self.throttle)
                 # self.motor. ...
 
     # not tested
@@ -202,7 +203,7 @@ class commander:
 
         # TODO control in reference to altitude, speed and glide slope
         self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
-        # self.motor.control(0)
+        self.motor.setThrottleFromInput(self.throttle)
 
     def run(self):
         # print(self.is_connected)
