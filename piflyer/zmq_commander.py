@@ -63,7 +63,7 @@ class commander:
         self.elevons = elevons()
         self.sensors = sensors()
         self.gps = gpsdata()
-        self.motor = motor_handler(0)
+        self.motor = motor_handler(3)
         self.camera = camera()
 
     def getParameters(self):
