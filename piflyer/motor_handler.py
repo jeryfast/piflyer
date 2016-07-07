@@ -26,6 +26,7 @@ class motor_handler:
         self.minThrottle = 0
         self.maxThrottle = 100
         self.channel = channel
+        self.timer=0
         self.setServoValue(self.channel, servoMin)
 
     def add(self):
