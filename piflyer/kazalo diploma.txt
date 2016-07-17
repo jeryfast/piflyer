@@ -3,7 +3,7 @@ Povzetek
 uvod (motivacija, zakaj)
 	Zanima me več področij znanosti in tehnologije, med drugim tudi letalstvo, aeronavtika in aerodinamika. Vse tri znanosti poznam zelo površno in na zelo amaterskem nivoju. Bolj me zanima računalništvo (computer science) in nekaj let sem naredil prvi korak v povezovanju teh stvari. Eno poletje sem namreč delal na projektu autonomnega letala z mikrokrmilnikom arduino. Poskus se je sicer končal neuspespešno s stališča samega projekta, saj ni bil niti konceptualno niti finančno dobro podprt.
 	Neuspeli poskus pa sam vidim kot ogromno naučenega znanja, ker sem ogromno stvari delal od začetka oz. "from scratch", kar z inženirskega vidika nikakoor ni dobra praksa. Naučil sem se tudi netehnične stvari, predvsem to, da si je včasih pri delu potrebno priznati, da projektu ne gre najboljše, ker ni bil dobro zasnovan že v načrtu, ker ima pomanjkljivosti, ker izumljamo toplo novo ali kaj tretjega in si priznati, da projekt ne bo izpeljan do konca.
-	Nekaj leta za tem sem poleg rednega dela na fakulteti "obiskoval" trimesečni spletni tečaj aeronavtike, ker me je zanimalo področje aerodinamike in ostalih stvari, ki jih je možno z nekaj enačbami preračunati, in ga uspešno opravil in pridobil certifikat (https://s3.amazonaws.com/verify.edx.org/downloads/60b6addb529c4bce952d89867e450f6e/Certificate.pdf). Moje zanimanje je vodilo k enem izmed interdisciplinarnih projektov na temo brezpilotnih letalnikov, kmalu zatem pa soudeležbo na mednarodnem tekmovanju DBF, kjer smo z ekipo 20 članov osvojili zmago v Tucsonu, ZDA (April 2015).
+	Nekaj leta za tem sem poleg rednega dela na fakulteti "obiskoval" trimesečni spletni tečaj aeronavtike, ker me je zanimalo področje aerodinamike in ostalih stvari, ki jih je možno z nekaj enačbami preračunati, in ga uspešno opravil in pridobil certifikat (https://s3.amazonaws.com/verify.edx.org/downloads/60b6addb529c4bce952d89867e450f6e/Certificate.pdf). Moje zanimanje je vodilo k enem izmed interdisciplinarnih projektov na temo brezpilotnih letalnikov, kmalu zatem pa soudeležbo na mednarodnem tekmovanju DBF (www.aiaadbf.org/), kjer smo z ekipo 20 članov osvojili zmago v Tucsonu, ZDA (April 2015).
 	Po zanimanju za teorijo delovanja raket, letal, satelitov, roverjev, ostalih robotov in projektov NASE in ESE, predvsem pa avtonomnih brezpilotnih letal in znanju programiranja spletnih in mobilnih aplikacij je nastopilo intenzivnejše obdobje zanimanja za mikrokrmilnike. Tako sem se hotel poglobiti v novi, popularni in zmogljivi mikrokrmilniški sistem Raspberry Pi, ki je sposoben poganjati Linux operacijski sistem. Potrebno je bilo obnoviti in poglobiti znanje linux komandnih ukazov, samega sistema, razvoja Androida preko Xamarin razvojnega orodja in Androida nasploh,
 	programskih jezikov C#, javascript in python, arhitekturnih in razvijalskih vzorcev, minimalnih elektrotehniških osnov, komunikacijskih omrežij, organizacije in vzdrževanja kode in ogromno ostalih inženirskih in programerskih izzivov in veliko razvojno-raziskovalnega dela na poti do rezultata.
 krmilni sistemi (za predstavo)
@@ -12,7 +12,7 @@ krmilni sistemi (za predstavo)
 	uvod 
 		Nekaj znanih proizvajalcev mikrokrmilnikov in mikrokrmilniških razvojnih plošč: Arduino, Texas Instruments, Microchip PIC, STM, RaspberryPi, Intel, Beaglebone, Odroid
 	delovanje	
-		Mikrokrmilnik sprejema podatki iz vhodnih naprav in krmili ihodne naprave, gledena speficičen program, ki ga izvaja. Vhode predstavljajo senzorji, ki na podlagi lastnosti določenih materialov prevajajo določeno količino električno energije. Tako na podlagi padca napetosti dobima na vhod vrednosti, ki po pretvorbi iz analogne v digitalno obliko predstavljajo količino svetlobe na senzorju, temperaturo senzorja, tlak na senzorju, stanje senzorja (gumb), vlažnost zraka v senzorju in še in še.
+		Mikrokrmilnik sprejema podatki iz vhodnih naprav in krmili izhodne naprave, gledena speficičen program, ki ga izvaja. Vhode predstavljajo senzorji, ki na podlagi lastnosti določenih materialov prevajajo določeno količino električno energije. Tako na podlagi padca napetosti dobima na vhod vrednosti, ki po pretvorbi iz analogne v digitalno obliko predstavljajo količino svetlobe na senzorju, temperaturo senzorja, tlak na senzorju, stanje senzorja (gumb), vlažnost zraka v senzorju in še in še.
 		Izhode pa predstavljajo razni aktuatorji, ki opravljajo neko nalogo. To so lahko servo, koračni, krtačni, brezkrtačni, BLCD in elektromotorji drugih vrst, tranzistorji, LED diode itd.
 	krmilni sistemi v tehnologiji letalstva
 		Zanimivost, kako dejansko delujejo krmilni sistemi pravih letal odlično opisuje magistrska naloga na podlagi Simuliranih razmer in rezultatov iz X-plane simulatorja letenja (https://daim.idi.ntnu.no/masteroppgaver/007/7001/masteroppgave.pdf)
@@ -681,7 +681,7 @@ testiranje
 					odzivnost (zamik med ukazi, latenca podatkov in slike)						
 						Zamik med ukazi se računa na android napravi med zadnjim in predzadnjim prejetim podatkom. Na vsako sekundo trenutni rezultat tudi prikažemo na zaslonu za čas in namen razvoja. Latenca podatkov se ni posebej merila, saj je bilo mogoče že s preprostim testom uporabe oceniti, ali zaznamo zamik in ali bi bil moteč pri sami uporabi. Latenca slike pa merimo s tako, da snemamo časovnik, fotografimo vhodno in izhodno sliko in primerjamo rezultata. Končni rezultat predstavlja približno 200ms zamika videa. Glede na raziskavi človeške percepcije jemljemo 100ms odziv za takojšen, kar ni presenetljivo, saj imamo v povprečju 250ms reakcijski čas (http://www.jneurosci.org/content/26/15/3981.full, https://www.pubnub.com/blog/2015-02-09-how-fast-is-realtime-human-perception-and-technology/)
 					poraba virov (obremenitve skupne procesorske moči, poraba pomnilnika, gretje CPU)
-						Obremenitev procesorske moči se lahko meri na več načinov. Mi smo ga merili glede na odstotkovno obremenitev vseh štirih procesorskih jeder s programom top in preklopom na referenco vseh, ne posameznega procesorja (shift+i). Lahko bi merili tudi CPU load average, ki prikazuje, koliko procesov je v povprečju čakalo na CPU zadnjo, zadnjih 5 in zadnjih 15 minut (https://en.wikipedia.org/wiki/Load_%28computing%29#CPU_load_vs_CPU_utilization). Porabo pomnilnika smo merili z grafičnim programom ... v okolju X, kjer lahko preprosto odštejemo porabo virov grafičnega okolja. Temperaturo procesorja smo merili z izpisom dnevnika, ki meri temperaturo CPU na vsake pol sekunde. Temperature so pri statičnih testih in sobnih temperaturah nihale med 40 in 60°C glede na obremenitev. Sicer ima RPijev CPU nastavljeno mejo na 80°C, smo se odločili za montažo pasivnih ALU hladilkikov.
+						Obremenitev procesorske moči se lahko meri na več načinov. Mi smo ga merili glede na odstotkovno obremenitev vseh štirih procesorskih jeder s programom top in preklopom na referenco vseh, ne posameznega procesorja (shift+i). Lahko bi merili tudi CPU load average, ki prikazuje, koliko procesov je v povprečju čakalo na CPU zadnjo, zadnjih 5 in zadnjih 15 minut (https://en.wikipedia.org/wiki/Load_%28computing%29#CPU_load_vs_CPU_utilization). Porabo pomnilnika smo merili z grafičnim programom ... v okolju X, kjer lahko preprosto odštejemo porabo virov grafičnega okolja. Temperaturo procesorja smo merili z izpisom dnevnika, ki meri temperaturo CPU na vsake pol sekunde. Temperature so pri statičnih testih in sobnih temperaturah nihale med 40 in 60°C glede na obremenitev. Sicer ima RPijev CPU nastavljeno mejo na 85°C, smo se odločili za montažo pasivnih ALU hladilkikov.
 					poraba mobilnih podatkov (količina prometa za podatke in video)
 						Količino prometa, zanimal nas je predvsem izhodni promet, ker je pričakovano nad 90% celotnega prometa povzročal prav video pretok. Količina prometa je pomembna zaradi faktorja zmanjševanje latence, prav tako pa zaradi omejitve in zmanjševanja stroškov pri porabi mobilnih podatkov. V trenutni rešitvi (tretji teden junij 2016) bilo celotnega prometa od 80 - 300 KB/s, od je predstavljal 10KB/s prometa podatkovni promet, tako izhodni kot vhodni, vsak približno polovico. Promet smo spremljali z linux programom bmon, ki nam v komandni vrstici riše celo grafe.		
 			Meritve na enak princip so bile načrtovane, vendar se še niso izvajale na Androidu (2.7.2016), ker je v času razvoja prihajalo do nenormalnega gretja naprave, potem pa se stanje izboljšalo ob optimizacijah programske rešitve. Skupni prenos podatkov se v Android aplikaciji za aplikacijo prikazuje zaradi uporabne informacije uporabniku. Obremenitev CPU in pomnilnika smo spremljali kar s pomočjo razvijalnih orodij na sami Android napravi. Porabo grafične moči ni bilo potrebno meriti, ker predvajanje slike ne predstavlja problema na napravo, saj recimo vsak Youtube video najbrž predstavlja večjo procesorsko in grafično obremenitev, če sklepamo po količini prometa in kvaliteti slike.
@@ -750,41 +750,17 @@ aplikacijski vmesniki in servisi
 		Obratno od tega, kar počne speech-to-text		
 						
 ######
-specifikacija zahtev
-	potek
-		zahteve
-		analiza (trenutno stanje, obstoječe rešitve, potencialni uporabniki, predlogi in izboljšave)
-		specifikacija 
-		validacija
-	vrste
-		uporabniške zahteve, sistemske
-		funkcionalne, nefukncionalne
-		prednostne
-		Metrika za nefunkcionalne zahteve
-			Lastnost Mera
-			hitrost število obdelanih transakcij na sekundo;
-			odzivni čas uporabnika/dogodka;
-			čas osveževanja zaslona
-			velikost megabiti;
-			število čipov ROM
-			enostavnost uporabe čas urjenja;
-			število oken s pomočjo
-			zanesljivost povprečen čas do napake;
-			verjetnost nerazpoložljivosti;
-			odstotek pojavitve napak;
-			razpoložljivost
-			robustnost čas ponovnega zagona po napaki;
-			odstotek dogodkov, ki povzročijo napako;
-			verjetnost okvare podatkov ob napaki
-			prenosljivost odstotek stavkov, odvisnih od sistema;
-			število ciljnih sistemov
+6 ključnih besed, legenda izrazov lahko več strani
+uvod (motivacija, zakaj ...)
+povzetek (pregled diplomske naloge - jedrnato v parih odstavkih, kaj je namen)
+analiza problema
 
-raziskovanje
+glavni del
+do 6 poglavij
+vsako poglavje do 3 podnivoje
 
-razvoj
-
-testiranje
-
-sklepne ugotovitve
+sklep (zaključek, pregled - prvi del: kaj je uspelo, kaj ni, drugi del: možnosti izboljšav)
 
 literatura
+
+kot prilogo se lahko brez problema doda dizajn letala, slika cfd analiza, aeroprofila ...
