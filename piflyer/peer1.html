@@ -47,8 +47,9 @@
 if (util.supports.data && util.supports.binary) {console.log('OK, this browser supports webrtc'); }
 else {console.log('NO, this browser does not support webrtc');}
 util.reliable=false;
-var tid=var tid = String(new Date().getTime()).substring(7,9);
-var pid = 'piflyerprototype'+tid;
+//var tid = String(new Date().getTime()).substring(7,9);
+var pid = 'piflyerprototype';
+console.log('connecting to:' +pid);
 var mystream;
 var mycall;
 var rcvTimer=18446744073709551616;
