@@ -185,7 +185,6 @@ function sendstr(str)
 {
   if(myconn!=null && myconn.open) {
 	myconn.send(str);
-	myconn.send(str);
 	}
   else{
     $('#connected').text(myconn.open);
