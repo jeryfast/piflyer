@@ -159,13 +159,12 @@ class commander:
             if (self.mode == MANUAL):
                 # print("Manual %f %f" % (self.pitch,self.roll))
                 # constantly updated even if no change ... not ok
-                #self.elevons.setAngle(self.pitch, self.roll)
+                self.elevons.setAngle(self.pitch, self.roll)
                 # self.elevons.setRoll(self.roll)
                 # not tested
                 if (self.throttle_updated):
                     self.throttle_updated = False
                     self.motor.setThrottleFromInput(self.throttle)
-                    self.elevons.setPitchRollFromInput(self.throttle,0)
 
             # not tested
             elif (self.mode == STABILIZED):
@@ -187,8 +186,7 @@ class commander:
                         print("controlling roll")
                     # alt off, auto off
                     else:
-                        #self.elevons.stabilize(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
-                        pass
+                        self.elevons.stabilize(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
                     if (self.throttle_updated):
                         self.throttle_updated = False
                         self.motor.setThrottleFromInput(self.throttle)
