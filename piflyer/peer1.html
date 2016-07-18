@@ -120,6 +120,7 @@ conn.on('data', function(data) {
 	//console.log('Received: '+data);
 	if(data!=lastData)
 	{
+	    ws.send(data);
         lastData=data;
         if(data=="stopStream")
             stopStream();
@@ -131,8 +132,9 @@ conn.on('data', function(data) {
             ws.send(data);
             //$('#receiver').text(data);
         }
+        rcvTimer=new Date().getTime();
     }
-    rcvTimer=new Date().getTime();
+
 });
 
 conn.on('error',function(err){
