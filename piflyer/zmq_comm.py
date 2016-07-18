@@ -72,7 +72,7 @@ if __name__ == '__main__':
             # process task
             if(connected):
                 ws.send("_" + msg)
-            #print("comm received:", msg)
+                print("comm received:", msg)
 
         # from commander to browser - gps data
         while True:
