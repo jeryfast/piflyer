@@ -165,6 +165,7 @@ class commander:
                 if (self.throttle_updated):
                     self.throttle_updated = False
                     self.motor.setThrottleFromInput(self.throttle)
+                    self.elevons.setPitchRollFromInput(self.throttle,0)
 
             # not tested
             elif (self.mode == STABILIZED):
