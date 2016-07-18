@@ -59,7 +59,6 @@ class elevons:
         self.right.setPositionFromTilt(roll / 2)
 
     def setPitchRoll(self, pitch, roll):
-        print("pitch and roll:", pitch, roll)
         self.left.setPositionFromTilt(pitch / 2 - roll / 2)
         self.right.setPositionFromTilt(pitch / 2 + roll / 2)
 

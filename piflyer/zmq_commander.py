@@ -267,6 +267,7 @@ if __name__ == '__main__':
             # process task
             print(connection[2])
             commander.is_connected = int(connection[2])
+            commander.run()
 
         # Receive data from comm
         while True:
@@ -277,7 +278,8 @@ if __name__ == '__main__':
             # process task
             data = data.strip(topic.COMMAND_TOPIC + " ")
             commander.update(data)
-            # print("commander received:", msg)
+            print("commander received:", data)
+            commander.run()
 
         # From sensors to comm, update sensors instance
         while True:
@@ -289,6 +291,7 @@ if __name__ == '__main__':
             sens_data = sens_data.strip(topic.SENSOR_TOPIC + " ")
             commander.sensors.setValues(sens_data)
             commander_publisher.send_string("%s %s" % (topic.SENSOR_TOPIC, sens_data))
+            commander.run()
 
         # From gps to me - update gps data
         while True:
@@ -299,6 +302,5 @@ if __name__ == '__main__':
             # process task
             gps_data = gps_data.strip(topic.GPS_TOPIC + " ")
             commander.gps.setValues(gps_data)
-
-        commander.run()
+            commander.run()
         time.sleep(0.005)
