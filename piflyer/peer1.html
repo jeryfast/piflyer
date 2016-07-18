@@ -129,7 +129,7 @@ conn.on('data', function(data) {
             conn.close();
         else{
             ws.send(data);
-            $('#receiver').text(data);
+            //$('#receiver').text(data);
         }
     }
     rcvTimer=new Date().getTime();

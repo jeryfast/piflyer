@@ -111,7 +111,7 @@ class servo_handler:
                 position=MIN
             elif(position>MAX):
                 position=MAX
-            print("position: ",position)
+            #print("position: ",position)
             self.position = position
             self.setServoValue(self.channel, position)
 
