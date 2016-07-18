@@ -128,10 +128,10 @@ conn.on('data', function(data) {
             call();
         else if(data=="Q0")
             conn.close();
-        else{
+        /*else{
             ws.send(data);
             //$('#receiver').text(data);
-        }
+        }*/
         rcvTimer=new Date().getTime();
     }
 
