@@ -57,7 +57,7 @@ class servo_handler:
 
     def setServoValue(self, channel, value):
         t = time.time()
-        if (t - self.timer > delays.SENSOR_REFRESH_DELAY):
+        if (t - self.timer > delays.SERVO_COMMAND_REFRESH_DELAY):
             self.timer = t
             value = n.arduino_map(value, 0, 180, servoMin, servoMax)
             pwm.set_pwm(channel, on, int(value))
