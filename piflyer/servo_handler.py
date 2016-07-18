@@ -16,7 +16,7 @@ pwm = Adafruit_PCA9685.PCA9685(0x41)
 # pwm = PWM(0x40, debug=True)
 
 # Set frequency to 60 Hz
-pwm.set_pwm_freq(60)
+pwm.set_pwm_freq(40)
 
 # default:min 150, max 600
 servoMin = 150  # Min pulse length out of 4096
