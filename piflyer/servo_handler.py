@@ -113,8 +113,7 @@ class servo_handler:
                 position=MAX
             # print("position: ",position)
             self.position = position
-            #self.setServoValue(self.channel, position)
-            self.setServoPulse(self.channel,position)
+            self.setServoValue(self.channel, position)
 
     # servo movement range limits - tested!
     def setUpDownLimit(self, up, down):
