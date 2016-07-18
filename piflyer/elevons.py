@@ -87,7 +87,7 @@ class elevons:
 
     # manual - raw control
     def setAngle(self, pitch, roll):
-        #print("pitch,roll: %d %d"%(pitch,roll))
+        print("pitch,roll: %d %d"%(pitch,roll))
         self.setPitchRollFromInput(pitch, roll)
         # print("servo L, R: %d %d"%(self.left.getPosition(),self.right.getPosition()))
 
