@@ -50,14 +50,12 @@ class motor_handler:
         self.setThrottle(throttle)
         print("throttle: %d" % (self.throttle))
 
-
     def getThrottle(self):
         return self.throttle
 
     def setThrottle(self,throttle):
-        if(throttle>=self.minThrottle and throttle<=self.maxThrottle):
-            self.throttle=throttle
-            self.setServoValue(self.channel,n.arduino_map(throttle, MIN, MAX, servoMin, servoMax))
+        self.throttle=throttle
+        self.setServoValue(self.channel,n.arduino_map(throttle, MIN, MAX, servoMin, servoMax))
 
     def setServoValue(self, channel, value):
         t = time.time()

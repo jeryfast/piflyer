@@ -12,6 +12,7 @@ import commands as c
 from camera import camera
 from gpsstorage import gpsdata
 import rpi
+from pid import pid
 
 MODE = "M"
 CONTROL = "C"
@@ -59,6 +60,10 @@ class commander:
         self.heading = 0.0
         self.altittude = 0.0
         self.speed = 0
+
+        self.altPID=pid(0,0)
+        self.hdgPID=pid(0,0)
+        self.throttlePID=pid(0,0)
 
         self.elevons = elevons()
         self.sensors = sensors()
@@ -172,8 +177,11 @@ class commander:
                 # auto on
                 if(self.auto_hold):
                     # alt on, auto on, autothrottle
+                    self.hdgPIDcontrol()
+                    self.throttlePIDcontrol()
                     if (self.alt_hold):
                         print("controlling hdg, alt")
+                        self.altPIDcontrol()
                     # alt off, auto on, autothrottle
                     else:
                         print("controlling hdg, pitch")
@@ -184,6 +192,7 @@ class commander:
                     # alt on, auto off
                     if (self.alt_hold):
                         print("controlling roll")
+                        self.altPIDcontrol()
                     # alt off, auto off
                     else:
                         self.elevons.stabilize(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
@@ -224,8 +233,14 @@ class commander:
         else:
             print("pitch")
             self.elevons.stabilize(self.pitch,0,self.sensors.pitch,self.sensors.roll)
+    def altPIDcontrol(self, setpoint, value):
+        self.altPID.run((setpoint, value))
 
+    def hdgPIDcontrol(self, setpoint, value):
+        self.hdgPID.run((setpoint, value))
 
+    def throttlePIDcontrol(self, setpoint, value):
+        self.motor.setThrottleFromInput(self.throttlePID.run(setpoint, value))
 
 if __name__ == '__main__':
     # print("Starting commander")
