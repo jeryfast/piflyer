@@ -177,22 +177,22 @@ class commander:
                 # auto on
                 if(self.auto_hold):
                     # alt on, auto on, autothrottle
-                    self.hdgPIDcontrol()
+                    #self.hdgPIDcontrol()
                     self.throttlePIDcontrol()
                     if (self.alt_hold):
                         print("controlling hdg, alt")
-                        self.altPIDcontrol()
+                        #self.altPIDcontrol()
                     # alt off, auto on, autothrottle
                     else:
                         print("controlling hdg, pitch")
-                        self.controlHdgPitchWing()
+                        #self.controlHdgPitchWing()
 
                 # auto off
                 else:
                     # alt on, auto off
                     if (self.alt_hold):
                         print("controlling roll")
-                        self.altPIDcontrol()
+                        self.altPIDcontrol(self.altittude, self.sensors.altitude)
                     # alt off, auto off
                     else:
                         self.elevons.stabilize(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
@@ -233,11 +233,14 @@ class commander:
         else:
             print("pitch")
             self.elevons.stabilize(self.pitch,0,self.sensors.pitch,self.sensors.roll)
+
     def altPIDcontrol(self, setpoint, value):
-        self.altPID.run((setpoint, value))
+        #self.altPID.run((setpoint, value))
+        pass
 
     def hdgPIDcontrol(self, setpoint, value):
-        self.hdgPID.run((setpoint, value))
+        #self.hdgPID.run((setpoint, value))
+        pass
 
     def throttlePIDcontrol(self, setpoint, value):
         self.motor.setThrottleFromInput(self.throttlePID.run(setpoint, value))
