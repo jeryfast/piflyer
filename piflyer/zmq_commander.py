@@ -178,7 +178,7 @@ class commander:
                 if(self.auto_hold):
                     # alt on, auto on, autothrottle
                     #self.hdgPIDcontrol()
-                    self.throttlePIDcontrol()
+                    #self.throttlePIDcontrol()
                     if (self.alt_hold):
                         print("controlling hdg, alt")
                         #self.altPIDcontrol()
@@ -192,7 +192,7 @@ class commander:
                     # alt on, auto off
                     if (self.alt_hold):
                         print("controlling roll")
-                        self.altPIDcontrol(self.altittude, self.sensors.altitude)
+                        #self.altPIDcontrol(self.altittude, self.sensors.altitude)
                     # alt off, auto off
                     else:
                         self.elevons.stabilize(self.pitch, self.roll, self.sensors.pitch, self.sensors.roll)
@@ -235,8 +235,9 @@ class commander:
             self.elevons.stabilize(self.pitch,0,self.sensors.pitch,self.sensors.roll)
 
     def altPIDcontrol(self, setpoint, value):
-        #self.altPID.run((setpoint, value))
-        pass
+        correction=self.altPID.run((setpoint, value))
+        #if(correction>20):
+            #self.elevons.setPitchRoll(correction,self.roll-self.sensors.roll)
 
     def hdgPIDcontrol(self, setpoint, value):
         #self.hdgPID.run((setpoint, value))
