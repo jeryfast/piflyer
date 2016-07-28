@@ -52,7 +52,10 @@ class sensors():
             self.humidity = round(self.sense.get_humidity(), 1)
             self.pressure = round(self.sense.get_pressure(), 1)
             self.sense.set_imu_config(True, True, True)
-            pitch, yaw, roll = self.sense.get_orientation().values()
+            orientation = self.sense.get_orientation()
+            pitch = orientation['pitch']
+            roll = orientation['roll']
+            yaw = orientation['yaw']
             ax, ay, az = self.sense.get_accelerometer_raw().values()
             self.heading = round(self.sense.get_compass(), 1)
             if (pitch > 180):
