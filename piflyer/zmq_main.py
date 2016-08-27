@@ -1,7 +1,7 @@
 import os, time
-os.system("v4l2-ctl --set-fmt-video=width=720,height=480,pixelformat=H264 -p 20")
-os.system("v4l2-ctl --set-ctrl video_bitrate=25000000")
-os.system("v4l2-ctl --set-ctrl h264_profile=highline")
+os.system("v4l2-ctl --set-fmt-video=width=320,height=240,pixelformat=H264 -p 20")
+os.system("v4l2-ctl --set-ctrl video_bitrate=5000000")
+os.system("v4l2-ctl --set-ctrl h264_profile=baseline")
 os.system("export DISPLAY=:99")
 os.system("sudo xvfb-run /usr/bin/firefox /home/pi/piflyer/piflyer/peer1.html &")
 #os.system("/usr/bin/firefox /home/pi/piflyer/piflyer/peer1.html &")
