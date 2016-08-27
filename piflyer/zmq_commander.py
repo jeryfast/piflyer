@@ -125,6 +125,7 @@ class commander:
 
             elif (words[0] == AUTO):
                 if (self.auto_hold):
+                    self.mode=STABILIZED
                     self.heading = float(words[1])
                     if (self.alt_hold):
                         self.altittude = float(words[2])
