@@ -91,7 +91,7 @@ peer.on('close', function() {
 
 peer.on('disconnected', function() {
 	console.log('disconnected from the signalling server');
-	setInterval(function(){peer.reconnect();}, 3000);
+	//setInterval(function(){peer.reconnect();}, 3000);
 	// not really ok
     $('#connected').text('false');
     ws.send("Q0");
@@ -161,8 +161,8 @@ function send()
 function sendstr(str)
 {
   var t=new Date().getTime();
-  if(conn.open && t-rcvTimer<5000){
-  //if(conn.open){
+  //if(conn.open && t-rcvTimer<5000){
+  if(conn.open){
 	conn.send(str);
 	}
   else{
