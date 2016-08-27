@@ -213,7 +213,7 @@ class commander:
 
         # TODO control in reference to altitude, speed and glide slope
         self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
-        self.motor.setThrottleFromInput(self.throttle)
+        self.motor.setThrottleFromInput(0)
 
     def run(self):
         # print(self.is_connected)
