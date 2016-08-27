@@ -91,7 +91,7 @@ peer.on('close', function() {
 
 peer.on('disconnected', function() {
 	console.log('disconnected from the signalling server');
-	//setInterval(function(){peer.reconnect();}, 3000);
+	setInterval(function(){peer.reconnect();}, 3000);
 	// not really ok
     $('#connected').text('false');
     ws.send("Q0");
@@ -118,7 +118,7 @@ conn.on('open', function() {
 
 conn.on('data', function(data) {
 	//console.log('Received: '+data);
-	if(data!=lastData)
+	if(data!=lastData || data=='!')
 	{
 	    ws.send(data);
         lastData=data;
