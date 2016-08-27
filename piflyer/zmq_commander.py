@@ -182,10 +182,11 @@ class commander:
                     if (self.alt_hold):
                         print("controlling hdg, alt")
                         #self.altPIDcontrol()
+                        self.controlAlt()
                     # alt off, auto on, autothrottle
                     else:
                         print("controlling hdg, pitch")
-                        #self.controlHdgPitchWing()
+                        self.controlHdgPitchWing()
 
                 # auto off
                 else:
@@ -223,7 +224,7 @@ class commander:
 
     # not tested
     def controlHdgPitchWing(self):
-        hdgdiff = self.heading-self.sensors.heading
+        """hdgdiff = self.heading-self.sensors.heading
         sign = hdgdiff/abs(hdgdiff)
         if(abs(hdgdiff)>10 and abs(self.sensors.pitch)<5):
             print("turn")
@@ -231,8 +232,17 @@ class commander:
             if(done):
                 self.elevons.stabilize(0, 0, self.sensors.pitch, self.sensors.roll)
         else:
-            print("pitch")
-            self.elevons.stabilize(self.pitch,0,self.sensors.pitch,self.sensors.roll)
+            print("pitch")"""
+        self.elevons.stabilize(self.pitch,0,self.sensors.pitch,self.sensors.roll)
+
+    def controlAlt(self):
+        if(self.altittude-self.sensors.altitude>10):
+            self.pitch=20
+        elif(self.altittude-self.sensors.altitude<-10):
+            self.pitch = -10
+        else:
+            self.pitch=0
+        self.controlHdgPitchWing()
 
     def altPIDcontrol(self, setpoint, value):
         correction=self.altPID.run((setpoint, value))
