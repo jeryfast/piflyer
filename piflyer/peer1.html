@@ -61,14 +61,14 @@ var lastData="";
 
 //peerjs
 var peer = new Peer(
-	{host:'peerserver.cloudapp.net', port:80},
-	{key: 'gsixocef254gqfr',
+	{host:'peerserver.cloudapp.net', port:80,
+	key: 'peerjs',
 	debug:3,
 	config: {'iceServers': [
-	{url:'stun:piflyerproxy.cloudapp.net'},
-    {url:'turn:piflyerproxy.cloudapp.net:443',
-     credential:'youhavetoberealistic',
-     username:'ninefingers'}
+	{url:'stun:numb.viagenie.ca'},
+    {url:'turn:numb.viagenie.ca:3478',
+     credential:'temp123***',
+     username:'jernej.plesnar@gmail.com'}
 	]}
 });
 
